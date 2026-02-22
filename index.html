@@ -5,36 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ben Chmieleski</title>
 
-
-    <style>    scroll-container {
-  width: 100%;
-  overflow: hidden; /* Hides images outside the container */
-  background: #f0f0f0;
-  padding: 20px 0;
-}
-
-.scroll-wrapper {
-  display: flex;
-  width: calc(250px * 6); /* Width of one image * total number of images (including duplicates) */
-  animation: scroll 20s linear infinite; /* Adjust '20s' to change speed */
-}
-
-.scroll-wrapper img {
-  width: 250px; /* Consistent width for all images */
-  height: 150px;
-  object-fit: cover;
-  margin: 0 10px;
-}
-
-/* Pause animation on hover for better user experience */
-.scroll-container:hover .scroll-wrapper {
-  animation-play-state: paused;
-}
-
-@keyframes scroll {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(calc(-250px * 3)); } /* Move by the width of the original set (3 images) */
-}        
+    <style>
         body {
             margin: 0;
             display: flex;
@@ -50,6 +21,7 @@
             display: flex;
             flex-direction: column;
             box-sizing: border-box;
+            z-index: 10; /* Keeps sidebar on top of scrolling content */
         }
 
         nav a {
@@ -67,13 +39,53 @@
         /* Content Area */
         main {
             flex-grow: 1;
-            padding: 40px;
+            padding: 40px 0; /* No left/right padding so slider hits the edge */
             background-color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* Padding for text only */
+        .content-padding {
+            padding: 0 40px;
         }
 
         h1 {
             margin-top: 0;
             color: #222;
+        }
+
+        /* Updated Scroll Container with Fade */
+        .scroll-container {
+            width: 100%;
+            overflow: hidden;
+            background: #f0f0f0;
+            padding: 20px 0;
+            margin-top: 30px;
+            /* Creates the fade-in effect on the left */
+            -webkit-mask-image: linear-gradient(to right, transparent, black 15%);
+            mask-image: linear-gradient(to right, transparent, black 15%);
+        }
+
+        .scroll-wrapper {
+            display: flex;
+            width: calc(250px * 6); 
+            animation: scroll 20s linear infinite;
+        }
+
+        .scroll-wrapper img {
+            width: 250px; 
+            height: 150px;
+            object-fit: cover;
+            margin: 0 10px;
+        }
+
+        .scroll-container:hover .scroll-wrapper {
+            animation-play-state: paused;
+        }
+
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(calc(-250px * 3)); } 
         }
     </style>
 </head>
@@ -88,21 +100,23 @@
     </nav>
 
     <main>
-        <h1>Ben Chmieleski</h1>
-        <p>Click on a link in the navigation bar to get started. </p> 
+        <div class="content-padding">
+            <h1>Ben Chmieleski</h1>
+            <p>Click on a link in the navigation bar to get started. </p> 
+        </div>
+
         <div class="scroll-container">
-  <div class="scroll-wrapper">
-    <!-- First set of images -->
-    <img src="image1.jpg" alt="1">
-    <img src="image2.jpg" alt="2">
-    <img src="image3.jpg" alt="3">
-    <!-- Duplicate set for seamless loop -->
-    <img src="image1.jpg" alt="1">
-    <img src="image2.jpg" alt="2">
-    <img src="image3.jpg" alt="3">
-  </div>
-</div>
-   
+            <div class="scroll-wrapper">
+                <!-- First set of images -->
+                <img src="image1.jpg" alt="1">
+                <img src="image2.jpg" alt="2">
+                <img src="image3.jpg" alt="3">
+                <!-- Duplicate set for seamless loop -->
+                <img src="image1.jpg" alt="1">
+                <img src="image2.jpg" alt="2">
+                <img src="image3.jpg" alt="3">
+            </div>
+        </div>
     </main>
 
 </body>
