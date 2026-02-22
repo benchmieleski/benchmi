@@ -11,6 +11,7 @@
             display: flex;
             font-family: sans-serif;
             min-height: 100vh;
+            overflow-x: hidden; /* Prevents unwanted horizontal scrollbars */
         }
 
         /* Sidebar - 1/6th of total width */
@@ -21,6 +22,10 @@
             display: flex;
             flex-direction: column;
             box-sizing: border-box;
+            /* Higher z-index so images go UNDER it */
+            position: relative;
+            z-index: 10; 
+            box-shadow: 5px 0 15px rgba(0,0,0,0.1); /* Optional: subtle shadow over the images */
         }
 
         nav a {
@@ -35,15 +40,16 @@
             text-decoration: underline;
         }
 
-        /* Content Area */
+        /* Content Area - 5/6ths of width */
         main {
             flex-grow: 1;
-            padding: 40px 0; /* Removed horizontal padding to let slider touch the bar */
+            padding: 40px 0; 
             background-color: #ffffff;
-            overflow-x: hidden;
+            /* Allow the container to touch the nav bar */
+            display: flex;
+            flex-direction: column;
         }
 
-        /* Text wrapper to maintain alignment for non-scrolling elements */
         .content-padding {
             padding: 0 40px;
         }
@@ -53,13 +59,15 @@
             color: #222;
         }
 
-        /* Scroll Container - No Fade */
+        /* Scroll Container - Starts exactly at the edge of the nav bar */
         .scroll-container {
             width: 100%;
             overflow: hidden;
             background: #f0f0f0;
             padding: 20px 0;
             margin-top: 30px;
+            /* Pulls the container slightly left to ensure no gap with the nav */
+            margin-left: 0; 
         }
 
         .scroll-wrapper {
@@ -81,7 +89,8 @@
 
         @keyframes scroll {
             0% { transform: translateX(0); }
-            100% { transform: translateX(calc(-250px * 3)); } 
+            /* Moves the width of 3 images (250px * 3) plus their margins (20px * 3) */
+            100% { transform: translateX(calc(-270px * 3)); } 
         }
     </style>
 </head>
@@ -103,11 +112,10 @@
 
         <div class="scroll-container">
             <div class="scroll-wrapper">
-                <!-- First set of images -->
                 <img src="image1.jpg" alt="1">
                 <img src="image2.jpg" alt="2">
                 <img src="image3.jpg" alt="3">
-                <!-- Duplicate set for seamless loop -->
+                <!-- Duplicates -->
                 <img src="image1.jpg" alt="1">
                 <img src="image2.jpg" alt="2">
                 <img src="image3.jpg" alt="3">
@@ -117,3 +125,4 @@
 
 </body>
 </html>
+
