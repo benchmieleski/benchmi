@@ -69,6 +69,14 @@
             100% { background-position: 400% center; }
         }
 
+        /* NEW: Dedicated animation for the painting frames to shift colors */
+        @keyframes border-color-shift {
+            0% { border-image-source: linear-gradient(to right, var(--theme-c1), var(--theme-c2), var(--theme-c3), var(--theme-c1)); }
+            33% { border-image-source: linear-gradient(to right, var(--theme-c2), var(--theme-c3), var(--theme-c1), var(--theme-c2)); }
+            66% { border-image-source: linear-gradient(to right, var(--theme-c3), var(--theme-c1), var(--theme-c2), var(--theme-c3)); }
+            100% { border-image-source: linear-gradient(to right, var(--theme-c1), var(--theme-c2), var(--theme-c3), var(--theme-c1)); }
+        }
+
         .nav-menu {
             display: none;
             flex-direction: column;
@@ -136,18 +144,14 @@
             padding: 12px;
             border: 8px solid;
             border-image-slice: 1;
-            border-image-source: linear-gradient(to right, 
-                var(--theme-c1), 
-                var(--theme-c2), 
-                var(--theme-c3), 
-                var(--theme-c1));
+            /* Updated to use the shift animation */
+            animation: border-color-shift 8s linear infinite;
             background-color: var(--wrapper-bg); 
             flex-shrink: 0;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: background-color 0.4s ease;
-            animation: gradient-flow 18s linear infinite;
         }
 
         .painting { height: 100%; display: block; }
