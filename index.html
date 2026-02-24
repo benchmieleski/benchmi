@@ -9,9 +9,9 @@
             --bg-main: #ffffff;
             --text-base: #1a1a1a;
             --name-text: #ffffff;
-            --theme-c1: #d9b3f2; 
-            --theme-c2: #b3d9d9; 
-            --theme-c3: #efb9da; 
+            --theme-c1: #d08cf2; 
+            --theme-c2: #66d9d9; 
+            --theme-c3: #ff85c9; 
             --modal-bg: #ffffff;
             --wrapper-bg: #ffffff; 
         }
@@ -61,6 +61,7 @@
             background-size: 400% auto;
             animation: gradient-flow 18s linear infinite;
             display: inline-block;
+            transition: color 0.4s ease;
         }
 
         @keyframes gradient-flow {
@@ -84,7 +85,7 @@
             font-weight: bold;
             text-decoration: none;
             cursor: pointer;
-            transition: transform 0.2s, opacity 0.2s;
+            transition: transform 0.2s, opacity 0.2s, color 0.4s ease;
             width: fit-content;
         }
 
@@ -246,19 +247,19 @@
                 
                 <div class="color-controls-dropdown">
                     <div class="theme-option active" onclick="setTheme('electric', this)">
-                        <div class="swatch" style="background: #d9b3f2;"></div>
-                        <div class="swatch" style="background: #b3d9d9;"></div>
-                        <div class="swatch" style="background: #efb9da;"></div>
+                        <div class="swatch" style="background: #d08cf2;"></div>
+                        <div class="swatch" style="background: #66d9d9;"></div>
+                        <div class="swatch" style="background: #ff85c9;"></div>
                     </div>
                     <div class="theme-option" onclick="setTheme('jewel', this)">
-                        <div class="swatch" style="background: #739bf3;"></div>
-                        <div class="swatch" style="background: #c39bd4;"></div>
-                        <div class="swatch" style="background: #ff72be;"></div>
+                        <div class="swatch" style="background: #3b76f7;"></div>
+                        <div class="swatch" style="background: #b268d1;"></div>
+                        <div class="swatch" style="background: #ff3da3;"></div>
                     </div>
                     <div class="theme-option" onclick="setTheme('autumn', this)">
-                        <div class="swatch" style="background: #e4a578;"></div>
-                        <div class="swatch" style="background: #d0d166;"></div>
-                        <div class="swatch" style="background: #af9991;"></div>
+                        <div class="swatch" style="background: #f08941;"></div>
+                        <div class="swatch" style="background: #d8db2e;"></div>
+                        <div class="swatch" style="background: #a37b6d;"></div>
                     </div>
                     <div class="theme-option" onclick="setTheme('monochrome', this)">
                         <div class="swatch" style="background: #666666;"></div>
@@ -293,22 +294,22 @@
     <script>
         const themes = {
             electric: { 
-                colors: ['#d9b3f2', '#b3d9d9', '#efb9da'], 
-                bg: '#ffffff', 
+                colors: ['#d08cf2', '#66d9d9', '#ff85c9'], 
+                bg: 'hsla(279, 81%, 75%, 0.6)', // 60% intensity
                 wrapper: '#ffffff', 
                 text: '#1a1a1a', 
                 name: '#ffffff' 
             },
             jewel: { 
-                colors: ['#739bf3', '#c39bd4', '#ff72be'], 
-                bg: '#e0fcf9', 
+                colors: ['#3b76f7', '#b268d1', '#ff3da3'], 
+                bg: 'hsla(221, 92%, 60%, 0.6)', // 60% intensity
                 wrapper: '#ffffff', 
                 text: '#1a1a1a', 
                 name: '#ffffff' 
             },
             autumn: { 
-                colors: ['#e4a578', '#d0d166', '#af9991'], 
-                bg: '#fff4e0', 
+                colors: ['#f08941', '#d8db2e', '#a37b6d'], 
+                bg: 'hsla(25, 87%, 60%, 0.6)', // 60% intensity
                 wrapper: '#ffffff', 
                 text: '#1a1a1a', 
                 name: '#ffffff' 
@@ -318,7 +319,7 @@
                 bg: '#0a0a1a', 
                 wrapper: '#ffffff', 
                 text: '#ffffff', 
-                name: '#ffffff' 
+                name: '#000000' 
             }
         };
 
@@ -341,13 +342,12 @@
         }
 
         function openModal(type) {
-            const content = type === 'about' 
-                ? `Hello, I'm Ben Chmieleski and I'm an Artist & Designer <br>
-                located in West Michigan. I believe in the power of design to improve the human condition. <br>
-                I paint landscapes and botanic-inspired pieces.` 
-                : `email<br>benchmieleski@gmail.com`;
-            
-            document.getElementById('modal-body').innerHTML = content;
+            const body = document.getElementById('modal-body');
+            if (type === 'about') {
+                body.innerHTML = "Hello, I'm Ben Chmieleski and I'm an Artist & Designer located in West Michigan. I believe in the power of design to improve the human condition. I paint landscapes and botanic-inspired pieces.";
+            } else {
+                body.innerHTML = "email<br>benchmieleski@gmail.com";
+            }
             document.getElementById('modal').style.display = 'block';
         }
     </script>
