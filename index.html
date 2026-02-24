@@ -9,9 +9,9 @@
             --bg-main: #ffffff;
             --text-base: #1a1a1a;
             --name-text: #ffffff;
-            --theme-c1: #d08cf2; 
-            --theme-c2: #66d9d9; 
-            --theme-c3: #ff85c9; 
+            --theme-c1: #d9b3f2; 
+            --theme-c2: #b3d9d9; 
+            --theme-c3: #efb9da; 
             --modal-bg: #ffffff;
             --wrapper-bg: #ffffff; 
         }
@@ -61,7 +61,6 @@
             background-size: 400% auto;
             animation: gradient-flow 18s linear infinite;
             display: inline-block;
-            transition: color 0.4s ease;
         }
 
         @keyframes gradient-flow {
@@ -85,7 +84,7 @@
             font-weight: bold;
             text-decoration: none;
             cursor: pointer;
-            transition: transform 0.2s, opacity 0.2s, color 0.4s ease;
+            transition: transform 0.2s, opacity 0.2s;
             width: fit-content;
         }
 
@@ -223,4 +222,135 @@
             cursor: pointer;
             background: none;
             border: 1px solid var(--theme-c2);
-            color: var(--
+            color: var(--theme-c2);
+            padding: 5px 10px;
+            transition: all 0.2s;
+        }
+        
+        .close-btn:hover {
+            background-color: var(--theme-c2);
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="site-name-wrapper">
+            <div class="site-name">
+                <span class="inv-grad-box">Ben Chmieleski</span>
+            </div>
+            <div class="nav-menu" id="navMenu">
+                <div class="nav-link inv-grad-box" onclick="openModal('about')">About</div>
+                <div class="nav-link inv-grad-box" onclick="openModal('contact')">Contact</div>
+                
+                <div class="color-controls-dropdown">
+                    <div class="theme-option active" onclick="setTheme('electric', this)">
+                        <div class="swatch" style="background: #d9b3f2;"></div>
+                        <div class="swatch" style="background: #b3d9d9;"></div>
+                        <div class="swatch" style="background: #efb9da;"></div>
+                    </div>
+                    <div class="theme-option" onclick="setTheme('jewel', this)">
+                        <div class="swatch" style="background: #739bf3;"></div>
+                        <div class="swatch" style="background: #c39bd4;"></div>
+                        <div class="swatch" style="background: #ff72be;"></div>
+                    </div>
+                    <div class="theme-option" onclick="setTheme('autumn', this)">
+                        <div class="swatch" style="background: #e4a578;"></div>
+                        <div class="swatch" style="background: #d0d166;"></div>
+                        <div class="swatch" style="background: #af9991;"></div>
+                    </div>
+                    <div class="theme-option" onclick="setTheme('monochrome', this)">
+                        <div class="swatch" style="background: #666666;"></div>
+                        <div class="swatch" style="background: #ffffff;"></div>
+                        <div class="swatch" style="background: #c2c2c2;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="gallery-container">
+        <div class="scroll-wrapper">
+            <div class="painting-wrapper"><img src="art_flowers.jpg" class="painting"><div class="painting-info"><div class="info-header inv-grad-box">Floral</div><div class="info-subheader">oil on paper, 2025</div></div></div>
+            <div class="painting-wrapper"><img src="art_gardens.jpg" class="painting"><div class="painting-info"><div class="info-header inv-grad-box">Garden</div><div class="info-subheader">oil on paper, 2025</div></div></div>
+            <div class="painting-wrapper"><img src="art_riverside.jpg" class="painting"><div class="painting-info"><div class="info-header inv-grad-box">Riverside</div><div class="info-subheader">oil on paper, 2025</div></div></div>
+            <div class="painting-wrapper"><img src="flipped.jpg" class="painting"><div class="painting-info"><div class="info-header inv-grad-box">Reflection</div><div class="info-subheader">oil on paper, 2025</div></div></div>
+            <div class="painting-wrapper"><img src="art_bella.jpg" class="painting"><div class="painting-info"><div class="info-header inv-grad-box">Sunset</div><div class="info-subheader">acrylic on wood, 2026</div></div></div>
+            <div class="painting-wrapper"><img src="art_flowers.jpg" class="painting"><div class="painting-info"><div class="info-header inv-grad-box">Floral</div><div class="info-subheader">oil on paper, 2025</div></div></div>
+            <div class="painting-wrapper"><img src="art_gardens.jpg" class="painting"><div class="painting-info"><div class="info-header inv-grad-box">Garden</div><div class="info-subheader">oil on paper, 2025</div></div></div>
+            <div class="painting-wrapper"><img src="art_riverside.jpg" class="painting"><div class="painting-info"><div class="info-header inv-grad-box">Riverside</div><div class="info-subheader">oil on paper, 2025</div></div></div>
+            <div class="painting-wrapper"><img src="flipped.jpg" class="painting"><div class="painting-info"><div class="info-header inv-grad-box">Sunset</div><div class="info-subheader">oil on paper, 2025</div></div></div>
+            <div class="painting-wrapper"><img src="art_bella.jpg" class="painting"><div class="painting-info"><div class="info-header inv-grad-box">Bella</div><div class="info-subheader">acrylic on wood, 2026</div></div></div>
+        </div>
+    </div>
+
+    <div id="modal">
+        <div id="modal-body"></div>
+        <button class="close-btn" onclick="document.getElementById('modal').style.display='none'">Close</button>
+    </div>
+
+    <script>
+        const themes = {
+            electric: { 
+                colors: ['#d9b3f2', '#b3d9d9', '#efb9da'], 
+                bg: '#ffffff', 
+                wrapper: '#ffffff', 
+                text: '#1a1a1a', 
+                name: '#ffffff' 
+            },
+            jewel: { 
+                colors: ['#739bf3', '#c39bd4', '#ff72be'], 
+                bg: '#e0fcf9', 
+                wrapper: '#ffffff', 
+                text: '#1a1a1a', 
+                name: '#ffffff' 
+            },
+            autumn: { 
+                colors: ['#e4a578', '#d0d166', '#af9991'], 
+                bg: '#fff4e0', 
+                wrapper: '#ffffff', 
+                text: '#1a1a1a', 
+                name: '#ffffff' 
+            },
+            monochrome: { 
+                colors: ['#666666', '#ffffff', '#c2c2c2'], 
+                bg: '#0a0a1a', 
+                wrapper: '#ffffff', 
+                text: '#ffffff', 
+                name: '#ffffff' 
+            }
+        };
+
+        function setTheme(key, el) {
+            const root = document.documentElement;
+            const t = themes[key];
+            
+            root.style.setProperty('--theme-c1', t.colors[0]);
+            root.style.setProperty('--theme-c2', t.colors[1]);
+            root.style.setProperty('--theme-c3', t.colors[2]);
+            
+            root.style.setProperty('--bg-main', t.bg);
+            root.style.setProperty('--wrapper-bg', t.wrapper);
+            root.style.setProperty('--text-base', t.text);
+            root.style.setProperty('--name-text', t.name);
+            root.style.setProperty('--modal-bg', (t.bg === '#0a0a1a') ? '#1e1e1e' : '#ffffff');
+            
+            document.querySelectorAll('.theme-option').forEach(o => o.classList.remove('active'));
+            el.classList.add('active');
+        }
+
+        function openModal(type) {
+            const body = document.getElementById('modal-body');
+            if (type === 'about') {
+                body.innerHTML = `Hello, I'm Ben Chmieleski and I'm an Artist & Designer <br>
+                    located in West Michigan. I believe in the power of design to improve the human condition. <br>
+                    I paint landscapes and botanic-inspired pieces.`;
+            } else {
+                body.innerHTML = `email<br>benchmieleski@gmail.com`;
+            }
+            document.getElementById('modal').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
