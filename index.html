@@ -3,120 +3,254 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ben Chmieleski</title>
-
+    <title>BENCHMIELESKI</title>
     <style>
-        body {
+        :root {
+            --bg-main: #ffffff;
+            --text-base: #1a1a1a;
+            --theme-c1: #9D00FF; 
+            --theme-c2: #008B8B; 
+            --theme-c3: #C71585; 
+        }
+
+        body, html {
             margin: 0;
-            display: grid;
-            /* Column 1: 1 fraction, Column 2: 5 fractions (Total 6 parts) */
-            grid-template-columns: 1fr 5fr;
-            min-height: 100vh;
+            padding: 0;
+            overflow: hidden;
+            background-color: var(--bg-main);
+            color: var(--text-base);
             font-family: sans-serif;
-            overflow-x: hidden;
         }
 
-        /* Sidebar - Occupies Column 1 */
-        nav {
-            background-color: #333333; /* Dark Grey */
-            padding: 20px;
+        /* Interactive Name Branding */
+        header {
+            position: fixed;
+            top: 40px;
+            left: 40px;
+            z-index: 1000;
+        }
+
+        .site-name-wrapper {
             display: flex;
-            flex-direction: column;
-            position: relative;
-            z-index: 10; 
-            box-shadow: 5px 0 15px rgba(0,0,0,0.1);
+            align-items: center;
+            gap: 10px;
+            cursor: default;
         }
 
-        nav a {
-            color: #F5F5DC; /* Light Beige/Cream */
+        .site-name {
+            font-size: 1.1rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        .name-part-1 { color: var(--theme-c1); }
+        .name-part-2 { color: var(--theme-c2); }
+
+        /* Hover Reveal Ellipsis Dots */
+        .menu-trigger {
+            display: flex;
+            gap: 2px;
+            font-weight: bold;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.2s;
+            padding: 0 5px;
+        }
+
+        .site-name-wrapper:hover .menu-trigger {
+            opacity: 1;
+        }
+
+        /* FIXED: Dot Colors and Typing Animation */
+        .dot-1 { color: var(--theme-c1); animation: dot-fade 3s infinite; }
+        .dot-2 { color: var(--theme-c2); animation: dot-fade 3s infinite 1s; }
+        .dot-3 { color: var(--theme-c3); animation: dot-fade 3s infinite 2s; }
+
+        @keyframes dot-fade {
+            0%, 100% { opacity: 0; }
+            33% { opacity: 1; }
+            66% { opacity: 0; }
+        }
+
+        /* Simple Vertical Dropdown */
+        .nav-menu {
+            display: none;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 15px;
+            padding-left: 2px;
+        }
+
+        .nav-menu.visible { display: flex; }
+
+        .nav-link {
+            font-size: 0.7rem;
             font-weight: bold;
             text-decoration: none;
-            margin-bottom: 15px;
-            font-size: 1.1rem;
+            color: var(--theme-c3);
+            cursor: pointer;
+            transition: opacity 0.2s;
         }
 
-        nav a:hover {
-            text-decoration: underline;
-        }
+        .nav-link:hover { opacity: 0.7; }
 
-        /* Content Area - Occupies Column 2 */
-        main {
-            padding: 40px 0; 
-            background-color: #ffffff;
+        /* Gallery */
+        .gallery-container {
+            width: 100vw;
+            height: 100vh;
             display: flex;
-            flex-direction: column;
-        }
-
-        .content-padding {
-            padding: 0 40px;
-        }
-
-        h1 {
-            margin-top: 0;
-            color: #222;
-        }
-
-        /* Image Carousel Logic */
-        .scroll-container {
-            width: 100%;
-            overflow: hidden;
-            background: #ffffff;
-            padding: 20px 0;
-            margin-top: 30px;
+            align-items: center;
         }
 
         .scroll-wrapper {
             display: flex;
-            /* Width calculation remains the same for the loop */
-            width: calc(250px * 6); 
-            animation: scroll 20s linear infinite;
+            animation: scroll 120s linear infinite;
         }
 
-        .scroll-wrapper img {
-            width: 250px; 
-            height: 150px;
-            object-fit: cover;
-            margin: 0 10px;
-        }
+        .scroll-wrapper:hover { animation-play-state: paused; }
 
-        .scroll-container:hover .scroll-wrapper {
-            animation-play-state: paused;
+        .painting {
+            height: 55vh;
+            margin: 0 50px;
+            border-bottom: 2px solid var(--theme-c3);
         }
 
         @keyframes scroll {
             0% { transform: translateX(0); }
-            100% { transform: translateX(calc(-270px * 3)); } 
+            100% { transform: translateX(-50%); }
+        }
+
+        /* Bottom Left Theme Picker (Minimal) */
+        .color-controls {
+            position: fixed;
+            bottom: 40px;
+            left: 40px;
+            z-index: 1000;
+        }
+
+        .theme-picker { display: flex; gap: 6px; }
+
+        .theme-option {
+            display: flex;
+            cursor: pointer;
+            border: 1px solid #eee;
+        }
+
+        .theme-option.active { border-color: var(--text-base); }
+
+        .swatch { width: 14px; height: 14px; }
+
+        /* Simple Modal */
+        #modal {
+            display: none;
+            position: fixed;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 40px;
+            border: 1px solid #000;
+            z-index: 2000;
+            text-align: center;
+            font-size: 0.8rem;
+        }
+
+        .close-btn {
+            margin-top: 20px;
+            font-size: 0.6rem;
+            font-weight: bold;
+            cursor: pointer;
+            background: none;
+            border: 1px solid #000;
+            padding: 5px 10px;
         }
     </style>
 </head>
-  
 <body>
 
-    <nav>
-        <a href="index">Home</a>
-        <a href="about">About</a>
-        <a href="socials">Socials</a>
-        <a href="message">Message</a>
-    </nav>
-
-    <main>
-        <div class="content-padding">
-            <h1>Ben Chmieleski</h1>
-            <p>Click on a link in the navigation bar to get started.</p> 
-        </div>
-
-        <div class="scroll-container">
-            <div class="scroll-wrapper">
-                <img src="image1.jpg" alt="1">
-                <img src="image2.jpg" alt="2">
-                <img src="image3.jpg" alt="3">
-                <!-- Duplicates for loop -->
-                <img src="image1.jpg" alt="1">
-                <img src="image2.jpg" alt="2">
-                <img src="image3.jpg" alt="3">
+    <header>
+        <div class="site-name-wrapper">
+            <div class="site-name">
+                <span class="name-part-1">BENCHMI</span><span class="name-part-2">ELESKI</span>
+            </div>
+            <div class="menu-trigger" onclick="toggleMenu()">
+                <span class="dot-1">.</span><span class="dot-2">.</span><span class="dot-3">.</span>
             </div>
         </div>
-    </main>
+        
+        <div class="nav-menu" id="navMenu">
+            <div class="nav-link" onclick="openModal('about')">ABOUT</div>
+            <div class="nav-link" onclick="openModal('contact')">CONTACT</div>
+        </div>
+    </header>
 
+    <div class="gallery-container">
+        <div class="scroll-wrapper">
+            <img src="https://picsum.photos" class="painting">
+            <img src="https://picsum.photos" class="painting">
+            <img src="https://picsum.photos" class="painting">
+            <img src="https://picsum.photos" class="painting">
+            <img src="https://picsum.photos" class="painting">
+            <img src="https://picsum.photos" class="painting">
+        </div>
+    </div>
+
+    <div class="color-controls">
+        <div class="theme-picker">
+            <div class="theme-option active" onclick="setTheme('electric', this)">
+                <div class="swatch" style="background: #9D00FF;"></div>
+                <div class="swatch" style="background: #008B8B;"></div>
+                <div class="swatch" style="background: #C71585;"></div>
+            </div>
+            <div class="theme-option" onclick="setTheme('jewel', this)">
+                <div class="swatch" style="background: #000080;"></div>
+                <div class="swatch" style="background: #e6af00;"></div>
+                <div class="swatch" style="background: #4B0082;"></div>
+            </div>
+            <div class="theme-option" onclick="setTheme('autumn', this)">
+                <div class="swatch" style="background: #D2691E;"></div>
+                <div class="swatch" style="background: #b1b300;"></div>
+                <div class="swatch" style="background: #3E2723;"></div>
+            </div>
+            <div class="theme-option" onclick="setTheme('monochrome', this)">
+                <div class="swatch" style="background: #000000;"></div>
+                <div class="swatch" style="background: #cccccc;"></div>
+                <div class="swatch" style="background: #999999;"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal">
+        <p id="modal-body"></p>
+        <button class="close-btn" onclick="document.getElementById('modal').style.display='none'">CLOSE</button>
+    </div>
+
+    <script>
+        const themes = {
+            electric: ['#9D00FF', '#008B8B', '#C71585'],
+            jewel: ['#000080', '#e6af00', '#4B0082'],
+            autumn: ['#D2691E', '#b1b300', '#3E2723'],
+            monochrome: ['#000000', '#cccccc', '#999999']
+        };
+
+        function setTheme(key, el) {
+            const root = document.documentElement;
+            root.style.setProperty('--theme-c1', themes[key][0]);
+            root.style.setProperty('--theme-c2', themes[key][1]);
+            root.style.setProperty('--theme-c3', themes[key][2]);
+            document.querySelectorAll('.theme-option').forEach(o => o.classList.remove('active'));
+            el.classList.add('active');
+        }
+
+        function toggleMenu() {
+            document.getElementById('navMenu').classList.toggle('visible');
+        }
+
+        function openModal(type) {
+            const body = type === 'about' ? 'Focusing on the interaction of light and architectural forms.' : 'studio@benchmieleski.com';
+            document.getElementById('modal-body').innerText = body;
+            document.getElementById('modal').style.display = 'block';
+            document.getElementById('navMenu').classList.remove('visible');
+        }
+    </script>
 </body>
 </html>
