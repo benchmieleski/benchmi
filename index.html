@@ -116,14 +116,13 @@
             width: 100vw;
             display: flex;
             align-items: flex-end;
-            overflow-x: auto; /* Enable horizontal scrolling */
+            overflow-x: auto; 
             overflow-y: hidden;
-            padding-bottom: 20px; /* Space for the scrollbar */
+            padding-bottom: 20px; 
             scrollbar-width: thin;
             scrollbar-color: var(--theme-c3) transparent;
         }
 
-        /* Custom Scroll Bar Styling (Chrome, Safari, Edge) */
         .gallery-container::-webkit-scrollbar {
             height: 6px;
         }
@@ -141,7 +140,7 @@
             white-space: nowrap;
             animation: scroll 45s linear infinite;
             padding: 0 20px;
-            padding-bottom: 20px; /* Padding above the scrollbar */
+            padding-bottom: 20px; 
         }
 
         .scroll-wrapper:hover { animation-play-state: paused; }
@@ -194,8 +193,9 @@
         }
 
         .info-subheader {
-            color: var(--text-base); 
-            padding: 0;
+            color: #000000; 
+            background-color: #ffffff;
+            padding: 4px 8px;
             font-size: 0.55rem;
             font-weight: bold;
             text-transform: uppercase;
