@@ -148,7 +148,7 @@
             text-transform: uppercase;
         }
 
-        /* GALLERY STYLES WITH HORIZONTAL SCROLLBAR */
+        /* GALLERY STYLES */
         .gallery-container {
             position: absolute;
             bottom: 0;
@@ -158,19 +158,14 @@
             align-items: flex-end;
             padding-bottom: 10px; 
             height: 32vh;
-            overflow-x: auto; /* Enable horizontal scrolling */
+            overflow-x: auto;
             overflow-y: hidden;
             scrollbar-width: thin;
             scrollbar-color: var(--theme-c1) rgba(0,0,0,0.05);
         }
 
-        /* Custom Scrollbar for Chrome/Safari */
-        .gallery-container::-webkit-scrollbar {
-            height: 8px;
-        }
-        .gallery-container::-webkit-scrollbar-track {
-            background: rgba(0,0,0,0.05);
-        }
+        .gallery-container::-webkit-scrollbar { height: 8px; }
+        .gallery-container::-webkit-scrollbar-track { background: rgba(0,0,0,0.05); }
         .gallery-container::-webkit-scrollbar-thumb {
             background-color: var(--theme-c1);
             border-radius: 10px;
@@ -180,14 +175,11 @@
             display: flex;
             white-space: nowrap;
             width: max-content;
-            /* Animation kept but pauses on hover to allow manual scroll focus */
-            animation: scroll 60s linear infinite;
+            animation: scroll 65s linear infinite;
             padding: 0 20px;
         }
 
-        .gallery-container:hover .scroll-wrapper { 
-            animation-play-state: paused; 
-        }
+        .gallery-container:hover .scroll-wrapper { animation-play-state: paused; }
 
         .painting-wrapper {
             position: relative;
@@ -315,24 +307,24 @@
     <div class="blog-container" id="blog-area">
         <div class="blog-post text-only">
             <div class="blog-content">
-                <h2>Welcome</h2>
-                <p>Text Blog Post Test</p>
+                <h2>Studio Update</h2>
+                <p>Sample Text 1</p>
             </div>
         </div>
 
         <div class="blog-post" id="post-floral">
             <div class="blog-img-frame"><img src="art_flowers.jpg"></div>
             <div class="blog-content">
-                <h2>Floral </h2>
-                <p> Floral sprays and sunshine days</p>
+                <h2>Floral</h2>
+                <p>Sample Text 2</p>
             </div>
         </div>
 
         <div class="blog-post" id="post-garden">
             <div class="blog-img-frame"><img src="art_gardens.jpg"></div>
             <div class="blog-content">
-                <h2>Gardens</h2>
-                <p>Frederik Meijer Sculpture Gardens winter escape</p>
+                <h2>Garden</h2>
+                <p>Sample Text 3</p>
             </div>
         </div>
 
@@ -340,7 +332,23 @@
             <div class="blog-img-frame"><img src="art_riverside.jpg"></div>
             <div class="blog-content">
                 <h2>Riverside</h2>
-                <p>Riverside Park, Grand Rapids, MI.</p>
+                <p>Sample Text 4</p>
+            </div>
+        </div>
+
+        <div class="blog-post" id="post-reflection">
+            <div class="blog-img-frame"><img src="flipped.jpg"></div>
+            <div class="blog-content">
+                <h2>Reflection</h2>
+                <p>Sample Text 5</p>
+            </div>
+        </div>
+
+        <div class="blog-post" id="post-sunset">
+            <div class="blog-img-frame"><img src="art_bella.jpg"></div>
+            <div class="blog-content">
+                <h2>Sunset</h2>
+                <p>Sample Text 6</p>
             </div>
         </div>
     </div>
@@ -350,9 +358,13 @@
             <div class="painting-wrapper" onclick="scrollToPost('post-floral')"><img src="art_flowers.jpg" class="painting"></div>
             <div class="painting-wrapper" onclick="scrollToPost('post-garden')"><img src="art_gardens.jpg" class="painting"></div>
             <div class="painting-wrapper" onclick="scrollToPost('post-riverside')"><img src="art_riverside.jpg" class="painting"></div>
+            <div class="painting-wrapper" onclick="scrollToPost('post-reflection')"><img src="flipped.jpg" class="painting"></div>
+            <div class="painting-wrapper" onclick="scrollToPost('post-sunset')"><img src="art_bella.jpg" class="painting"></div>
             <div class="painting-wrapper" onclick="scrollToPost('post-floral')"><img src="art_flowers.jpg" class="painting"></div>
             <div class="painting-wrapper" onclick="scrollToPost('post-garden')"><img src="art_gardens.jpg" class="painting"></div>
             <div class="painting-wrapper" onclick="scrollToPost('post-riverside')"><img src="art_riverside.jpg" class="painting"></div>
+            <div class="painting-wrapper" onclick="scrollToPost('post-reflection')"><img src="flipped.jpg" class="painting"></div>
+            <div class="painting-wrapper" onclick="scrollToPost('post-sunset')"><img src="art_bella.jpg" class="painting"></div>
         </div>
     </div>
 
