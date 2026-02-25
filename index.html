@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ben Chmieleski | Artist</title>
+    <title>Ben Chmieleski | Homepage</title>
     <style>
         :root {
             --bg-main: #ffffff;
@@ -113,13 +113,18 @@
             gap: 40px;
             align-items: flex-start;
             scroll-margin-top: 20px;
+            text-align: left; /* Ensure left alignment */
         }
 
         .blog-post.text-only {
             flex-direction: column;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
+            max-width: 100%; /* Allow it to fill the space like others */
+            margin-left: 0;  /* Remove centering margin */
+            margin-right: 0;
+        }
+
+        .blog-post.text-only .blog-content {
+            max-width: 600px; /* Keep text readable but left-aligned */
         }
 
         .blog-img-frame {
@@ -317,9 +322,9 @@
     <div class="blog-container" id="blog-area">
         <div class="blog-post text-only">
             <div class="blog-content">
-                <h2>Studio Update</h2>
+                <h2>Portfolio Site Conception + Launch</h2>
                 <span class="blog-date">FEBRUARY 25, 2026</span>
-                <p>Sample Text 1</p>
+                <p>After having most of my creative work live in a transient state for most of my adult life, I wanted to begin to compile things togerher in order to weave together the story that is my creative life. </p>
             </div>
         </div>
 
