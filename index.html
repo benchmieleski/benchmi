@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ben Chmieleski</title>
+    <title>Ben Chmieleski | Artist</title>
     <style>
         :root {
             --bg-main: #ffffff;
@@ -12,6 +12,7 @@
             --theme-c1: #d9b3f2; 
             --theme-c2: #b3d9d9; 
             --theme-c3: #efb9da; 
+            --painting-frame: #d9b3f2; 
             --modal-bg: #ffffff;
             --wrapper-bg: #ffffff; 
         }
@@ -121,32 +122,33 @@
         }
 
         .scroll-wrapper {
-            display: inline-flex;
+            display: flex;
             white-space: nowrap;
+            width: max-content;
             animation: scroll 45s linear infinite;
             padding: 0 20px;
         }
 
         .scroll-wrapper:hover { animation-play-state: paused; }
 
-        /* UPDATED: STATIC FRAME WITHOUT GLOW */
         .painting-wrapper {
             position: relative;
             height: 45vh; 
             margin: 0 30px; 
-            padding: 6px; /* This creates the border thickness */
+            padding: 6px;
             flex-shrink: 0;
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 1;
-            background-color: var(--theme-c1); /* Static color instead of animated gradient */
-            transition: background-color 0.4s ease;
+            background-color: var(--painting-frame); 
+            transition: background-color 0.4s ease, transform 0.3s ease;
+            cursor: zoom-in;
         }
 
-        /* Hover effect for the static frame */
         .painting-wrapper:hover {
             background-color: var(--theme-c2);
+            transform: translateY(-5px);
         }
 
         .painting { 
@@ -189,6 +191,28 @@
         @keyframes scroll {
             0% { transform: translateX(0); }
             100% { transform: translateX(-50%); }
+        }
+
+        /* LIGHTBOX STYLES */
+        #lightbox {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.92);
+            z-index: 3000;
+            justify-content: center;
+            align-items: center;
+            cursor: zoom-out;
+            backdrop-filter: blur(5px);
+        }
+
+        #lightbox img {
+            max-width: 90%;
+            max-height: 85%;
+            box-shadow: 0 0 40px rgba(0,0,0,0.8);
+            border: 3px solid var(--painting-frame);
+            object-fit: contain;
         }
 
         #modal {
@@ -236,9 +260,9 @@
                         <div class="swatch" style="background: #efb9da;"></div>
                     </div>
                     <div class="theme-option" onclick="setTheme('jewel', this)">
-                        <div class="swatch" style="background: #739bf3;"></div>
-                        <div class="swatch" style="background: #c39bd4;"></div>
-                        <div class="swatch" style="background: #ff72be;"></div>
+                        <div class="swatch" style="background: #000080;"></div>
+                        <div class="swatch" style="background: #daa520;"></div>
+                        <div class="swatch" style="background: #ff00ff;"></div>
                     </div>
                     <div class="theme-option" onclick="setTheme('autumn', this)">
                         <div class="swatch" style="background: #e4a578;"></div>
@@ -246,9 +270,9 @@
                         <div class="swatch" style="background: #af9991;"></div>
                     </div>
                     <div class="theme-option" onclick="setTheme('monochrome', this)">
-                        <div class="swatch" style="background: #000;"></div>
-                        <div class="swatch" style="background: #444;"></div>
-                        <div class="swatch" style="background: #111;"></div>
+                        <div class="swatch" style="background: #000000;"></div>
+                        <div class="swatch" style="background: #444444;"></div>
+                        <div class="swatch" style="background: #e0e0e0;"></div>
                     </div>
                 </div>
             </div>
@@ -257,17 +281,21 @@
 
     <div class="gallery-container">
         <div class="scroll-wrapper">
-            <div class="painting-wrapper"><img src="art_flowers.jpg" class="painting"><div class="painting-info"><div class="info-header inv-grad-box">Floral</div><div class="info-subheader">oil on paper, 2025</div></div></div>
-            <div class="painting-wrapper"><img src="art_gardens.jpg" class="painting"><div class="painting-info"><div class="info-header inv-grad-box">Garden</div><div class="info-subheader">oil on paper, 2025</div></div></div>
-            <div class="painting-wrapper"><img src="art_riverside.jpg" class="painting"><div class="painting-info"><div class="info-header inv-grad-box">Riverside</div><div class="info-subheader">oil on paper, 2025</div></div></div>
-            <div class="painting-wrapper"><img src="flipped.jpg" class="painting"><div class="painting-info"><div class="info-header inv-grad-box">Reflection</div><div class="info-subheader">oil on paper, 2025</div></div></div>
-            <div class="painting-wrapper"><img src="art_bella.jpg" class="painting"><div class="painting-info"><div class="info-header inv-grad-box">Sunset</div><div class="info-subheader">acrylic on wood, 2026</div></div></div>
-            <div class="painting-wrapper"><img src="art_flowers.jpg" class="painting"><div class="painting-info"><div class="info-header inv-grad-box">Floral</div><div class="info-subheader">oil on paper, 2025</div></div></div>
-            <div class="painting-wrapper"><img src="art_gardens.jpg" class="painting"><div class="painting-info"><div class="info-header inv-grad-box">Garden</div><div class="info-subheader">oil on paper, 2025</div></div></div>
-            <div class="painting-wrapper"><img src="art_riverside.jpg" class="painting"><div class="painting-info"><div class="info-header inv-grad-box">Riverside</div><div class="info-subheader">oil on paper, 2025</div></div></div>
-            <div class="painting-wrapper"><img src="flipped.jpg" class="painting"><div class="painting-info"><div class="info-header inv-grad-box">Sunset</div><div class="info-subheader">oil on paper, 2025</div></div></div>
-            <div class="painting-wrapper"><img src="art_bella.jpg" class="painting"><div class="painting-info"><div class="info-header inv-grad-box">Bella</div><div class="info-subheader">acrylic on wood, 2026</div></div></div>
+            <div class="painting-wrapper" onclick="openLightbox('art_flowers.jpg')"><img src="art_flowers.jpg" class="painting"><div class="painting-info"><div class="info-header inv-grad-box">Floral</div><div class="info-subheader">oil on paper, 2025</div></div></div>
+            <div class="painting-wrapper" onclick="openLightbox('art_gardens.jpg')"><img src="art_gardens.jpg" class="painting"><div class="painting-info"><div class="info-header inv-grad-box">Garden</div><div class="info-subheader">oil on paper, 2025</div></div></div>
+            <div class="painting-wrapper" onclick="openLightbox('art_riverside.jpg')"><img src="art_riverside.jpg" class="painting"><div class="painting-info"><div class="info-header inv-grad-box">Riverside</div><div class="info-subheader">oil on paper, 2025</div></div></div>
+            <div class="painting-wrapper" onclick="openLightbox('flipped.jpg')"><img src="flipped.jpg" class="painting"><div class="painting-info"><div class="info-header inv-grad-box">Reflection</div><div class="info-subheader">oil on paper, 2025</div></div></div>
+            <div class="painting-wrapper" onclick="openLightbox('art_bella.jpg')"><img src="art_bella.jpg" class="painting"><div class="painting-info"><div class="info-header inv-grad-box">Sunset</div><div class="info-subheader">acrylic on wood, 2026</div></div></div>
+            <div class="painting-wrapper" onclick="openLightbox('art_flowers.jpg')"><img src="art_flowers.jpg" class="painting"><div class="painting-info"><div class="info-header inv-grad-box">Floral</div><div class="info-subheader">oil on paper, 2025</div></div></div>
+            <div class="painting-wrapper" onclick="openLightbox('art_gardens.jpg')"><img src="art_gardens.jpg" class="painting"><div class="painting-info"><div class="info-header inv-grad-box">Garden</div><div class="info-subheader">oil on paper, 2025</div></div></div>
+            <div class="painting-wrapper" onclick="openLightbox('art_riverside.jpg')"><img src="art_riverside.jpg" class="painting"><div class="painting-info"><div class="info-header inv-grad-box">Riverside</div><div class="info-subheader">oil on paper, 2025</div></div></div>
+            <div class="painting-wrapper" onclick="openLightbox('flipped.jpg')"><img src="flipped.jpg" class="painting"><div class="painting-info"><div class="info-header inv-grad-box">Reflection</div><div class="info-subheader">oil on paper, 2025</div></div></div>
+            <div class="painting-wrapper" onclick="openLightbox('art_bella.jpg')"><img src="art_bella.jpg" class="painting"><div class="painting-info"><div class="info-header inv-grad-box">Sunset</div><div class="info-subheader">acrylic on wood, 2026</div></div></div>
         </div>
+    </div>
+
+    <div id="lightbox" onclick="closeLightbox()">
+        <img id="lightbox-img" src="" alt="Enlarged Art">
     </div>
 
     <div id="modal">
@@ -278,9 +306,9 @@
     <script>
         const themes = {
             electric: { colors: ['#d9b3f2', '#b3d9d9', '#efb9da'], bg: '#ffffff', text: '#1a1a1a' },
-            jewel: { colors: ['#739bf3', '#c39bd4', '#ff72be'], bg: '#ffffff', text: '#1a1a1a' },
-            autumn: { colors: ['#e4a578', '#d0d166', '#af9991'], bg: '#ffffff', text: '#1a1a1a' },
-            monochrome: { colors: ['#000000', '#444444', '#111111'], bg: '#000000', text: '#ffffff' }
+            jewel: { colors: ['#000080', '#daa520', '#ff00ff'], bg: '#daa520', text: '#ffffff' },
+            autumn: { colors: ['#e4a578', '#d0d166', '#af9991'], bg: '#d0d166', text: '#1a1a1a' },
+            monochrome: { colors: ['#000000', '#444444', '#e0e0e0'], bg: '#000000', text: '#ffffff' }
         };
 
         function setTheme(key, el) {
@@ -293,6 +321,10 @@
             root.style.setProperty('--bg-main', t.bg);
             root.style.setProperty('--text-base', t.text);
             root.style.setProperty('--modal-bg', (t.bg === '#000000') ? '#1e1e1e' : '#ffffff');
+
+            // Set frame to white for monochrome, else use the first theme color
+            const frameColor = (key === 'monochrome') ? '#ffffff' : t.colors[0];
+            root.style.setProperty('--painting-frame', frameColor);
             
             document.querySelectorAll('.theme-option').forEach(o => o.classList.remove('active'));
             el.classList.add('active');
@@ -307,6 +339,24 @@
             }
             document.getElementById('modal').style.display = 'block';
         }
+
+        function openLightbox(src) {
+            const lb = document.getElementById('lightbox');
+            const lbImg = document.getElementById('lightbox-img');
+            lbImg.src = src;
+            lb.style.display = 'flex';
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').style.display = 'none';
+        }
+
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeLightbox();
+                document.getElementById('modal').style.display = 'none';
+            }
+        });
     </script>
 </body>
 </html>
