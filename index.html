@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ben Chmieleski | Homepage</title>
+    <title>Benjamin Chmieleski | Homepage</title>
     <style>
         :root {
             --bg-main: #ffffff;
@@ -42,11 +42,22 @@
         .site-name {
             display: flex;
             align-items: stretch;
-            font-size: 1.1rem;
+            font-size: 1.25rem; /* Increased from 1.1rem */
             font-weight: bold;
             letter-spacing: 1.5px;
             gap: 2px;
+            margin-bottom: 2px;
+        }
+
+        /* Subheading Style - Adjusted to match the new name size width */
+        .site-subheading {
+            font-size: 0.61rem; /* Adjusted from 0.54rem to match 1.25rem name width */
+            letter-spacing: 1px;
             margin-bottom: 12px;
+            display: block;
+            text-align: justify;
+            text-justify: inter-character;
+            width: 100%;
         }
 
         /* Text gradient effect */
@@ -315,8 +326,10 @@
     <header>
         <div class="site-name-wrapper" onclick="goHome()">
             <div class="site-name">
-                <span class="inv-grad-box">Ben Chmieleski</span>
+                <span class="inv-grad-box"> Benjamin Chmieleski</span>
             </div>
+            <div class="site-subheading inv-grad-box">Artist | Designer  |  Creator</div>
+            
             <div class="nav-menu">
                 <div class="nav-link inv-grad-box" onclick="event.stopPropagation(); openModal('about')">About</div>
                 <div class="nav-link inv-grad-box" onclick="event.stopPropagation(); openModal('contact')">Contact</div>
@@ -475,7 +488,7 @@
         function openModal(type) {
             const body = document.getElementById('modal-body');
             body.innerHTML = type === 'about' 
-                ? `<h3>Ben Chmieleski</h3><p>Artist & Designer located in West Michigan. <br>I paint landscapes and botanic-inspired pieces.</p>`
+                ? `<h3>Benjamin Chmieleski</h3><p>Artist & Designer located in West Michigan. <br>I paint landscapes and botanic-inspired pieces.</p>`
                 : `<h3>Contact</h3><p>benchmieleski@gmail.com</p>`;
             document.getElementById('modal').style.display = 'block';
         }
