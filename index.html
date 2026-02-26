@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Benjamin Chmieleski | Homepage</title>
+    <title>Ben Chmieleski | Homepage</title>
     <style>
         :root {
             --bg-main: #ffffff;
@@ -34,33 +34,32 @@
         }
 
         .site-name-wrapper {
-            display: inline-block;
+            display: inline-flex;
+            flex-direction: column;
             cursor: pointer;
-            padding-bottom: 30px; 
+            padding-bottom: 30px;
+            width: min-content; /* Forces the wrapper to be only as wide as the name */
         }
 
         .site-name {
-            display: flex;
-            align-items: stretch;
-            font-size: 1.25rem; /* Increased from 1.1rem */
-            font-weight: bold;
-            letter-spacing: 1.5px;
-            gap: 2px;
-            margin-bottom: 2px;
-        }
-
-        /* Subheading Style - Adjusted to match the new name size width */
-        .site-subheading {
-            font-size: 0.61rem; /* Adjusted from 0.54rem to match 1.25rem name width */
-            letter-spacing: 1px;
-            margin-bottom: 12px;
             display: block;
-            text-align: justify;
-            text-justify: inter-character;
-            width: 100%;
+            font-size: 1.25rem; 
+            font-weight: bold;
+            margin-bottom: 2px;
+            white-space: nowrap;
+            line-height: 1.1;
         }
 
-        /* Text gradient effect */
+        .site-subheading {
+            display: block;
+            font-size: 0.53rem; /* Adjusted size to naturally match width */
+            font-weight: normal;
+            letter-spacing: 0px; /* Removed stretching */
+            white-space: nowrap;
+            line-height: 1;
+            margin-bottom: 12px;
+        }
+
         .inv-grad-box {
             background: linear-gradient(to right, 
                 var(--theme-c1), 
@@ -76,7 +75,6 @@
             color: transparent;
         }
 
-        /* Class to disable gradients for static theme */
         .no-grad {
             background: none !important;
             animation: none !important;
@@ -94,6 +92,7 @@
             flex-direction: column;
             gap: 6px;
             padding-left: 0;
+            width: max-content;
         }
 
         .site-name-wrapper:hover .nav-menu {
@@ -111,7 +110,6 @@
 
         .nav-link:hover { transform: translateX(3px); opacity: 0.8; }
 
-        /* Color Controls Grid (1x4) */
         .color-controls-dropdown {
             margin-top: 15px;
             display: grid;
@@ -132,7 +130,6 @@
         .theme-option.active { border-color: var(--text-base); border-width: 2px; }
         .swatch { width: 14px; height: 14px; }
 
-        /* BLOG AREA */
         .blog-container {
             position: absolute;
             top: 100px;
@@ -244,7 +241,6 @@
             letter-spacing: 0.5px;
         }
 
-        /* GALLERY STYLES */
         .gallery-container {
             position: absolute;
             bottom: 0;
@@ -325,10 +321,8 @@
 
     <header>
         <div class="site-name-wrapper" onclick="goHome()">
-            <div class="site-name">
-                <span class="inv-grad-box"> Benjamin Chmieleski</span>
-            </div>
-            <div class="site-subheading inv-grad-box">Artist | Designer  |  Creator</div>
+            <div class="site-name inv-grad-box">Ben Chmieleski</div>
+            <div class="site-subheading inv-grad-box">Artist | Designer | Creator</div>
             
             <div class="nav-menu">
                 <div class="nav-link inv-grad-box" onclick="event.stopPropagation(); openModal('about')">About</div>
@@ -488,7 +482,7 @@
         function openModal(type) {
             const body = document.getElementById('modal-body');
             body.innerHTML = type === 'about' 
-                ? `<h3>Benjamin Chmieleski</h3><p>Artist & Designer located in West Michigan. <br>I paint landscapes and botanic-inspired pieces.</p>`
+                ? `<h3>Benjamin Chmieleski</h3><p>Artist & Designer located in West Michigan.<br>I paint landscapes and botanic-inspired pieces.</p>`
                 : `<h3>Contact</h3><p>benchmieleski@gmail.com</p>`;
             document.getElementById('modal').style.display = 'block';
         }
