@@ -21,10 +21,10 @@
             margin: 0;
             padding: 0;
             overflow: hidden;
-            background-color: #ffffff;
+            background-color: var(--bg-main);
             color: var(--text-base);
             font-family: sans-serif;
-            transition: color 0.4s ease;
+            transition: background-color 0.4s ease, color 0.4s ease;
             height: 100vh;
         }
 
@@ -52,6 +52,8 @@
         }
 
         .inv-grad-box {
+            color: var(--name-text);
+            padding: 2px 8px;
             background: linear-gradient(to right, 
                 var(--theme-c1), 
                 var(--theme-c2), 
@@ -60,12 +62,7 @@
             background-size: 400% auto;
             animation: gradient-flow 18s linear infinite;
             display: inline-block;
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            color: transparent;
-            padding: 2px 0;
-            transition: none;
+            transition: color 0.4s ease;
         }
 
         @keyframes gradient-flow {
@@ -110,7 +107,6 @@
             display: none; 
             opacity: 0;
             transition: opacity 0.5s ease;
-            background-color: #ffffff;
         }
 
         .blog-container.active {
@@ -146,14 +142,14 @@
             gap: 15px;
             padding: 15px 0;
             width: 75vw;
-            background: linear-gradient(to top, #ffffff 40%, transparent);
+            background: linear-gradient(to top, var(--bg-main) 40%, transparent);
             z-index: 10;
             pointer-events: none;
         }
 
         .nav-btn {
             pointer-events: auto;
-            background: #ffffff;
+            background: var(--bg-main);
             border: 1px solid var(--text-base);
             color: var(--text-base);
             padding: 4px 12px;
@@ -167,7 +163,7 @@
         }
         .nav-btn:hover {
             background: var(--text-base);
-            color: #ffffff;
+            color: var(--bg-main);
             opacity: 1;
         }
 
@@ -190,10 +186,9 @@
 
         .blog-img-frame {
             flex: 1;
-            padding: 8px;
+            padding: 5px; /* Reduced by 50% from 10px */
             background-color: var(--painting-frame);
             max-width: 500px;
-            transition: background-color 0.4s ease;
         }
 
         .blog-img-frame img {
@@ -265,7 +260,7 @@
             position: relative;
             height: 50vh; 
             margin: 0 30px; 
-            padding: 5px; 
+            padding: 3px; /* Reduced by 50% from 6px */
             flex-shrink: 0;
             background-color: var(--painting-frame); 
             transition: all 0.6s ease;
@@ -275,10 +270,10 @@
         .gallery-container.minimized .painting-wrapper {
             height: 12vh;
             margin: 0 10px;
-            padding: 2.5px;
+            padding: 1.5px; /* Reduced by 50% from 3px */
         }
 
-        .painting { height: 100%; display: block; background-color: #ffffff; }
+        .painting { height: 100%; display: block; background-color: var(--wrapper-bg); }
 
         @keyframes scroll {
             0% { transform: translateX(0); }
@@ -288,7 +283,7 @@
         .color-controls-dropdown {
             margin-top: 10px;
             display: grid;
-            grid-template-columns: repeat(6, 1fr);
+            grid-template-columns: repeat(4, 1fr);
             gap: 6px;
             width: fit-content;
         }
@@ -310,7 +305,7 @@
             position: fixed;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            background: #ffffff;
+            background: var(--modal-bg);
             padding: 40px;
             border: 2px solid var(--theme-c1); 
             z-index: 2000;
@@ -318,7 +313,6 @@
             font-size: 0.8rem;
             min-width: 250px;
             color: var(--text-base);
-            transition: border-color 0.4s ease;
         }
 
         .close-btn {
@@ -330,7 +324,6 @@
             border: 1px solid var(--theme-c2);
             color: var(--theme-c2);
             padding: 5px 10px;
-            transition: all 0.4s ease;
         }
     </style>
 </head>
@@ -347,11 +340,13 @@
                 <div class="nav-link inv-grad-box" onclick="event.stopPropagation(); openBlogOnly()">Blog</div>
                 <div class="color-controls-dropdown">
                     <div class="theme-option active" onclick="event.stopPropagation(); setTheme('electric', this)"><div class="swatch" style="background: #d9b3f2;"></div><div class="swatch" style="background: #b3d9d9;"></div><div class="swatch" style="background: #efb9da;"></div></div>
-                    <div class="theme-option" onclick="event.stopPropagation(); setTheme('misty', this)"><div class="swatch" style="background: #6cccb6;"></div><div class="swatch" style="background: #57648a;"></div><div class="swatch" style="background: #ab5c95;"></div></div>
-                    <div class="theme-option" onclick="event.stopPropagation(); setTheme('jungle', this)"><div class="swatch" style="background: #7851a9;"></div><div class="swatch" style="background: #32cd32;"></div><div class="swatch" style="background: #fffacd;"></div></div>
+                    <div class="theme-option" onclick="event.stopPropagation(); setTheme('jewel', this)"><div class="swatch" style="background: #000080;"></div><div class="swatch" style="background: #daa520;"></div><div class="swatch" style="background: #ff00ff;"></div></div>
+                    <div class="theme-option" onclick="event.stopPropagation(); setTheme('autumn', this)"><div class="swatch" style="background: #e4a578;"></div><div class="swatch" style="background: #d0d166;"></div><div class="swatch" style="background: #af9991;"></div></div>
+                    <div class="theme-option" onclick="event.stopPropagation(); setTheme('monochrome', this)"><div class="swatch" style="background: #000000;"></div><div class="swatch" style="background: #444444;"></div><div class="swatch" style="background: #e0e0e0;"></div></div>
                     <div class="theme-option" onclick="event.stopPropagation(); setTheme('fuzzy', this)"><div class="swatch" style="background: #ffc0cb;"></div><div class="swatch" style="background: #ffd1dc;"></div><div class="swatch" style="background: #ff69b4;"></div></div>
                     <div class="theme-option" onclick="event.stopPropagation(); setTheme('freezy', this)"><div class="swatch" style="background: #e0ffff;"></div><div class="swatch" style="background: #afeeee;"></div><div class="swatch" style="background: #00ced1;"></div></div>
-                    <div class="theme-option" onclick="event.stopPropagation(); setTheme('monochrome', this)"><div class="swatch" style="background: #000000;"></div><div class="swatch" style="background: #444444;"></div><div class="swatch" style="background: #e0e0e0;"></div></div>
+                    <div class="theme-option" onclick="event.stopPropagation(); setTheme('jungle', this)"><div class="swatch" style="background: #7851a9;"></div><div class="swatch" style="background: #32cd32;"></div><div class="swatch" style="background: #fffacd;"></div></div>
+                    <div class="theme-option" onclick="event.stopPropagation(); setTheme('minimal', this)"><div class="swatch" style="background: #ffffff;"></div><div class="swatch" style="background: #f5f5f5;"></div><div class="swatch" style="background: #d3d3d3;"></div></div>
                 </div>
             </div>
         </div>
@@ -415,12 +410,14 @@
 
     <script>
         const themes = {
-            electric: { colors: ['#d9b3f2', '#b3d9d9', '#efb9da'], text: '#1a1a1a' },
-            misty: { colors: ['#6cccb6', '#57648a', '#ab5c95'], text: '#1a1a1a' }, 
-            jungle: { colors: ['#7851a9', '#32cd32', '#fffacd'], text: '#1a1a1a' },
-            fuzzy: { colors: ['#ffc0cb', '#ffd1dc', '#ff69b4'], text: '#1a1a1a' },
-            freezy: { colors: ['#e0ffff', '#afeeee', '#00ced1'], text: '#1a1a1a' },
-            monochrome: { colors: ['#000000', '#444444', '#e0e0e0'], text: '#1a1a1a' }
+            electric: { colors: ['#d9b3f2', '#b3d9d9', '#efb9da'], bg: '#ffffff', text: '#1a1a1a', nameText: '#ffffff' },
+            jewel: { colors: ['#000080', '#daa520', '#ff00ff'], bg: '#daa520', text: '#ffffff', nameText: '#ffffff' }, 
+            autumn: { colors: ['#e4a578', '#d0d166', '#af9991'], bg: '#d0d166', text: '#1a1a1a', nameText: '#000000' },
+            monochrome: { colors: ['#000000', '#444444', '#e0e0e0'], bg: '#000000', text: '#ffffff', nameText: '#ffffff' },
+            fuzzy: { colors: ['#ffc0cb', '#ffd1dc', '#ff69b4'], bg: '#ffd1dc', text: '#1a1a1a', nameText: '#ffffff' },
+            freezy: { colors: ['#e0ffff', '#afeeee', '#00ced1'], bg: '#f0f8ff', text: '#1a1a1a', nameText: '#ffffff' },
+            jungle: { colors: ['#7851a9', '#32cd32', '#fffacd'], bg: '#32cd32', text: '#1a1a1a', nameText: '#000000' },
+            minimal: { colors: ['#ffffff', '#f5f5f5', '#d3d3d3'], bg: '#ffffff', text: '#000000', nameText: '#000000' }
         };
 
         let currentPostIndex = 0;
@@ -438,8 +435,11 @@
             root.style.setProperty('--theme-c1', t.colors[0]);
             root.style.setProperty('--theme-c2', t.colors[1]);
             root.style.setProperty('--theme-c3', t.colors[2]);
+            root.style.setProperty('--bg-main', t.bg);
             root.style.setProperty('--text-base', t.text);
-            root.style.setProperty('--painting-frame', (key === 'monochrome') ? '#d3d3d3' : t.colors[0]);
+            root.style.setProperty('--name-text', t.nameText);
+            root.style.setProperty('--modal-bg', (t.bg === '#000000') ? '#1e1e1e' : '#ffffff');
+            root.style.setProperty('--painting-frame', (key === 'monochrome' || key === 'minimal') ? '#d3d3d3' : t.colors[0]);
             
             document.querySelectorAll('.theme-option').forEach(o => o.classList.remove('active'));
             el.classList.add('active');
@@ -451,7 +451,11 @@
             const nav = document.getElementById('blog-nav');
             activePostFilter = filter;
             document.querySelectorAll('.blog-post').forEach(post => {
-                post.style.display = (filter === 'text-only') ? (post.classList.contains('text-only') ? 'flex' : 'none') : 'flex';
+                if (filter === 'text-only') {
+                    post.style.display = post.classList.contains('text-only') ? 'flex' : 'none';
+                } else {
+                    post.style.display = 'flex';
+                }
             });
             currentPostIndex = postIds.indexOf(id);
             blog.style.display = 'block';
@@ -470,7 +474,8 @@
             currentPostIndex += direction;
             if (currentPostIndex < 0) currentPostIndex = postIds.length - 1;
             if (currentPostIndex >= postIds.length) currentPostIndex = 0;
-            document.getElementById(postIds[currentPostIndex]).scrollIntoView({ behavior: 'smooth' });
+            const id = postIds[currentPostIndex];
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
         }
 
         function closeBlog() {
@@ -484,6 +489,7 @@
                     blog.style.display = 'none';
                     nav.style.display = 'none';
                     blog.scrollTop = 0;
+                    document.querySelectorAll('.blog-post').forEach(p => p.style.display = 'flex');
                 }
             }, 500);
         }
