@@ -92,20 +92,20 @@
 
         .nav-link:hover { transform: translateX(3px); opacity: 0.8; }
 
-        /* BLOG AREA STYLES */
+        /* BLOG AREA */
         .blog-container {
             position: absolute;
-            top: 140px;
-            bottom: 35vh;
+            top: 100px;
+            bottom: 22vh;
             left: 50%;
             transform: translateX(-50%);
-            width: 70vw;
+            width: 75vw;
             overflow-y: auto;
-            padding-right: 20px;
+            padding: 40px 20px 80px 20px;
             scrollbar-width: thin;
             scrollbar-color: var(--theme-c2) transparent;
             z-index: 5;
-            display: none; /* Initially hidden */
+            display: none; 
             opacity: 0;
             transition: opacity 0.5s ease;
         }
@@ -115,12 +115,65 @@
             opacity: 1;
         }
 
+        .close-blog-x {
+            position: sticky;
+            top: -20px;
+            float: right;
+            background: none;
+            border: none;
+            font-size: 2.5rem;
+            line-height: 1;
+            cursor: pointer;
+            color: var(--text-base);
+            z-index: 100;
+            padding: 0;
+            margin-top: -20px;
+            transition: opacity 0.3s;
+            font-family: serif;
+        }
+        .close-blog-x:hover { opacity: 0.5; }
+
+        .post-nav {
+            position: absolute;
+            bottom: 18vh;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            padding: 15px 0;
+            width: 75vw;
+            background: linear-gradient(to top, var(--bg-main) 40%, transparent);
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .nav-btn {
+            pointer-events: auto;
+            background: var(--bg-main);
+            border: 1px solid var(--text-base);
+            color: var(--text-base);
+            padding: 4px 12px;
+            font-size: 0.6rem;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            opacity: 0.9;
+        }
+        .nav-btn:hover {
+            background: var(--text-base);
+            color: var(--bg-main);
+            opacity: 1;
+        }
+
         .blog-post {
             display: flex;
-            margin-bottom: 80px;
+            margin-bottom: 120px;
             gap: 40px;
             align-items: flex-start;
-            scroll-margin-top: 20px;
+            scroll-margin-top: 60px;
         }
 
         .blog-post.text-only {
@@ -136,7 +189,7 @@
             flex: 1;
             padding: 10px;
             background-color: var(--painting-frame);
-            max-width: 400px;
+            max-width: 500px;
         }
 
         .blog-img-frame img {
@@ -147,14 +200,14 @@
 
         .blog-content {
             flex: 1;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             line-height: 1.6;
         }
 
         .blog-content h2 {
             margin-top: 0;
             margin-bottom: 4px;
-            font-size: 1.2rem;
+            font-size: 1.4rem;
             letter-spacing: 1px;
             text-transform: uppercase;
         }
@@ -168,27 +221,6 @@
             letter-spacing: 0.5px;
         }
 
-        .back-to-gallery {
-            display: block;
-            margin: 0 auto 40px auto;
-            padding: 8px 16px;
-            background: none;
-            border: 1px solid var(--text-base);
-            color: var(--text-base);
-            font-size: 0.7rem;
-            font-weight: bold;
-            text-transform: uppercase;
-            cursor: pointer;
-            letter-spacing: 1px;
-            transition: all 0.3s ease;
-            width: fit-content;
-        }
-
-        .back-to-gallery:hover {
-            background-color: var(--text-base);
-            color: var(--bg-main);
-        }
-
         /* GALLERY STYLES */
         .gallery-container {
             position: absolute;
@@ -197,7 +229,7 @@
             width: 100vw;
             display: flex;
             align-items: center; 
-            height: 80vh; /* Dominant on start */
+            height: 80vh; 
             overflow-x: auto;
             overflow-y: hidden;
             scrollbar-width: thin;
@@ -206,13 +238,11 @@
         }
 
         .gallery-container.minimized {
-            height: 32vh;
-            align-items: flex-end;
-            padding-bottom: 10px;
+            height: 18vh;
+            align-items: center;
         }
 
-        .gallery-container::-webkit-scrollbar { height: 8px; }
-        .gallery-container::-webkit-scrollbar-track { background: rgba(0,0,0,0.05); }
+        .gallery-container::-webkit-scrollbar { height: 6px; }
         .gallery-container::-webkit-scrollbar-thumb {
             background-color: var(--theme-c1);
             border-radius: 10px;
@@ -240,9 +270,9 @@
         }
 
         .gallery-container.minimized .painting-wrapper {
-            height: 25vh;
-            margin: 0 20px;
-            padding: 4px;
+            height: 12vh;
+            margin: 0 10px;
+            padding: 3px;
         }
 
         .painting { height: 100%; display: block; background-color: var(--wrapper-bg); }
@@ -256,7 +286,6 @@
             margin-top: 10px;
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            grid-template-rows: repeat(2, 1fr);
             gap: 6px;
             width: fit-content;
         }
@@ -310,57 +339,25 @@
             <div class="nav-menu">
                 <div class="nav-link inv-grad-box" onclick="openModal('about')">About</div>
                 <div class="nav-link inv-grad-box" onclick="openModal('contact')">Contact</div>
-                
+                <div class="nav-link inv-grad-box" onclick="openBlogOnly()">Blog</div>
                 <div class="color-controls-dropdown">
-                    <div class="theme-option active" onclick="setTheme('electric', this)">
-                        <div class="swatch" style="background: #d9b3f2;"></div>
-                        <div class="swatch" style="background: #b3d9d9;"></div>
-                        <div class="swatch" style="background: #efb9da;"></div>
-                    </div>
-                    <div class="theme-option" onclick="setTheme('jewel', this)">
-                        <div class="swatch" style="background: #000080;"></div>
-                        <div class="swatch" style="background: #daa520;"></div>
-                        <div class="swatch" style="background: #ff00ff;"></div>
-                    </div>
-                    <div class="theme-option" onclick="setTheme('autumn', this)">
-                        <div class="swatch" style="background: #e4a578;"></div>
-                        <div class="swatch" style="background: #d0d166;"></div>
-                        <div class="swatch" style="background: #af9991;"></div>
-                    </div>
-                    <div class="theme-option" onclick="setTheme('monochrome', this)">
-                        <div class="swatch" style="background: #000000;"></div>
-                        <div class="swatch" style="background: #444444;"></div>
-                        <div class="swatch" style="background: #e0e0e0;"></div>
-                    </div>
-                    <div class="theme-option" onclick="setTheme('fuzzy', this)">
-                        <div class="swatch" style="background: #ffc0cb;"></div>
-                        <div class="swatch" style="background: #ffd1dc;"></div>
-                        <div class="swatch" style="background: #ff69b4;"></div>
-                    </div>
-                    <div class="theme-option" onclick="setTheme('freezy', this)">
-                        <div class="swatch" style="background: #e0ffff;"></div>
-                        <div class="swatch" style="background: #afeeee;"></div>
-                        <div class="swatch" style="background: #00ced1;"></div>
-                    </div>
-                    <div class="theme-option" onclick="setTheme('jungle', this)">
-                        <div class="swatch" style="background: #7851a9;"></div>
-                        <div class="swatch" style="background: #32cd32;"></div>
-                        <div class="swatch" style="background: #fffacd;"></div>
-                    </div>
-                    <div class="theme-option" onclick="setTheme('minimal', this)">
-                        <div class="swatch" style="background: #ffffff;"></div>
-                        <div class="swatch" style="background: #f5f5f5;"></div>
-                        <div class="swatch" style="background: #d3d3d3;"></div>
-                    </div>
+                    <div class="theme-option active" onclick="setTheme('electric', this)"><div class="swatch" style="background: #d9b3f2;"></div><div class="swatch" style="background: #b3d9d9;"></div><div class="swatch" style="background: #efb9da;"></div></div>
+                    <div class="theme-option" onclick="setTheme('jewel', this)"><div class="swatch" style="background: #000080;"></div><div class="swatch" style="background: #daa520;"></div><div class="swatch" style="background: #ff00ff;"></div></div>
+                    <div class="theme-option" onclick="setTheme('autumn', this)"><div class="swatch" style="background: #e4a578;"></div><div class="swatch" style="background: #d0d166;"></div><div class="swatch" style="background: #af9991;"></div></div>
+                    <div class="theme-option" onclick="setTheme('monochrome', this)"><div class="swatch" style="background: #000000;"></div><div class="swatch" style="background: #444444;"></div><div class="swatch" style="background: #e0e0e0;"></div></div>
+                    <div class="theme-option" onclick="setTheme('fuzzy', this)"><div class="swatch" style="background: #ffc0cb;"></div><div class="swatch" style="background: #ffd1dc;"></div><div class="swatch" style="background: #ff69b4;"></div></div>
+                    <div class="theme-option" onclick="setTheme('freezy', this)"><div class="swatch" style="background: #e0ffff;"></div><div class="swatch" style="background: #afeeee;"></div><div class="swatch" style="background: #00ced1;"></div></div>
+                    <div class="theme-option" onclick="setTheme('jungle', this)"><div class="swatch" style="background: #7851a9;"></div><div class="swatch" style="background: #32cd32;"></div><div class="swatch" style="background: #fffacd;"></div></div>
+                    <div class="theme-option" onclick="setTheme('minimal', this)"><div class="swatch" style="background: #ffffff;"></div><div class="swatch" style="background: #f5f5f5;"></div><div class="swatch" style="background: #d3d3d3;"></div></div>
                 </div>
             </div>
         </div>
     </header>
 
     <div class="blog-container" id="blog-area">
-        <button class="back-to-gallery" onclick="closeBlog()">Back to Gallery</button>
+        <button class="close-blog-x" onclick="closeBlog()">&times;</button>
         
-        <div class="blog-post text-only">
+        <div class="blog-post text-only" id="post-intro">
             <div class="blog-content">
                 <h2>Portfolio Site Conception + Launch</h2>
                 <span class="blog-date">FEBRUARY 25, 2026</span>
@@ -414,6 +411,11 @@
         </div>
     </div>
 
+    <div class="post-nav" id="blog-nav" style="display: none;">
+        <button class="nav-btn" onclick="navigatePost(-1)">Previous</button>
+        <button class="nav-btn" onclick="navigatePost(1)">Next</button>
+    </div>
+
     <div class="gallery-container" id="gallery-container">
         <div class="scroll-wrapper">
             <div class="painting-wrapper" onclick="scrollToPost('post-floral')"><img src="art_flowers.jpg" class="painting"></div>
@@ -446,10 +448,13 @@
             minimal: { colors: ['#ffffff', '#f5f5f5', '#d3d3d3'], bg: '#ffffff', text: '#000000', nameText: '#000000' }
         };
 
+        let currentPostIndex = 0;
+        let activePostFilter = 'all'; // 'all' or 'text-only'
+        const postIds = ['post-intro', 'post-floral', 'post-garden', 'post-riverside', 'post-reflection', 'post-sunset'];
+
         function setTheme(key, el) {
             const root = document.documentElement;
             const t = themes[key];
-            
             root.style.setProperty('--theme-c1', t.colors[0]);
             root.style.setProperty('--theme-c2', t.colors[1]);
             root.style.setProperty('--theme-c3', t.colors[2]);
@@ -457,67 +462,78 @@
             root.style.setProperty('--text-base', t.text);
             root.style.setProperty('--name-text', t.nameText);
             root.style.setProperty('--modal-bg', (t.bg === '#000000') ? '#1e1e1e' : '#ffffff');
-
-            const frameColor = (key === 'monochrome' || key === 'minimal') ? '#d3d3d3' : t.colors[0];
-            root.style.setProperty('--painting-frame', frameColor);
-
-            const closeBtn = document.getElementById('modal-close-btn');
-            if(key === 'minimal') {
-                closeBtn.style.color = '#000000';
-                closeBtn.style.borderColor = '#000000';
-            } else if (key === 'monochrome') {
-                closeBtn.style.color = '#ffffff';
-                closeBtn.style.borderColor = '#ffffff';
-            } else {
-                closeBtn.style.color = 'var(--theme-c2)';
-                closeBtn.style.borderColor = 'var(--theme-c2)';
-            }
+            root.style.setProperty('--painting-frame', (key === 'monochrome' || key === 'minimal') ? '#d3d3d3' : t.colors[0]);
             
             document.querySelectorAll('.theme-option').forEach(o => o.classList.remove('active'));
             el.classList.add('active');
         }
 
-        function scrollToPost(id) {
+        // Modified to handle post filtering
+        function scrollToPost(id, filter = 'all') {
             const blog = document.getElementById('blog-area');
             const gallery = document.getElementById('gallery-container');
+            const nav = document.getElementById('blog-nav');
             
-            // Show blog and minimize gallery
-            blog.classList.add('active');
-            gallery.classList.add('minimized');
-
-            setTimeout(() => {
-                const element = document.getElementById(id);
-                if (element) {
-                    element.scrollIntoView({ behavior: 'smooth' });
+            activePostFilter = filter;
+            
+            // Toggle visibility based on filter
+            document.querySelectorAll('.blog-post').forEach(post => {
+                if (filter === 'text-only') {
+                    post.style.display = post.classList.contains('text-only') ? 'flex' : 'none';
+                } else {
+                    post.style.display = 'flex';
                 }
-            }, 100);
+            });
+
+            currentPostIndex = postIds.indexOf(id);
+            blog.style.display = 'block';
+            nav.style.display = (filter === 'text-only') ? 'none' : 'flex'; // Hide nav if only 1 post
+            
+            setTimeout(() => {
+                blog.classList.add('active');
+                gallery.classList.add('minimized');
+                document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+            }, 50);
+        }
+
+        // Function specific for the new "Blog" link
+        function openBlogOnly() {
+            scrollToPost('post-intro', 'text-only');
+        }
+
+        function navigatePost(direction) {
+            if (activePostFilter === 'text-only') return; // Navigation disabled in filtered view
+
+            currentPostIndex += direction;
+            if (currentPostIndex < 0) currentPostIndex = postIds.length - 1;
+            if (currentPostIndex >= postIds.length) currentPostIndex = 0;
+            
+            const id = postIds[currentPostIndex];
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
         }
 
         function closeBlog() {
             const blog = document.getElementById('blog-area');
             const gallery = document.getElementById('gallery-container');
-            
+            const nav = document.getElementById('blog-nav');
             blog.classList.remove('active');
             gallery.classList.remove('minimized');
-            
-            // Small delay to remove display after opacity fades
             setTimeout(() => {
                 if(!blog.classList.contains('active')) {
                     blog.style.display = 'none';
+                    nav.style.display = 'none';
+                    blog.scrollTop = 0;
+                    // Reset all posts to display flex for the next open
+                    document.querySelectorAll('.blog-post').forEach(p => p.style.display = 'flex');
                 }
             }, 500);
-            
-            // Re-enable display logic for next open
-            blog.style.display = ''; 
         }
 
         function openModal(type) {
             const body = document.getElementById('modal-body');
-            if (type === 'about') {
-                body.innerHTML = `<h3>Ben Chmieleski</h3><p>Artist & Designer located in West Michigan. <br>I paint landscapes and botanic-inspired pieces.</p>`;
-            } else {
-                body.innerHTML = `<h3>Contact</h3><p>benchmieleski@gmail.com</p>`;
-            }
+            body.innerHTML = type === 'about' 
+                ? `<h3>Ben Chmieleski</h3><p>Artist & Designer located in West Michigan. <br>I paint landscapes and botanic-inspired pieces.</p>`
+                : `<h3>Contact</h3><p>benchmieleski@gmail.com</p>`;
             document.getElementById('modal').style.display = 'block';
         }
 
@@ -525,6 +541,10 @@
             if (e.key === 'Escape') {
                 document.getElementById('modal').style.display = 'none';
                 closeBlog();
+            }
+            if (document.getElementById('blog-area').classList.contains('active')) {
+                if (e.key === 'ArrowRight') navigatePost(1);
+                if (e.key === 'ArrowLeft') navigatePost(-1);
             }
         });
     </script>
