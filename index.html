@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,23 +22,40 @@
             font-family: sans-serif;
             height: 100vh;
             transition: background 0.4s, color 0.4s;
-            /* Improved rendering for Chrome */
             -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
         }
 
         header { position: fixed; top: 40px; left: 40px; z-index: 5000; }
         
-        /* Header Alignment: Subheading ends exactly where Name ends */
+        /* Updated Header for Full Width Spanning */
         .site-name-wrapper { 
             display: inline-flex; 
             flex-direction: column; 
-            align-items: flex-end; 
             cursor: pointer; 
-            padding-bottom: 30px; 
+            padding-bottom: 30px;
+            /* Ensures the wrapper only takes up as much space as the name */
+            width: fit-content; 
         }
-        .site-name { font-size: 1.5rem; font-weight: bold; line-height: 1.1; white-space: nowrap; }
-        .site-subheading { font-size: 0.65rem; line-height: 1; margin: 4px 0 15px; white-space: nowrap; letter-spacing: 0.02em; }
+
+        .site-name { 
+            font-size: 1.5rem; 
+            font-weight: bold; 
+            line-height: 1.1; 
+            white-space: nowrap;
+            width: 100%;
+        }
+
+        .site-subheading { 
+            font-size: 0.58rem; /* Slightly adjusted for fit */
+            line-height: 1; 
+            margin: 4px 0 15px; 
+            white-space: nowrap; 
+            display: flex;
+            justify-content: space-between; /* Spans the text across the full width of the name */
+            width: 100%;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
 
         .inv-grad-box {
             background: linear-gradient(to right, var(--theme-c1), var(--theme-c2), var(--theme-c3), var(--theme-c1));
@@ -54,10 +70,10 @@
         .no-grad { -webkit-text-fill-color: var(--text-base) !important; background: none !important; animation: none !important; }
         @keyframes gradient-flow { to { background-position: 400% center; } }
 
-        .nav-menu { display: none; flex-direction: column; align-items: flex-end; gap: 8px; width: 100%; }
+        .nav-menu { display: none; flex-direction: column; align-items: flex-start; gap: 8px; width: 100%; }
         .site-name-wrapper:hover .nav-menu { display: flex; }
         .nav-link { font-size: 0.8rem; font-weight: bold; text-decoration: none; transition: 0.2s; width: fit-content; cursor: pointer; color: inherit;}
-        .nav-link:hover { transform: translateX(-3px); opacity: 0.8; }
+        .nav-link:hover { transform: translateX(3px); opacity: 0.8; }
 
         .color-controls-dropdown { margin-top: 15px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
         .theme-option { cursor: pointer; border: 1px solid #ccc; padding: 4px; display: flex; gap: 2px; width: fit-content; transition: border 0.2s; }
@@ -99,7 +115,6 @@
         .gallery-container.blog-mode .item-wrapper.blog-item { display: flex; } 
         .gallery-container.minimized .item-wrapper { height: 14vh; margin: 0 12px; padding: 4px; }
 
-        /* Preview Aspect Ratio: 1.25 / 1 Width to Height */
         .text-item-preview { 
             width: 100%; 
             height: 100%; 
@@ -116,7 +131,6 @@
             box-sizing: border-box; 
         }
         
-        /* Font Sizes increased for Chrome Legibility */
         .preview-title { 
             font-size: 0.65rem; 
             font-weight: bold; 
@@ -153,7 +167,13 @@
     <header>
         <div class="site-name-wrapper" onclick="goHome()">
             <div class="site-name inv-grad-box">Ben Chmieleski</div>
-            <div class="site-subheading inv-grad-box">Artist | Designer | Creator</div>
+            <div class="site-subheading inv-grad-box">
+                <span>ARTIST</span>
+                <span>|</span>
+                <span>DESIGNER</span>
+                <span>|</span>
+                <span>CREATOR</span>
+            </div>
             <nav class="nav-menu">
                 <a class="nav-link inv-grad-box" onclick="event.stopPropagation(); openModal('about')">About</a>
                 <a class="nav-link inv-grad-box" onclick="event.stopPropagation(); openModal('contact')">Contact</a>
