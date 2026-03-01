@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -101,9 +100,9 @@
         }
         .blog-img-frame img { max-height: 100%; max-width: 100%; object-fit: contain; display: block; background: #fff; }
 
-        .blog-content { max-width: 500px; font-size: 0.95rem; line-height: 1.6; text-align: center; }
-        .blog-content h2 { margin: 0 0 8px; font-size: 1.6rem; text-transform: none; line-height: 1.2; display: inline-block; }
-        .blog-date { display: block; font-size: 0.65rem; font-weight: bold; opacity: 0.6; margin-bottom: 12px; }
+        .blog-content { max-width: 500px; font-size: 0.95rem; line-height: 1.6; text-align: center; display: flex; flex-direction: column; align-items: center; }
+        .blog-content h2 { margin: 0 0 8px; font-size: 1.6rem; text-transform: none; line-height: 1.2; display: inline-block; text-align: center; }
+        .blog-date { display: block; font-size: 0.65rem; font-weight: bold; opacity: 0.6; margin-bottom: 12px; text-align: center; }
 
         .gallery-container {
             position: absolute; bottom: 0; width: 100vw; height: 90vh;
@@ -130,7 +129,7 @@
             background: var(--bg-main); padding: 40px; border: 2px solid var(--theme-c1);
             z-index: 2000; text-align: center; color: var(--text-base);
         }
-        #modal h3 { margin: 0 0 15px; font-size: 1.5rem; text-transform: none; line-height: 1.2; }
+        #modal h3 { margin: 0 auto 15px auto; font-size: 1.5rem; text-transform: none; line-height: 1.2; text-align: center; }
         .close-btn { margin-top: 20px; font-size: 0.6rem; font-weight: bold; cursor: pointer; background: none; border: 1px solid var(--theme-c3); color: var(--theme-c3); padding: 5px 10px; }
     </style>
 </head>
@@ -173,11 +172,11 @@
 
     <script>
         const galleryItems = [
-            { id: 'post-floral', img: 'art_flowers.jpg' },
-            { id: 'post-garden', img: 'art_garden.jpg' },
-            { id: 'post-riverside', img: 'art_riverside.jpg' },
-            { id: 'post-reflection', img: 'art_sunset.jpg' },
-            { id: 'post-sunset', img: 'art_bella.jpg' }
+            { id: 'post-floral', img: 'art_flowers.jpg', title: 'Flowers' },
+            { id: 'post-garden', img: 'art_garden.jpg', title: 'Garden' },
+            { id: 'post-riverside', img: 'art_riverside.jpg', title: 'Riverside' },
+            { id: 'post-reflection', img: 'art_sunset.jpg', title: 'Sunset' },
+            { id: 'post-sunset', img: 'art_bella.jpg', title: 'Bella' }
         ];
 
         const blogPosts = [
@@ -200,7 +199,7 @@
             const bArea = document.getElementById('blog-area');
 
             const gHtml = galleryItems.map(item => `
-                <div class="painting-wrapper" onclick="scrollToWork('${item.id}', '${item.img}')">
+                <div class="painting-wrapper" onclick="scrollToWork('${item.id}', '${item.img}', '${item.title}')">
                     <img src="${item.img}" class="painting">
                 </div>`).join('');
             gWrapper.innerHTML = gHtml + gHtml;
@@ -215,9 +214,15 @@
                 </article>`).join('');
         }
 
-        function scrollToWork(id, imgPath) {
+        function scrollToWork(id, imgPath, title) {
             const bArea = document.getElementById('blog-area');
-            bArea.innerHTML = `<article class="blog-post active"><div class="blog-img-frame"><img src="${imgPath}"></div></article>`;
+            bArea.innerHTML = `
+                <article class="blog-post active">
+                    <div class="blog-img-frame"><img src="${imgPath}"></div>
+                    <div class="blog-content">
+                        <h2 class="inv-grad-box">${title}</h2>
+                    </div>
+                </article>`;
             document.getElementById('blog-nav').style.display = 'none';
             document.getElementById('close-x').style.display = 'block';
             document.getElementById('gallery-container').classList.add('minimized');
