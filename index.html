@@ -8,89 +8,117 @@
         :root { --bg: #fff; --txt: #1a1a1a; --c1: #6cccb6; --c2: #57648a; --c3: #ab5c95; --frame: #6cccb6; }
         body, html { margin: 0; padding: 0; overflow: hidden; background: var(--bg); color: var(--txt); font-family: sans-serif; height: 100vh; transition: 0.4s; -webkit-font-smoothing: antialiased; }
         
-        /* Layout Fix: Added background and padding to prevent intersection */
-        header { 
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            width: 100%;
-            padding: 40px 0 0 40px;
-            z-index: 5000; 
-            background: var(--bg); /* Matches current theme background */
-            transition: background 0.4s;
-        }
-
-        .site-name-wrapper { 
-            display: inline-flex; 
-            flex-direction: column; 
-            cursor: pointer; 
-            padding-bottom: 20px; 
-            width: fit-content; 
-        }
-
+        /* Layout */
+        header { position: fixed; top: 40px; left: 40px; z-index: 5000; pointer-events: none; }
+        .site-name-wrapper { display: inline-flex; flex-direction: column; cursor: pointer; width: fit-content; pointer-events: auto; }
         .site-name { font-size: 2.2rem; font-weight: bold; line-height: 1.1; margin: 0; }
         
-        /* Normal subheading text */
         .site-subheading { 
             font-size: 1.025rem; 
             line-height: 1.2; 
-            margin: 6px 0 10px; 
+            margin: 6px 0 15px; 
             display: block;
-            white-space: nowrap;
         }
         
-        /* Gradient Text */
-        .inv-grad-box { background: linear-gradient(to right, var(--c1), var(--c2), var(--c3), var(--c1)); background-size: 400% auto; animation: grad 18s linear infinite; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; display: inline-block; }
-        .no-grad { -webkit-text-fill-color: var(--txt) !important; background: none !important; animation: none !important; }
-        @keyframes grad { to { background-position: 400% center; } }
-
         /* Nav & Themes */
-        .nav-menu { display: none; flex-direction: column; gap: 8px; width: 100%; background: var(--bg); }
+        .nav-menu { display: none; flex-direction: column; gap: 8px; width: 100%; }
         .site-name-wrapper:hover .nav-menu { display: flex; }
         .nav-link { font-size: 0.9rem; font-weight: bold; cursor: pointer; transition: 0.2s; color: inherit; text-decoration: none; }
-        .nav-link:hover { transform: translateX(3px); opacity: 0.8; }
-        
-        .theme-grid { margin-top: 15px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; padding-bottom: 10px; }
-        .theme-opt { cursor: pointer; border: 1px solid #ccc; padding: 4px; display: flex; gap: 2px; transition: 0.2s; background: #fff; }
+        .theme-grid { margin-top: 15px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+        .theme-opt { cursor: pointer; border: 1px solid #ccc; padding: 4px; display: flex; gap: 2px; }
         .theme-opt.active { border: 2px solid var(--txt); padding: 3px; }
         .swatch { width: 12px; height: 12px; border: 1px solid rgba(0,0,0,0.05); }
 
-        /* Gallery */
-        .gallery-container { position: absolute; bottom: 0; width: 100vw; height: 75vh; display: flex; align-items: center; overflow-x: auto; transition: 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
-        .gallery-container.min { height: 20vh; }
-        .scroll-wrapper { display: flex; width: max-content; animation: scroll 65s linear infinite; padding: 0 20px; }
+        /* Gallery Positioning - Clear of Header */
+        .gallery-container { 
+            position: absolute; 
+            top: 260px; 
+            bottom: 0;
+            width: 100vw; 
+            display: flex; 
+            align-items: center; 
+            overflow-x: auto; 
+            transition: 0.6s cubic-bezier(0.4, 0, 0.2, 1); 
+        }
+        .gallery-container.min { top: 75vh; }
+
+        .scroll-wrapper { display: flex; width: max-content; animation: scroll 65s linear infinite; padding: 0 40px; }
         .scroll-wrapper:hover { animation-play-state: paused; }
         @keyframes scroll { to { transform: translateX(-50%); } }
 
-        .item-wrapper { position: relative; height: 55vh; margin: 0 40px; padding: 4px; background: var(--frame); cursor: pointer; display: flex; align-items: center; transition: 0.6s; }
-        .gallery-container.min .item-wrapper { height: 14vh; margin: 0 12px; padding: 2px; }
-
-        /* Centered Blog Preview Titles */
-        .preview-card { width: 100%; height: 100%; background: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 12% 10%; box-sizing: border-box; aspect-ratio: 1.25/1; text-align: center; }
-        .pre-title { font-size: 0.88rem; font-weight: bold; text-transform: uppercase; margin-bottom: 5%; line-height: 1.1; width: 100%; display: block; }
-        .pre-date { font-size: 0.62rem; opacity: 0.6; font-weight: bold; margin-top: auto; }
+        .item-wrapper { 
+            position: relative; 
+            height: 50vh; 
+            margin: 0 40px; 
+            padding: 4px; 
+            background: var(--frame); 
+            cursor: pointer; 
+            display: flex; 
+            align-items: center; 
+            transition: 0.4s; 
+        }
         
-        /* Rest of the UI */
-        .blog-container { position: absolute; top: 180px; height: 60vh; left: 50%; transform: translateX(-50%); width: 90vw; overflow-y: scroll; z-index: 5; display: none; opacity: 0; transition: 0.5s; scroll-snap-type: y mandatory; }
+        /* Visibility Logic: Only show images on home, only show cards in blog mode */
+        .item-wrapper.is-blog { display: none; }
+        .blog-mode .item-wrapper.is-blog { display: flex; }
+        .blog-mode .item-wrapper.has-img { display: none; }
+
+        .gallery-container.min .item-wrapper { height: 14vh; margin: 0 12px; }
+
+        /* Centered Preview Cards */
+        .preview-card { 
+            width: 100%; 
+            height: 100%; 
+            background: #fff; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            padding: 20px; 
+            box-sizing: border-box; 
+            aspect-ratio: 1.2/1; 
+            text-align: center; 
+        }
+        .pre-title { font-size: 0.9rem; font-weight: bold; margin-bottom: 8px; line-height: 1.2; width: 100%; }
+        .pre-date { font-size: 0.65rem; opacity: 0.6; font-weight: bold; }
+
+        /* Blog Content Area */
+        .blog-container { 
+            position: absolute; 
+            top: 120px; 
+            height: 60vh; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            width: 90vw; 
+            overflow-y: scroll; 
+            z-index: 5; 
+            display: none; 
+            opacity: 0; 
+            transition: 0.5s; 
+        }
         .blog-container.active { display: block; opacity: 1; }
-        .blog-post { display: flex; flex-direction: column; min-height: 65vh; gap: 30px; align-items: center; scroll-snap-align: center; padding: 40px 0; }
-        .blog-content { max-width: 800px; text-align: center; }
+        .blog-post { display: flex; flex-direction: column; align-items: center; padding: 60px 0; min-height: 50vh; }
+        .blog-content { max-width: 700px; text-align: center; line-height: 1.6; }
+
+        .inv-grad-box { background: linear-gradient(to right, var(--c1), var(--c2), var(--c3), var(--c1)); background-size: 400% auto; animation: grad 18s linear infinite; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; display: inline-block; }
+        @keyframes grad { to { background-position: 400% center; } }
+
         .close-x { position: fixed; top: 20px; right: 40px; background: none; border: none; font-size: 3rem; cursor: pointer; color: var(--txt); z-index: 6000; }
+        
         #modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--bg); padding: 50px; border: 2px solid var(--c1); z-index: 7000; text-align: center; }
         #modal.visible { display: block; }
 
         @media (max-width: 600px) {
-            header { padding: 20px 0 0 20px; }
+            header { top: 20px; left: 20px; }
             .site-name { font-size: 1.6rem; }
-            .site-subheading { font-size: 0.85rem; }
-            .item-wrapper { height: 35vh; }
-            .gallery-container { height: 60vh; }
+            .gallery-container { top: 200px; }
+            .item-wrapper { height: 35vh; margin: 0 15px; }
         }
     </style>
 </head>
 <body>
 
-    <header id="main-header">
+    <header>
         <div class="site-name-wrapper" onclick="goHome()">
             <div class="site-name inv-grad-box">Ben Chmieleski</div>
             <div class="site-subheading inv-grad-box">Artist | Designer | Creator</div>
@@ -104,7 +132,6 @@
     </header>
 
     <button class="close-x" id="close-x" style="display:none" onclick="ui.closeBlog()">&times;</button>
-    
     <main class="blog-container" id="blog-area"></main>
 
     <div class="gallery-container" id="gallery-container">
@@ -113,13 +140,13 @@
 
     <div id="modal">
         <div id="modal-body"></div>
-        <button onclick="ui.closeModal()" style="margin-top:20px; cursor:pointer">Close</button>
+        <button onclick="ui.closeModal()" style="margin-top:20px; cursor:pointer; padding: 5px 15px;">Close</button>
     </div>
 
     <script>
         const POSTS = [
-            { id: 'p1', title: 'Site Design Complete', date: 'Mar. 01, 2026', body: 'Part test post, past confirmation of the completion of the code portion of this site.' },
-            { id: 'p2', title: 'Portfolio Site Conception', date: 'Feb. 25, 2026', body: 'After having most of my creative work live in a transient state, I wanted to compile things together.' },
+            { id: 'p1', title: 'Site Design Complete', date: 'Mar. 01, 2026', body: 'The code portion of this site is now live.' },
+            { id: 'p2', title: 'Portfolio Site Conception', date: 'Feb. 25, 2026', body: 'A place to compile my creative work.' },
             { id: 'p3', title: 'Floral', date: 'FEB 25, 2026', body: 'Floral Study', img: 'art_flowers.jpg' },
             { id: 'p4', title: 'Garden', date: 'FEB 25, 2026', body: 'Frederik Meijer Sculpture Gardens', img: 'art_garden.jpg' },
             { id: 'p5', title: 'Riverside', date: 'FEB 25, 2026', body: 'Riverside Park', img: 'art_riverside.jpg' },
@@ -134,20 +161,23 @@
             static: { c: ['#000', '#000', '#000'], bg: '#fff', txt: '#1a1a1a' }
         };
 
-        let currentIdx = 0;
-
         const ui = {
             init() {
                 const blog = document.getElementById('blog-area');
                 const scroll = document.getElementById('gallery-scroll');
                 const themes = document.getElementById('theme-selector');
+                
                 Object.entries(THEMES).forEach(([k, v]) => {
                     themes.innerHTML += `<div class="theme-opt ${k==='misty'?'active':''}" onclick="event.stopPropagation();ui.setTheme('${k}', this)">${v.c.map(c=>`<div class="swatch" style="background:${c}"></div>`).join('')}</div>`;
                 });
+
                 let gHTML = '';
                 POSTS.forEach(p => {
-                    blog.innerHTML += `<article class="blog-post" id="${p.id}"><div class="blog-content"><h2 class="inv-grad-box">${p.title}</h2><p>${p.body}</p></div>${p.img?`<img src="${p.img}" style="max-width:80%">`:''}</article>`;
-                    gHTML += `<div class="item-wrapper ${!p.img?'is-blog':''}" onclick="ui.view('${p.id}')">
+                    // Create Full Posts
+                    blog.innerHTML += `<article class="blog-post" id="${p.id}"><div class="blog-content"><h2 class="inv-grad-box">${p.title}</h2><p>${p.body}</p></div>${p.img?`<img src="${p.img}" style="max-width:80%; margin-top:20px; border:4px solid var(--frame)">`:''}</article>`;
+                    
+                    // Create Gallery Items (Hidden/Shown based on type)
+                    gHTML += `<div class="item-wrapper ${p.img ? 'has-img' : 'is-blog'}" onclick="ui.view('${p.id}')">
                         ${p.img ? `<img src="${p.img}" style="height:100%">` : 
                         `<div class="preview-card"><div class="pre-title inv-grad-box">${p.title}</div><div class="pre-date">${p.date}</div></div>`}
                     </div>`;
@@ -170,16 +200,19 @@
             },
             closeBlog() {
                 const b = document.getElementById('blog-area'), g = document.getElementById('gallery-container');
-                b.classList.remove('active'); g.classList.remove('min');
+                b.classList.remove('active'); g.classList.remove('min', 'blog-mode');
                 document.getElementById('close-x').style.display = 'none';
+                setTimeout(() => { b.style.display = 'none'; }, 500);
+            },
+            blogOnly() {
+                document.getElementById('gallery-container').classList.add('blog-mode');
             },
             modal(type) {
                 const m = document.getElementById('modal');
                 document.getElementById('modal-body').innerHTML = type === 'about' ? `<h3>About</h3><p>Artist & Designer in West Michigan.</p>` : `<h3>Contact</h3><p>benchmieleski@gmail.com</p>`;
                 m.style.display = 'block'; setTimeout(() => m.classList.add('visible'), 10);
             },
-            closeModal() { document.getElementById('modal').style.display = 'none'; },
-            blogOnly() { this.view(POSTS[0].id); }
+            closeModal() { document.getElementById('modal').style.display = 'none'; }
         };
 
         function goHome() { ui.closeModal(); ui.closeBlog(); }
