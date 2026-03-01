@@ -27,13 +27,11 @@
 
         header { position: fixed; top: 40px; left: 40px; z-index: 5000; }
         
-        /* Updated Header for Full Width Spanning */
         .site-name-wrapper { 
             display: inline-flex; 
             flex-direction: column; 
             cursor: pointer; 
             padding-bottom: 30px;
-            /* Ensures the wrapper only takes up as much space as the name */
             width: fit-content; 
         }
 
@@ -46,15 +44,15 @@
         }
 
         .site-subheading { 
-            font-size: 0.58rem; /* Slightly adjusted for fit */
+            font-size: 0.65rem; 
             line-height: 1; 
             margin: 4px 0 15px; 
             white-space: nowrap; 
             display: flex;
-            justify-content: space-between; /* Spans the text across the full width of the name */
+            justify-content: space-between; /* This handles the spanning */
             width: 100%;
-            font-weight: bold;
-            text-transform: uppercase;
+            text-transform: none; /* Reverted from All Caps */
+            font-weight: normal; /* Reverted to original weight */
         }
 
         .inv-grad-box {
@@ -168,11 +166,11 @@
         <div class="site-name-wrapper" onclick="goHome()">
             <div class="site-name inv-grad-box">Ben Chmieleski</div>
             <div class="site-subheading inv-grad-box">
-                <span>ARTIST</span>
+                <span>Artist</span>
                 <span>|</span>
-                <span>DESIGNER</span>
+                <span>Designer</span>
                 <span>|</span>
-                <span>CREATOR</span>
+                <span>Creator</span>
             </div>
             <nav class="nav-menu">
                 <a class="nav-link inv-grad-box" onclick="event.stopPropagation(); openModal('about')">About</a>
