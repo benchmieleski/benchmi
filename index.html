@@ -34,9 +34,11 @@
 
         header { position: fixed; top: 40px; left: 40px; z-index: 1000; }
 
-        .site-name-wrapper { display: inline-flex; flex-direction: column; cursor: pointer; padding-bottom: 30px; }
-        .site-name { font-size: 1.25rem; font-weight: bold; line-height: 1.1; }
-        .site-subheading { font-size: 0.53rem; line-height: 1; margin: 2px 0 12px; }
+        .site-name-wrapper { display: inline-flex; flex-direction: column; cursor: pointer; padding-bottom: 30px; align-items: flex-start; }
+        
+        /* Fixed line-height for Chrome normalization */
+        .site-name { font-size: 1.25rem; font-weight: bold; line-height: 1.2; margin: 0; }
+        .site-subheading { font-size: 0.53rem; line-height: 1.2; margin: 2px 0 12px; text-transform: uppercase; letter-spacing: 1px; }
 
         .inv-grad-box {
             background: linear-gradient(to right, var(--theme-c1), var(--theme-c2), var(--theme-c3), var(--theme-c1));
@@ -45,7 +47,9 @@
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
-            display: inline-block;
+            /* width: fit-content ensures the gradient box doesn't stretch to the edge of the screen */
+            width: fit-content;
+            display: block; 
         }
 
         .no-grad { -webkit-text-fill-color: var(--text-base) !important; background: none !important; animation: none !important; }
@@ -55,7 +59,7 @@
         .nav-menu { display: none; flex-direction: column; gap: 6px; }
         .site-name-wrapper:hover .nav-menu { display: flex; }
 
-        .nav-link { font-size: 0.6rem; font-weight: bold; text-decoration: none; transition: 0.2s; width: fit-content; cursor: pointer;}
+        .nav-link { font-size: 0.6rem; font-weight: bold; text-decoration: none; transition: 0.2s; cursor: pointer; line-height: 1.2; }
         .nav-link:hover { transform: translateX(3px); opacity: 0.8; }
 
         .color-controls-dropdown { margin-top: 15px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
@@ -99,7 +103,7 @@
         .blog-img-frame img { max-height: 100%; max-width: 100%; object-fit: contain; display: block; background: #fff; }
 
         .blog-content { max-width: 400px; font-size: 0.95rem; line-height: 1.6; }
-        .blog-content h2 { margin: 0 0 4px; font-size: 1.6rem; text-transform: uppercase; }
+        .blog-content h2 { margin: 0 0 8px; font-size: 1.6rem; text-transform: uppercase; line-height: 1.2; }
         .blog-date { display: block; font-size: 0.65rem; font-weight: bold; opacity: 0.6; margin-bottom: 12px; }
 
         .gallery-container {
@@ -127,6 +131,7 @@
             background: var(--bg-main); padding: 40px; border: 2px solid var(--theme-c1);
             z-index: 2000; text-align: center; color: var(--text-base);
         }
+        #modal h3 { margin: 0 0 15px; font-size: 1.5rem; text-transform: uppercase; line-height: 1.2; }
         .close-btn { margin-top: 20px; font-size: 0.6rem; font-weight: bold; cursor: pointer; background: none; border: 1px solid var(--theme-c3); color: var(--theme-c3); padding: 5px 10px; }
     </style>
 </head>
@@ -168,7 +173,6 @@
     </div>
 
     <script>
-        // --- ADD NEW GALLERY IMAGES HERE ---
         const galleryItems = [
             { id: 'post-floral', img: 'art_flowers.jpg' },
             { id: 'post-garden', img: 'art_garden.jpg' },
@@ -177,7 +181,6 @@
             { id: 'post-sunset', img: 'art_bella.jpg' }
         ];
 
-        // --- ADD NEW BLOG POSTS HERE ---
         const blogPosts = [
             { id: 'post-intro', title: 'Portfolio Site Conception', date: 'FEBRUARY 25, 2026', body: 'After having most of my creative work live in a transient state for most of my adult life, I wanted to begin to compile things together in order to weave together the story that is my creative life.', img: null },
             { id: 'post-floral', title: 'Floral', date: 'FEB 25, 2026', body: 'Floral Study', img: 'art_flowers.jpg' },
@@ -202,19 +205,17 @@
             const gWrapper = document.getElementById('gallery-wrapper');
             const bArea = document.getElementById('blog-area');
 
-            // Render Gallery (Twice for loop)
             const gHtml = galleryItems.map(item => `
                 <div class="painting-wrapper" onclick="scrollToPost('${item.id}')">
                     <img src="${item.img}" class="painting">
                 </div>`).join('');
             gWrapper.innerHTML = gHtml + gHtml;
 
-            // Render Blog Posts
             bArea.innerHTML = blogPosts.map(post => `
                 <article class="blog-post" id="${post.id}">
                     ${post.img ? `<div class="blog-img-frame"><img src="${post.img}"></div>` : ''}
                     <div class="blog-content">
-                        <h2 class="inv-grad-box">${post.title}</h2>
+                        <h2 class="${activeTheme === 'monochromeStatic' ? 'inv-grad-box no-grad' : 'inv-grad-box'}">${post.title}</h2>
                         <span class="blog-date">${post.date}</span>
                         <p>${post.body}</p>
                     </div>
