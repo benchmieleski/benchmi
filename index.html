@@ -54,7 +54,6 @@
         .theme-option.active { border: 2px solid var(--text-base); }
         .swatch { width: 14px; height: 14px; }
 
-        /* BLOG CONTAINER */
         .blog-container {
             position: absolute; top: 80px; height: 70vh; left: 50%;
             transform: translateX(-50%); width: 85vw;
@@ -102,7 +101,6 @@
         .blog-content h2 { margin: 0 0 4px; font-size: 1.6rem; text-transform: uppercase; }
         .blog-date { display: block; font-size: 0.65rem; font-weight: bold; opacity: 0.6; margin-bottom: 12px; }
 
-        /* GALLERY */
         .gallery-container {
             position: absolute; bottom: 0; width: 100vw; height: 90vh;
             display: flex; align-items: center; overflow-x: auto; overflow-y: hidden;
@@ -111,31 +109,35 @@
         .gallery-container.minimized { height: 20vh; }
 
         .scroll-wrapper { display: flex; width: max-content; animation: scroll 65s linear infinite; padding: 0 20px; }
-        .scroll-wrapper:hover { animation-play-state: paused; } /* Pause on hover for easier clicking */
+        .scroll-wrapper:hover { animation-play-state: paused; } 
 
         .painting-wrapper { 
             height: 65vh; margin: 0 40px; padding: 5px; 
             background: var(--painting-frame); transition: 0.6s; cursor: pointer; 
             display: flex; align-items: center; justify-content: center;
         }
+
+        /* Logic to hide the wrapper entirely on the home page if it contains a text-post */
+        .painting-wrapper.text-item { display: none; }
+        .gallery-container.minimized .painting-wrapper.text-item { display: flex; height: 14vh; margin: 0 10px; padding: 2px; }
+
         .gallery-container.minimized .painting-wrapper { height: 14vh; margin: 0 10px; padding: 2px; }
         
         .painting { height: 100%; display: block; background: #fff; }
 
-        /* Text Post Box in Gallery */
         .text-post-placeholder {
-            width: 45vh; /* Proportional width */
+            width: 100%;
             height: 100%;
             background: #fff;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 5rem;
             font-weight: bold;
             color: var(--painting-frame);
             border: 1px solid #eee;
+            aspect-ratio: 1 / 1; /* Keep it square */
+            font-size: 1.5rem;
         }
-        .gallery-container.minimized .text-post-placeholder { width: 10vh; font-size: 1.5rem; }
 
         @keyframes scroll { to { transform: translateX(-50%); } }
 
@@ -191,7 +193,7 @@
 
     <div class="gallery-container" id="gallery-container">
         <div class="scroll-wrapper">
-            <div class="painting-wrapper" onclick="scrollToPost('post-intro')">
+            <div class="painting-wrapper text-item" onclick="scrollToPost('post-intro')">
                 <div class="text-post-placeholder">T</div>
             </div>
             <div class="painting-wrapper" onclick="scrollToPost('post-floral')"><img src="art_flowers.jpg" class="painting"></div>
@@ -200,7 +202,7 @@
             <div class="painting-wrapper" onclick="scrollToPost('post-reflection')"><img src="art_sunset.jpg" class="painting"></div>
             <div class="painting-wrapper" onclick="scrollToPost('post-sunset')"><img src="art_bella.jpg" class="painting"></div>
             
-            <div class="painting-wrapper" onclick="scrollToPost('post-intro')">
+            <div class="painting-wrapper text-item" onclick="scrollToPost('post-intro')">
                 <div class="text-post-placeholder">T</div>
             </div>
             <div class="painting-wrapper" onclick="scrollToPost('post-floral')"><img src="art_flowers.jpg" class="painting"></div>
