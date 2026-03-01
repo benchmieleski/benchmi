@@ -9,30 +9,25 @@
         body, html { margin: 0; padding: 0; overflow: hidden; background: var(--bg); color: var(--txt); font-family: sans-serif; height: 100vh; transition: 0.4s; -webkit-font-smoothing: antialiased; }
         
         /* Layout */
-        header { position: fixed; top: 40px; left: 40px; z-index: 5000; pointer-events: none; }
-        .site-name-wrapper { display: inline-flex; flex-direction: column; cursor: pointer; width: fit-content; pointer-events: auto; }
+        header { position: fixed; top: 40px; left: 40px; z-index: 5000; }
+        .site-name-wrapper { display: inline-flex; flex-direction: column; cursor: pointer; width: fit-content; }
         .site-name { font-size: 2.2rem; font-weight: bold; line-height: 1.1; margin: 0; }
-        
-        .site-subheading { 
-            font-size: 1.025rem; 
-            line-height: 1.2; 
-            margin: 6px 0 15px; 
-            display: block;
-        }
+        .site-subheading { font-size: 1.025rem; line-height: 1.2; margin: 6px 0 15px; display: block; }
         
         /* Nav & Themes */
         .nav-menu { display: none; flex-direction: column; gap: 8px; width: 100%; }
         .site-name-wrapper:hover .nav-menu { display: flex; }
-        .nav-link { font-size: 0.9rem; font-weight: bold; cursor: pointer; transition: 0.2s; color: inherit; text-decoration: none; }
+        .nav-link { font-size: 0.9rem; font-weight: bold; cursor: pointer; transition: 0.2s; color: inherit; text-decoration: none; padding: 2px 0; }
+        .nav-link:hover { opacity: 0.7; transform: translateX(3px); }
         .theme-grid { margin-top: 15px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
         .theme-opt { cursor: pointer; border: 1px solid #ccc; padding: 4px; display: flex; gap: 2px; }
         .theme-opt.active { border: 2px solid var(--txt); padding: 3px; }
         .swatch { width: 12px; height: 12px; border: 1px solid rgba(0,0,0,0.05); }
 
-        /* Gallery Positioning - Clear of Header */
+        /* Gallery - Positioned to never hit the header */
         .gallery-container { 
             position: absolute; 
-            top: 260px; 
+            top: 280px; 
             bottom: 0;
             width: 100vw; 
             display: flex; 
@@ -58,46 +53,22 @@
             transition: 0.4s; 
         }
         
-        /* Visibility Logic: Only show images on home, only show cards in blog mode */
+        /* Filtering Logic */
         .item-wrapper.is-blog { display: none; }
         .blog-mode .item-wrapper.is-blog { display: flex; }
         .blog-mode .item-wrapper.has-img { display: none; }
 
         .gallery-container.min .item-wrapper { height: 14vh; margin: 0 12px; }
 
-        /* Centered Preview Cards */
-        .preview-card { 
-            width: 100%; 
-            height: 100%; 
-            background: #fff; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: center; 
-            padding: 20px; 
-            box-sizing: border-box; 
-            aspect-ratio: 1.2/1; 
-            text-align: center; 
-        }
-        .pre-title { font-size: 0.9rem; font-weight: bold; margin-bottom: 8px; line-height: 1.2; width: 100%; }
+        /* Text Previews */
+        .preview-card { width: 100%; height: 100%; background: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; box-sizing: border-box; aspect-ratio: 1.2/1; text-align: center; }
+        .pre-title { font-size: 0.9rem; font-weight: bold; margin-bottom: 8px; line-height: 1.2; }
         .pre-date { font-size: 0.65rem; opacity: 0.6; font-weight: bold; }
 
-        /* Blog Content Area */
-        .blog-container { 
-            position: absolute; 
-            top: 120px; 
-            height: 60vh; 
-            left: 50%; 
-            transform: translateX(-50%); 
-            width: 90vw; 
-            overflow-y: scroll; 
-            z-index: 5; 
-            display: none; 
-            opacity: 0; 
-            transition: 0.5s; 
-        }
+        /* Blog Content */
+        .blog-container { position: absolute; top: 140px; height: 55vh; left: 50%; transform: translateX(-50%); width: 90vw; overflow-y: scroll; z-index: 5; display: none; opacity: 0; transition: 0.5s; }
         .blog-container.active { display: block; opacity: 1; }
-        .blog-post { display: flex; flex-direction: column; align-items: center; padding: 60px 0; min-height: 50vh; }
+        .blog-post { display: flex; flex-direction: column; align-items: center; padding: 60px 0; }
         .blog-content { max-width: 700px; text-align: center; line-height: 1.6; }
 
         .inv-grad-box { background: linear-gradient(to right, var(--c1), var(--c2), var(--c3), var(--c1)); background-size: 400% auto; animation: grad 18s linear infinite; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; display: inline-block; }
@@ -111,7 +82,7 @@
         @media (max-width: 600px) {
             header { top: 20px; left: 20px; }
             .site-name { font-size: 1.6rem; }
-            .gallery-container { top: 200px; }
+            .gallery-container { top: 220px; }
             .item-wrapper { height: 35vh; margin: 0 15px; }
         }
     </style>
@@ -119,9 +90,11 @@
 <body>
 
     <header>
-        <div class="site-name-wrapper" onclick="goHome()">
-            <div class="site-name inv-grad-box">Ben Chmieleski</div>
-            <div class="site-subheading inv-grad-box">Artist | Designer | Creator</div>
+        <div class="site-name-wrapper">
+            <div onclick="goHome()">
+                <div class="site-name inv-grad-box">Ben Chmieleski</div>
+                <div class="site-subheading inv-grad-box">Artist | Designer | Creator</div>
+            </div>
             <nav class="nav-menu">
                 <a class="nav-link inv-grad-box" onclick="ui.modal('about')">About</a>
                 <a class="nav-link inv-grad-box" onclick="ui.modal('contact')">Contact</a>
@@ -173,10 +146,7 @@
 
                 let gHTML = '';
                 POSTS.forEach(p => {
-                    // Create Full Posts
                     blog.innerHTML += `<article class="blog-post" id="${p.id}"><div class="blog-content"><h2 class="inv-grad-box">${p.title}</h2><p>${p.body}</p></div>${p.img?`<img src="${p.img}" style="max-width:80%; margin-top:20px; border:4px solid var(--frame)">`:''}</article>`;
-                    
-                    // Create Gallery Items (Hidden/Shown based on type)
                     gHTML += `<div class="item-wrapper ${p.img ? 'has-img' : 'is-blog'}" onclick="ui.view('${p.id}')">
                         ${p.img ? `<img src="${p.img}" style="height:100%">` : 
                         `<div class="preview-card"><div class="pre-title inv-grad-box">${p.title}</div><div class="pre-date">${p.date}</div></div>`}
@@ -200,11 +170,12 @@
             },
             closeBlog() {
                 const b = document.getElementById('blog-area'), g = document.getElementById('gallery-container');
-                b.classList.remove('active'); g.classList.remove('min', 'blog-mode');
+                b.classList.remove('active'); g.classList.remove('min');
                 document.getElementById('close-x').style.display = 'none';
                 setTimeout(() => { b.style.display = 'none'; }, 500);
             },
             blogOnly() {
+                this.closeBlog();
                 document.getElementById('gallery-container').classList.add('blog-mode');
             },
             modal(type) {
@@ -212,10 +183,14 @@
                 document.getElementById('modal-body').innerHTML = type === 'about' ? `<h3>About</h3><p>Artist & Designer in West Michigan.</p>` : `<h3>Contact</h3><p>benchmieleski@gmail.com</p>`;
                 m.style.display = 'block'; setTimeout(() => m.classList.add('visible'), 10);
             },
-            closeModal() { document.getElementById('modal').style.display = 'none'; }
+            closeModal() { document.getElementById('modal').classList.remove('visible'); setTimeout(()=>document.getElementById('modal').style.display='none', 300); }
         };
 
-        function goHome() { ui.closeModal(); ui.closeBlog(); }
+        function goHome() { 
+            ui.closeModal(); 
+            ui.closeBlog(); 
+            document.getElementById('gallery-container').classList.remove('blog-mode'); 
+        }
         document.addEventListener('DOMContentLoaded', () => ui.init());
     </script>
 </body>
