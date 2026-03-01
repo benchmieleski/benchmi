@@ -50,10 +50,18 @@
         .nav-link { font-size: 0.6rem; font-weight: bold; text-decoration: none; transition: 0.2s; width: fit-content; cursor: pointer; color: inherit;}
         .nav-link:hover { transform: translateX(3px); opacity: 0.8; }
 
+        /* THEME CONTROLS */
         .color-controls-dropdown { margin-top: 15px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
-        .theme-option { cursor: pointer; border: 1px solid var(--theme-c3); padding: 1px; background: #fff; display: flex; }
+        .theme-option { 
+            cursor: pointer; 
+            border: 1px solid var(--theme-c3); 
+            padding: 1px; 
+            background: #fff; 
+            display: flex; 
+            width: fit-content;
+        }
         .theme-option.active { border: 2px solid var(--text-base); }
-        .swatch { width: 14px; height: 14px; }
+        .swatch { width: 12px; height: 12px; } /* Slightly smaller to fit 4 */
 
         /* BLOG CONTAINER & POSTS */
         .blog-container {
@@ -85,18 +93,18 @@
 
         .blog-post { 
             display: flex; 
-            flex-direction: column; /* Text ABOVE Image */
+            flex-direction: column; 
             height: 75vh; 
             gap: 20px; 
             align-items: center; 
-            justify-content: flex-start; /* Start from top */
+            justify-content: flex-start; 
             scroll-snap-align: center; 
             box-sizing: border-box; 
             padding: 40px 0;
         }
 
         .blog-img-frame { 
-            max-height: 50%; /* Prevents image from pushing text off-screen */
+            max-height: 50%; 
             width: auto;
             padding: 8px; 
             background: var(--painting-frame); 
@@ -105,7 +113,7 @@
             box-sizing: border-box;
         }
         .blog-img-frame img { 
-            max-height: 45vh; /* Responsive height */
+            max-height: 45vh; 
             max-width: 100%; 
             object-fit: contain; 
             display: block; 
@@ -177,28 +185,44 @@
                 <a class="nav-link inv-grad-box" onclick="event.stopPropagation(); openModal('contact')">Contact</a>
                 <a class="nav-link inv-grad-box" onclick="event.stopPropagation(); openBlogOnly()">Blog</a>
                 <div class="color-controls-dropdown">
-                    <div class="theme-option active" onclick="event.stopPropagation(); setTheme('misty', this)"><div class="swatch" style="background:#6cccb6"></div><div class="swatch" style="background:#57648a"></div><div class="swatch" style="background:#ab5c95"></div></div>
-                    <div class="theme-option" onclick="event.stopPropagation(); setTheme('electric', this)"><div class="swatch" style="background:#d9b3f2"></div><div class="swatch" style="background:#b3d9d9"></div><div class="swatch" style="background:#efb9da"></div></div>
-                    <div class="theme-option" onclick="event.stopPropagation(); setTheme('monochromeDark', this)"><div class="swatch" style="background:#ccc"></div><div class="swatch" style="background:#eee"></div><div class="swatch" style="background:#fff"></div></div>
-                    <div class="theme-option" onclick="event.stopPropagation(); setTheme('monochromeStatic', this)"><div class="swatch" style="background:#000"></div><div class="swatch" style="background:#000"></div><div class="swatch" style="background:#000"></div></div>
+                    <div class="theme-option active" onclick="event.stopPropagation(); setTheme('misty', this)">
+                        <div class="swatch" style="background:#6cccb6"></div>
+                        <div class="swatch" style="background:#57648a"></div>
+                        <div class="swatch" style="background:#ab5c95"></div>
+                        <div class="swatch" style="background:#ffffff; border-left: 1px solid #eee;"></div>
+                    </div>
+                    <div class="theme-option" onclick="event.stopPropagation(); setTheme('electric', this)">
+                        <div class="swatch" style="background:#d9b3f2"></div>
+                        <div class="swatch" style="background:#b3d9d9"></div>
+                        <div class="swatch" style="background:#efb9da"></div>
+                        <div class="swatch" style="background:#ffffff; border-left: 1px solid #eee;"></div>
+                    </div>
+                    <div class="theme-option" onclick="event.stopPropagation(); setTheme('monochromeDark', this)">
+                        <div class="swatch" style="background:#ccc"></div>
+                        <div class="swatch" style="background:#eee"></div>
+                        <div class="swatch" style="background:#fff"></div>
+                        <div class="swatch" style="background:#000000; border-left: 1px solid #444;"></div>
+                    </div>
+                    <div class="theme-option" onclick="event.stopPropagation(); setTheme('monochromeStatic', this)">
+                        <div class="swatch" style="background:#000"></div>
+                        <div class="swatch" style="background:#000"></div>
+                        <div class="swatch" style="background:#000"></div>
+                        <div class="swatch" style="background:#ffffff; border-left: 1px solid #eee;"></div>
+                    </div>
                 </div>
             </nav>
         </div>
     </header>
 
     <button class="close-blog-x" id="close-x" style="display:none" onclick="closeBlog()">&times;</button>
-
     <main class="blog-container" id="blog-area"></main>
-
     <div class="post-nav" id="blog-nav">
         <button class="nav-btn" onclick="navigatePost(-1)">Previous</button>
         <button class="nav-btn" onclick="navigatePost(1)">Next</button>
     </div>
-
     <div class="gallery-container" id="gallery-container">
         <div class="scroll-wrapper" id="gallery-scroll"></div>
     </div>
-
     <div id="modal">
         <div id="modal-body"></div>
         <button class="close-btn" onclick="document.getElementById('modal').style.display='none'">Close</button>
