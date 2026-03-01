@@ -44,7 +44,7 @@
         }
 
         .site-subheading { 
-            font-size: 0.85rem; /* Increased 130% from 0.65rem */
+            font-size: 0.85rem; 
             line-height: 1; 
             margin: 4px 0 15px; 
             white-space: nowrap; 
@@ -92,7 +92,7 @@
         .nav-btn { background: var(--bg-main); border: 1.5px solid var(--text-base); color: var(--text-base); padding: 8px 20px; font-size: 0.85rem; font-weight: bold; cursor: pointer; text-transform: uppercase; }
 
         .blog-post { display: flex; flex-direction: column; min-height: 75vh; gap: 30px; align-items: center; justify-content: flex-start; scroll-snap-align: center; box-sizing: border-box; padding: 40px 0; }
-        .blog-img-frame { flex-shrink: 0; padding: 10px; background: var(--painting-frame); display: flex; align-items: center; justify-content: center; box-sizing: border-box; max-width: 90%; }
+        .blog-img-frame { flex-shrink: 0; padding: 5px; /* Reduced 50% from 10px */ background: var(--painting-frame); display: flex; align-items: center; justify-content: center; box-sizing: border-box; max-width: 90%; }
         .blog-img-frame img { max-height: 45vh; max-width: 100%; object-fit: contain; display: block; background: #fff; }
 
         .blog-content { max-width: 700px; font-size: 1.1rem; line-height: 1.6; text-align: center; }
@@ -105,13 +105,13 @@
         .scroll-wrapper:hover { animation-play-state: paused; } 
 
         .item-wrapper { 
-            position: relative; height: 65vh; margin: 0 40px; padding: 8px; 
+            position: relative; height: 65vh; margin: 0 40px; padding: 4px; /* Reduced 50% from 8px */
             background: var(--painting-frame); transition: 0.6s; cursor: pointer; 
             display: flex; align-items: center; justify-content: center; overflow: hidden;
         }
         .item-wrapper.blog-item { display: none; } 
         .gallery-container.blog-mode .item-wrapper.blog-item { display: flex; } 
-        .gallery-container.minimized .item-wrapper { height: 14vh; margin: 0 12px; padding: 4px; }
+        .gallery-container.minimized .item-wrapper { height: 14vh; margin: 0 12px; padding: 2px; /* Reduced 50% from 4px */ }
 
         .text-item-preview { 
             width: 100%; 
@@ -196,7 +196,6 @@
     </div>
 
     <script>
-        /* Javascript remains the same */
         const textPosts = [
             { id: 'post-second', title: 'Site Design Complete', date: 'Mar. 01, 2026', content: 'Part test post, past confirmation of the completion (for now) of the html/code portion of this site. Next up I am planning on uploading some pieces from times passed/past. ' },
             { id: 'post-intro', title: 'Portfolio Site Conception', date: 'Feb. 25, 2026', content: 'After having most of my creative work live in a transient state for most of my adult life, I wanted to begin to compile things together in order to weave together the story that is my creative life.' }
