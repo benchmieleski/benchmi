@@ -37,6 +37,7 @@
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
+            display: inline-block; /* Ensures gradient wraps correctly */
         }
 
         .no-grad { -webkit-text-fill-color: var(--text-base) !important; background: none !important; animation: none !important; }
@@ -98,7 +99,7 @@
         }
 
         .blog-content { max-width: 400px; font-size: 0.95rem; line-height: 1.6; }
-        .blog-content h2 { margin: 0 0 4px; font-size: 1.6rem; text-transform: uppercase; }
+        .blog-content h2 { margin: 0 0 4px; font-size: 1.6rem; text-transform: none; } /* Removed uppercase */
         .blog-date { display: block; font-size: 0.65rem; font-weight: bold; opacity: 0.6; margin-bottom: 12px; }
 
         .gallery-container {
@@ -129,7 +130,7 @@
             height: 100%;
             background: #fff;
             display: flex;
-            flex-direction: column; /* Stacks "Blog Post" and Date */
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             color: var(--painting-frame);
@@ -142,7 +143,7 @@
         }
 
         .placeholder-label { font-size: 0.55rem; font-weight: bold; margin-bottom: 2px; }
-        .placeholder-date { font-size: 0.4rem; opacity: 0.7; }
+        .placeholder-date { font-size: 0.35rem; opacity: 0.7; } /* Reduced size */
 
         @keyframes scroll { to { transform: translateX(-50%); } }
 
@@ -179,8 +180,7 @@
     <main class="blog-container" id="blog-area">
         <article class="blog-post" id="post-intro">
             <div class="blog-content">
-                <h2>Portfolio Site Conception</h2>
-                <span class="blog-date">FEBRUARY 25, 2026</span>
+                <h2 class="inv-grad-box">Portfolio Site Conception</h2> <span class="blog-date">FEBRUARY 25, 2026</span>
                 <p>After having most of my creative work live in a transient state for most of my adult life, I wanted to begin to compile things together in order to weave together the story that is my creative life.</p>
             </div>
         </article>
