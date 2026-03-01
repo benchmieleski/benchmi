@@ -117,7 +117,6 @@
             display: flex; align-items: center; justify-content: center;
         }
 
-        /* Logic to hide the wrapper entirely on the home page if it contains a text-post */
         .painting-wrapper.text-item { display: none; }
         .gallery-container.minimized .painting-wrapper.text-item { display: flex; height: 14vh; margin: 0 10px; padding: 2px; }
 
@@ -130,14 +129,20 @@
             height: 100%;
             background: #fff;
             display: flex;
+            flex-direction: column; /* Stacks "Blog Post" and Date */
             align-items: center;
             justify-content: center;
-            font-weight: bold;
             color: var(--painting-frame);
             border: 1px solid #eee;
-            aspect-ratio: 1 / 1; /* Keep it square */
-            font-size: 1.5rem;
+            aspect-ratio: 1 / 1;
+            text-align: center;
+            padding: 5px;
+            box-sizing: border-box;
+            text-transform: uppercase;
         }
+
+        .placeholder-label { font-size: 0.55rem; font-weight: bold; margin-bottom: 2px; }
+        .placeholder-date { font-size: 0.4rem; opacity: 0.7; }
 
         @keyframes scroll { to { transform: translateX(-50%); } }
 
@@ -194,7 +199,10 @@
     <div class="gallery-container" id="gallery-container">
         <div class="scroll-wrapper">
             <div class="painting-wrapper text-item" onclick="scrollToPost('post-intro')">
-                <div class="text-post-placeholder">T</div>
+                <div class="text-post-placeholder">
+                    <div class="placeholder-label">Blog Post</div>
+                    <div class="placeholder-date">Feb 25, 2026</div>
+                </div>
             </div>
             <div class="painting-wrapper" onclick="scrollToPost('post-floral')"><img src="art_flowers.jpg" class="painting"></div>
             <div class="painting-wrapper" onclick="scrollToPost('post-garden')"><img src="art_garden.jpg" class="painting"></div>
@@ -203,7 +211,10 @@
             <div class="painting-wrapper" onclick="scrollToPost('post-sunset')"><img src="art_bella.jpg" class="painting"></div>
             
             <div class="painting-wrapper text-item" onclick="scrollToPost('post-intro')">
-                <div class="text-post-placeholder">T</div>
+                <div class="text-post-placeholder">
+                    <div class="placeholder-label">Blog Post</div>
+                    <div class="placeholder-date">Feb 25, 2026</div>
+                </div>
             </div>
             <div class="painting-wrapper" onclick="scrollToPost('post-floral')"><img src="art_flowers.jpg" class="painting"></div>
             <div class="painting-wrapper" onclick="scrollToPost('post-garden')"><img src="art_garden.jpg" class="painting"></div>
