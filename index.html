@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ben Chmieleski | Homepage</title>
+    <title>Ben Chmieleski | Artist & Designer</title>
     <style>
         :root {
             --bg-main: #ffffff;
@@ -37,7 +37,7 @@
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
-            display: inline-block; /* Ensures gradient wraps correctly */
+            display: inline-block;
         }
 
         .no-grad { -webkit-text-fill-color: var(--text-base) !important; background: none !important; animation: none !important; }
@@ -47,7 +47,7 @@
         .nav-menu { display: none; flex-direction: column; gap: 6px; }
         .site-name-wrapper:hover .nav-menu { display: flex; }
 
-        .nav-link { font-size: 0.6rem; font-weight: bold; text-decoration: none; transition: 0.2s; width: fit-content; }
+        .nav-link { font-size: 0.6rem; font-weight: bold; text-decoration: none; transition: 0.2s; width: fit-content; cursor: pointer; color: inherit;}
         .nav-link:hover { transform: translateX(3px); opacity: 0.8; }
 
         .color-controls-dropdown { margin-top: 15px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
@@ -99,7 +99,7 @@
         }
 
         .blog-content { max-width: 400px; font-size: 0.95rem; line-height: 1.6; }
-        .blog-content h2 { margin: 0 0 4px; font-size: 1.6rem; text-transform: none; } /* Removed uppercase */
+        .blog-content h2 { margin: 0 0 4px; font-size: 1.6rem; text-transform: none; }
         .blog-date { display: block; font-size: 0.65rem; font-weight: bold; opacity: 0.6; margin-bottom: 12px; }
 
         .gallery-container {
@@ -120,30 +120,21 @@
 
         .painting-wrapper.text-item { display: none; }
         .gallery-container.minimized .painting-wrapper.text-item { display: flex; height: 14vh; margin: 0 10px; padding: 2px; }
-
         .gallery-container.minimized .painting-wrapper { height: 14vh; margin: 0 10px; padding: 2px; }
         
         .painting { height: 100%; display: block; background: #fff; }
 
         .text-post-placeholder {
-            width: 100%;
-            height: 100%;
-            background: #fff;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: var(--painting-frame);
-            border: 1px solid #eee;
-            aspect-ratio: 1 / 1;
-            text-align: center;
-            padding: 5px;
-            box-sizing: border-box;
-            text-transform: uppercase;
+            width: 100%; height: 100%; background: #fff;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            color: var(--painting-frame); border: 1px solid #eee;
+            aspect-ratio: 1 / 1; text-align: center;
+            padding: 5px; box-sizing: border-box; text-transform: uppercase;
         }
 
         .placeholder-label { font-size: 0.55rem; font-weight: bold; margin-bottom: 2px; }
-        .placeholder-date { font-size: 0.35rem; opacity: 0.7; } /* Reduced size */
+        .placeholder-date { font-size: 0.35rem; opacity: 0.7; }
 
         @keyframes scroll { to { transform: translateX(-50%); } }
 
@@ -177,21 +168,7 @@
 
     <button class="close-blog-x" id="close-x" style="display:none" onclick="closeBlog()">&times;</button>
 
-    <main class="blog-container" id="blog-area">
-        <article class="blog-post" id="post-intro">
-            <div class="blog-content">
-                <h2 class="inv-grad-box">AI Speaking for you?</h2> <span class="blog-date">March 01, 2026</span>
-                <p>It's so frustrating how AI frequently oversteps its ask and creates things out of thin air. I was doing some editing work on this personal site and when adding a blog area Gemini decided to add an entire second post. This seemed far too uncanny and unsettling to say the least.. With oversteps like this AI seems borderline useless. The development of this personal site was my first real foray into an AI-driven project, and to be frank I've been proven right about my hesitations over blind AI adaptation. Clearly I'm not opposed to any and all use as this site itself is a product of AI, but I implore everyone to run over any data they've input into any AI models with a fine-toothed comb...</p>
-                <h2 class="inv-grad-box">Portfolio Site Conception</h2> <span class="blog-date">February 25, 2026</span>
-                <p>After having most of my creative work live in a transient state for most of my adult life, I wanted to begin to compile things together in order to weave together the story that is my creative life.</p>
-            </div>
-        </article>
-        <article class="blog-post" id="post-floral"><div class="blog-img-frame"><img src="art_flowers.jpg"></div><div class="blog-content"><h2>Floral</h2><span class="blog-date">FEB 25, 2026</span><p>Floral Study</p></div></article>
-        <article class="blog-post" id="post-garden"><div class="blog-img-frame"><img src="art_garden.jpg"></div><div class="blog-content"><h2>Garden</h2><span class="blog-date">FEB 25, 2026</span><p>Frederik Meijer Sculpture Gardens</p></div></article>
-        <article class="blog-post" id="post-riverside"><div class="blog-img-frame"><img src="art_riverside.jpg"></div><div class="blog-content"><h2>Riverside</h2><span class="blog-date">FEB 25, 2026</span><p>Riverside Park</p></div></article>
-        <article class="blog-post" id="post-reflection"><div class="blog-img-frame"><img src="art_sunset.jpg"></div><div class="blog-content"><h2>Sunset</h2><span class="blog-date">FEB 25, 2026</span><p>Sunset Study</p></div></article>
-        <article class="blog-post" id="post-sunset"><div class="blog-img-frame"><img src="art_bella.jpg"></div><div class="blog-content"><h2>Bella</h2><span class="blog-date">FEB 25, 2026</span><p>Frederik Meijer Sculpture Gardens</p></div></article>
-    </main>
+    <main class="blog-container" id="blog-area"></main>
 
     <div class="post-nav" id="blog-nav">
         <button class="nav-btn" onclick="navigatePost(-1)">Previous</button>
@@ -199,31 +176,7 @@
     </div>
 
     <div class="gallery-container" id="gallery-container">
-        <div class="scroll-wrapper">
-            <div class="painting-wrapper text-item" onclick="scrollToPost('post-intro')">
-                <div class="text-post-placeholder">
-                    <div class="placeholder-label">Blog Post</div>
-                    <div class="placeholder-date">Feb 25, 2026</div>
-                </div>
-            </div>
-            <div class="painting-wrapper" onclick="scrollToPost('post-floral')"><img src="art_flowers.jpg" class="painting"></div>
-            <div class="painting-wrapper" onclick="scrollToPost('post-garden')"><img src="art_garden.jpg" class="painting"></div>
-            <div class="painting-wrapper" onclick="scrollToPost('post-riverside')"><img src="art_riverside.jpg" class="painting"></div>
-            <div class="painting-wrapper" onclick="scrollToPost('post-reflection')"><img src="art_sunset.jpg" class="painting"></div>
-            <div class="painting-wrapper" onclick="scrollToPost('post-sunset')"><img src="art_bella.jpg" class="painting"></div>
-            
-            <div class="painting-wrapper text-item" onclick="scrollToPost('post-intro')">
-                <div class="text-post-placeholder">
-                    <div class="placeholder-label">Blog Post</div>
-                    <div class="placeholder-date">Feb 25, 2026</div>
-                </div>
-            </div>
-            <div class="painting-wrapper" onclick="scrollToPost('post-floral')"><img src="art_flowers.jpg" class="painting"></div>
-            <div class="painting-wrapper" onclick="scrollToPost('post-garden')"><img src="art_garden.jpg" class="painting"></div>
-            <div class="painting-wrapper" onclick="scrollToPost('post-riverside')"><img src="art_riverside.jpg" class="painting"></div>
-            <div class="painting-wrapper" onclick="scrollToPost('post-reflection')"><img src="art_sunset.jpg" class="painting"></div>
-            <div class="painting-wrapper" onclick="scrollToPost('post-sunset')"><img src="art_bella.jpg" class="painting"></div>
-        </div>
+        <div class="scroll-wrapper" id="gallery-scroll"></div>
     </div>
 
     <div id="modal">
@@ -232,15 +185,107 @@
     </div>
 
     <script>
+        /* ==========================================
+           EDIT CONTENT HERE 
+           ========================================== */
+
+        // 1. ADD NEW WORKS HERE
+        const paintings = [
+            { id: 'post-floral',    img: 'art_flowers.jpg', title: 'Floral',    date: 'FEB 25, 2026', desc: 'Floral Study' },
+            { id: 'post-garden',    img: 'art_garden.jpg',  title: 'Garden',    date: 'FEB 25, 2026', desc: 'Frederik Meijer Sculpture Gardens' },
+            { id: 'post-riverside', img: 'art_riverside.jpg', title: 'Riverside', date: 'FEB 25, 2026', desc: 'Riverside Park' },
+            { id: 'post-reflection',img: 'art_sunset.jpg',  title: 'Sunset',    date: 'FEB 25, 2026', desc: 'Sunset Study' },
+            { id: 'post-sunset',    img: 'art_bella.jpg',   title: 'Bella',     date: 'FEB 25, 2026', desc: 'Frederik Meijer Sculpture Gardens' }
+        ];
+
+        // 2. ADD NEW TEXT POSTS HERE
+        const textPosts = [
+            { 
+                id: 'post-intro', 
+                title: 'Angry with AI', 
+                date: 'March 01, 2026', 
+                content: 'It's so frustrating how AI frequently oversteps its ask and creates things out of thin air. I was doing some editing work on this personal site and when adding a blog area Gemini decided to add an entire second post. This seemed far too uncanny and unsettling to say the least.. With oversteps like this AI seems borderline useless. The development of this personal site was my first real foray into an AI-driven project, and to be frank I've been proven right about my hesitations over blind AI adaptation. Clearly I'm not opposed to any and all use as this site itself is a product of AI, but I implore everyone to run over any data they've input into any AI models with a fine-toothed comb...
+
+'
+                id: 'post-intro', 
+                title: 'Portfolio Site Conception', 
+                date: 'FEBRUARY 25, 2026', 
+                content: 'After having most of my creative work live in a transient state for most of my adult life, I wanted to begin to compile things together in order to weave together the story that is my creative life.'
+            }
+        ];
+
+        /* ==========================================
+           SYSTEM LOGIC (DON'T TOUCH UNLESS NEEDED)
+           ========================================== */
+
+        const blogArea = document.getElementById('blog-area');
+        const galleryScroll = document.getElementById('gallery-scroll');
+        const postIds = [];
+
+        // Build the Site
+        function initSite() {
+            // Build Text Posts
+            textPosts.forEach(post => {
+                postIds.push(post.id);
+                blogArea.innerHTML += `
+                    <article class="blog-post" id="${post.id}">
+                        <div class="blog-content">
+                            <h2 class="inv-grad-box">${post.title}</h2>
+                            <span class="blog-date">${post.date}</span>
+                            <p>${post.content}</p>
+                        </div>
+                    </article>`;
+            });
+
+            // Build Painting Posts
+            paintings.forEach(art => {
+                postIds.push(art.id);
+                blogArea.innerHTML += `
+                    <article class="blog-post" id="${art.id}">
+                        <div class="blog-img-frame"><img src="${art.img}"></div>
+                        <div class="blog-content">
+                            <h2>${art.title}</h2>
+                            <span class="blog-date">${art.date}</span>
+                            <p>${art.desc}</p>
+                        </div>
+                    </article>`;
+            });
+
+            // Build Gallery (Original + Clone for infinite scroll)
+            const galleryContent = generateGalleryHTML();
+            galleryScroll.innerHTML = galleryContent + galleryContent;
+        }
+
+        function generateGalleryHTML() {
+            let html = '';
+            // Add Text Placeholders
+            textPosts.forEach(post => {
+                html += `
+                <div class="painting-wrapper text-item" onclick="scrollToPost('${post.id}')">
+                    <div class="text-post-placeholder">
+                        <div class="placeholder-label">Blog Post</div>
+                        <div class="placeholder-date">${post.date}</div>
+                    </div>
+                </div>`;
+            });
+            // Add Painting Images
+            paintings.forEach(art => {
+                html += `
+                <div class="painting-wrapper" onclick="scrollToPost('${art.id}')">
+                    <img src="${art.img}" class="painting">
+                </div>`;
+            });
+            return html;
+        }
+
+        // Global functions
+        let currentIdx = 0;
         const themes = {
             misty: { colors: ['#6cccb6', '#57648a', '#ab5c95'], bg: '#fff', text: '#1a1a1a' }, 
             electric: { colors: ['#d9b3f2', '#b3d9d9', '#efb9da'], bg: '#fff', text: '#1a1a1a' },
             monochromeDark: { colors: ['#ccc', '#eee', '#fff'], bg: '#000', text: '#f0f0f0' },
             monochromeStatic: { colors: ['#000', '#000', '#000'], bg: '#fff', text: '#1a1a1a' }
         };
-
-        let currentIdx = 0;
-        const postIds = ['post-intro', 'post-floral', 'post-garden', 'post-riverside', 'post-reflection', 'post-sunset'];
 
         function setTheme(key, el) {
             const t = themes[key];
@@ -251,32 +296,22 @@
             root.setProperty('--bg-main', t.bg);
             root.setProperty('--text-base', t.text);
             root.setProperty('--painting-frame', key.includes('mono') ? '#d3d3d3' : t.colors[0]);
-
             document.querySelectorAll('.inv-grad-box').forEach(b => b.classList.toggle('no-grad', key === 'monochromeStatic'));
             document.querySelectorAll('.theme-option').forEach(o => o.classList.remove('active'));
             el.classList.add('active');
         }
 
         function scrollToPost(id) {
-            const blog = document.getElementById('blog-area');
-            const nav = document.getElementById('blog-nav');
-            const closeX = document.getElementById('close-x');
-            currentIdx = postIds.indexOf(id);
-
-            blog.style.display = 'block';
-            nav.style.display = 'flex';
-            closeX.style.display = 'block';
+            blogArea.style.display = 'block';
+            document.getElementById('blog-nav').style.display = 'flex';
+            document.getElementById('close-x').style.display = 'block';
             document.getElementById('gallery-container').classList.add('minimized');
-
+            currentIdx = postIds.indexOf(id);
             setTimeout(() => {
-                blog.classList.add('active');
-                const target = document.getElementById(id);
-                target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                blogArea.classList.add('active');
+                document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'center' });
             }, 50);
         }
-
-        function openBlogOnly() { scrollToPost('post-intro'); }
-        function goHome() { closeBlog(); document.getElementById('modal').style.display = 'none'; }
 
         function navigatePost(dir) {
             currentIdx = (currentIdx + dir + postIds.length) % postIds.length;
@@ -284,15 +319,16 @@
         }
 
         function closeBlog() {
-            const blog = document.getElementById('blog-area');
-            const closeX = document.getElementById('close-x');
-            blog.classList.remove('active');
-            closeX.style.display = 'none';
+            blogArea.classList.remove('active');
+            document.getElementById('close-x').style.display = 'none';
             document.getElementById('gallery-container').classList.remove('minimized');
             document.getElementById('blog-nav').style.display = 'none';
-            setTimeout(() => { if(!blog.classList.contains('active')) blog.style.display = 'none'; }, 500);
+            setTimeout(() => { if(!blogArea.classList.contains('active')) blogArea.style.display = 'none'; }, 500);
         }
 
+        function goHome() { closeBlog(); document.getElementById('modal').style.display = 'none'; }
+        function openBlogOnly() { scrollToPost(postIds[0]); }
+        
         function openModal(type) {
             const body = document.getElementById('modal-body');
             body.innerHTML = type === 'about' 
@@ -303,11 +339,13 @@
 
         window.addEventListener('keydown', e => {
             if (e.key === 'Escape') goHome();
-            if (document.getElementById('blog-area').classList.contains('active')) {
+            if (blogArea.classList.contains('active')) {
                 if (e.key === 'ArrowRight' || e.key === 'ArrowDown') navigatePost(1);
                 if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') navigatePost(-1);
             }
         });
+
+        initSite(); // Run on load
     </script>
 </body>
 </html>
