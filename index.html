@@ -5,163 +5,65 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ben Chmieleski | Artist & Designer</title>
     <style>
-        :root {
-            --bg-main: #ffffff;
-            --text-base: #1a1a1a;
-            --theme-c1: #6cccb6; 
-            --theme-c2: #57648a; 
-            --theme-c3: #ab5c95; 
-            --painting-frame: #6cccb6; 
-        }
-
-        body, html {
-            margin: 0; padding: 0;
-            overflow: hidden;
-            background: var(--bg-main);
-            color: var(--text-base);
-            font-family: sans-serif;
-            height: 100vh;
-            transition: background 0.4s, color 0.4s;
-            -webkit-font-smoothing: antialiased;
-        }
-
+        :root { --bg: #fff; --txt: #1a1a1a; --c1: #6cccb6; --c2: #57648a; --c3: #ab5c95; --frame: #6cccb6; }
+        body, html { margin: 0; padding: 0; overflow: hidden; background: var(--bg); color: var(--txt); font-family: sans-serif; height: 100vh; transition: 0.4s; -webkit-font-smoothing: antialiased; }
+        
+        /* Layout */
         header { position: fixed; top: 40px; left: 40px; z-index: 5000; }
+        .site-name-wrapper { display: inline-flex; flex-direction: column; cursor: pointer; padding-bottom: 30px; width: fit-content; }
+        .site-name { font-size: 2rem; font-weight: bold; line-height: 1.1; width: 100%; }
+        .site-subheading { font-size: 1.025rem; line-height: 1.2; margin: 4px 0 15px; display: flex; justify-content: space-between; width: 100%; }
         
-        .site-name-wrapper { 
-            display: inline-flex; 
-            flex-direction: column; 
-            cursor: pointer; 
-            padding-bottom: 30px;
-            width: fit-content; 
-        }
+        /* Gradient Text */
+        .inv-grad-box { background: linear-gradient(to right, var(--c1), var(--c2), var(--c3), var(--c1)); background-size: 400% auto; animation: grad 18s linear infinite; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; display: inline-block; }
+        .no-grad { -webkit-text-fill-color: var(--txt) !important; background: none !important; animation: none !important; }
+        @keyframes grad { to { background-position: 400% center; } }
 
-        .site-name { 
-            font-size: 2.0rem; 
-            font-weight: bold; 
-            line-height: 1.1; 
-            white-space: nowrap;
-            width: 100%;
-        }
-
-        .site-subheading { 
-            font-size: 1.025rem; 
-            line-height: 1.2; 
-            margin: 4px 0 15px; 
-            white-space: nowrap; 
-            display: flex;
-            justify-content: space-between; 
-            width: 100%;
-            text-transform: none; 
-            font-weight: normal; 
-        }
-
-        .inv-grad-box {
-            background: linear-gradient(to right, var(--theme-c1), var(--theme-c2), var(--theme-c3), var(--theme-c1));
-            background-size: 400% auto;
-            animation: gradient-flow 18s linear infinite;
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            display: inline-block;
-        }
-
-        .no-grad { -webkit-text-fill-color: var(--text-base) !important; background: none !important; animation: none !important; }
-        @keyframes gradient-flow { to { background-position: 400% center; } }
-
-        .nav-menu { display: none; flex-direction: column; align-items: flex-start; gap: 8px; width: 100%; }
+        /* Nav & Themes */
+        .nav-menu { display: none; flex-direction: column; gap: 8px; width: 100%; }
         .site-name-wrapper:hover .nav-menu { display: flex; }
-        .nav-link { font-size: 0.9rem; font-weight: bold; text-decoration: none; transition: 0.2s; width: fit-content; cursor: pointer; color: inherit;}
+        .nav-link { font-size: 0.9rem; font-weight: bold; cursor: pointer; transition: 0.2s; color: inherit; text-decoration: none; }
         .nav-link:hover { transform: translateX(3px); opacity: 0.8; }
+        .theme-grid { margin-top: 15px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+        .theme-opt { cursor: pointer; border: 1px solid #ccc; padding: 4px; display: flex; gap: 2px; transition: 0.2s; }
+        .theme-opt.active { border: 2px solid var(--txt); padding: 3px; }
+        .swatch { width: 12px; height: 12px; border: 1px solid rgba(0,0,0,0.05); }
 
-        .color-controls-dropdown { margin-top: 15px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-        .theme-option { cursor: pointer; border: 1px solid #ccc; padding: 4px; display: flex; gap: 2px; width: fit-content; transition: border 0.2s; }
-        .theme-option.active { border: 2px solid var(--text-base); padding: 3px; }
-        .swatch { width: 12px; height: 12px; border-radius: 1px; border: 1px solid rgba(0,0,0,0.05); }
-
-        .blog-container {
-            position: absolute; top: 120px; height: 70vh; left: 50%;
-            transform: translateX(-50%); width: 90vw;
-            overflow-y: scroll; overflow-x: hidden; z-index: 5; 
-            display: none; opacity: 0; transition: opacity 0.5s; 
-            scroll-behavior: smooth; scroll-snap-type: y mandatory;
-        }
+        /* Blog Area */
+        .blog-container { position: absolute; top: 120px; height: 70vh; left: 50%; transform: translateX(-50%); width: 90vw; overflow-y: scroll; z-index: 5; display: none; opacity: 0; transition: 0.5s; scroll-snap-type: y mandatory; }
         .blog-container.active { display: block; opacity: 1; }
-        .close-blog-x { position: fixed; top: 20px; right: 40px; background: none; border: none; font-size: 3rem; cursor: pointer; color: var(--text-base); z-index: 1001; font-family: serif; }
-
-        .post-nav { position: fixed; bottom: 18vh; left: 50%; transform: translateX(-50%); display: none; justify-content: center; gap: 15px; width: fit-content; z-index: 10; }
-        .nav-btn { background: var(--bg-main); border: 1.5px solid var(--text-base); color: var(--text-base); padding: 8px 20px; font-size: 0.85rem; font-weight: bold; cursor: pointer; text-transform: uppercase; }
-
-        .blog-post { display: flex; flex-direction: column; min-height: 75vh; gap: 30px; align-items: center; justify-content: flex-start; scroll-snap-align: center; box-sizing: border-box; padding: 40px 0; }
-        .blog-img-frame { flex-shrink: 0; padding: 5px; background: var(--painting-frame); display: flex; align-items: center; justify-content: center; box-sizing: border-box; max-width: 90%; }
-        .blog-img-frame img { max-height: 45vh; max-width: 100%; object-fit: contain; display: block; background: #fff; }
-
-        .blog-content { max-width: 800px; font-size: 1.15rem; line-height: 1.6; text-align: center; }
-        .blog-content h2 { margin: 0 0 10px; font-size: 1.85rem; text-transform: none; }
+        .blog-post { display: flex; flex-direction: column; min-height: 75vh; gap: 30px; align-items: center; scroll-snap-align: center; padding: 40px 0; box-sizing: border-box; }
+        .blog-content { max-width: 800px; text-align: center; font-size: 1.15rem; line-height: 1.6; }
+        .blog-content h2 { margin: 0 0 10px; font-size: 1.85rem; }
         .blog-date { display: block; font-size: 0.75rem; font-weight: bold; opacity: 0.6; margin-bottom: 15px; }
+        .img-frame { padding: 5px; background: var(--frame); max-width: 90%; }
+        .img-frame img { max-height: 45vh; max-width: 100%; display: block; background: #fff; }
 
-        .gallery-container { position: absolute; bottom: 0; width: 100vw; height: 90vh; display: flex; align-items: center; overflow-x: auto; overflow-y: hidden; transition: height 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
-        .gallery-container.minimized { height: 20vh; }
+        /* Gallery */
+        .gallery-container { position: absolute; bottom: 0; width: 100vw; height: 90vh; display: flex; align-items: center; overflow-x: auto; transition: 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+        .gallery-container.min { height: 20vh; }
         .scroll-wrapper { display: flex; width: max-content; animation: scroll 65s linear infinite; padding: 0 20px; }
-        .scroll-wrapper:hover { animation-play-state: paused; } 
-
-        .item-wrapper { 
-            position: relative; height: 65vh; margin: 0 40px; padding: 4px; 
-            background: var(--painting-frame); transition: 0.6s; cursor: pointer; 
-            display: flex; align-items: center; justify-content: center; overflow: hidden;
-        }
-        .item-wrapper.blog-item { display: none; } 
-        .gallery-container.blog-mode .item-wrapper.blog-item { display: flex; } 
-        .gallery-container.minimized .item-wrapper { height: 14vh; margin: 0 12px; padding: 2px; }
-
-        .text-item-preview { 
-            width: 100%; 
-            height: 100%; 
-            background: #fff; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: center; 
-            color: var(--text-base); 
-            border: 1px solid rgba(0,0,0,0.05); 
-            aspect-ratio: 1.25 / 1; 
-            text-align: center; 
-            padding: 15%; 
-            box-sizing: border-box; 
-        }
-        
-        .preview-title { 
-            font-size: 0.88rem; 
-            font-weight: bold; 
-            text-transform: uppercase; 
-            margin-bottom: 8%; 
-            line-height: 1.2; 
-            width: 100%; 
-            overflow: hidden; 
-            display: -webkit-box; 
-            -webkit-line-clamp: 3; 
-            -webkit-box-orient: vertical; 
-            max-height: 3.8em; 
-        }
-        .preview-date { 
-            font-size: 0.62rem; 
-            opacity: 0.6; 
-            font-weight: bold; 
-        }
-        
-        .hover-overlay {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255,255,255,0.92); display: flex; align-items: center; justify-content: center;
-            opacity: 0; transition: opacity 0.3s ease; pointer-events: none; padding: 15px; box-sizing: border-box;
-        }
-        .item-wrapper:hover .hover-overlay { opacity: 1; }
-        .hover-text { font-size: 1rem; font-weight: bold; text-transform: uppercase; text-align: center; line-height: 1.2; }
-
-        .painting { height: 100%; display: block; background: #fff; }
+        .scroll-wrapper:hover { animation-play-state: paused; }
         @keyframes scroll { to { transform: translateX(-50%); } }
 
-        #modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--bg-main); padding: 50px; border: 2px solid var(--theme-c1); z-index: 6000; text-align: center; color: var(--text-base); opacity: 0; transition: opacity 0.3s ease; min-width: 300px; }
-        #modal.visible { display: block; opacity: 1; }
-        .close-btn { margin-top: 25px; font-size: 0.8rem; font-weight: bold; cursor: pointer; background: none; border: 1.5px solid var(--theme-c3); color: var(--theme-c3); padding: 8px 16px; text-transform: uppercase; }
+        .item-wrapper { position: relative; height: 65vh; margin: 0 40px; padding: 4px; background: var(--frame); cursor: pointer; display: flex; align-items: center; transition: 0.6s; }
+        .gallery-container.min .item-wrapper { height: 14vh; margin: 0 12px; padding: 2px; }
+        .item-wrapper.is-blog { display: none; }
+        .blog-mode .item-wrapper.is-blog { display: flex; }
+
+        .preview-card { width: 100%; height: 100%; background: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 12% 10%; box-sizing: border-box; aspect-ratio: 1.25/1; }
+        .pre-title { font-size: 0.88rem; font-weight: bold; text-transform: uppercase; margin-bottom: 5%; line-height: 1.1; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; max-height: 2.2em; }
+        .pre-date { font-size: 0.62rem; opacity: 0.6; font-weight: bold; margin-top: auto; }
+        
+        .overlay { position: absolute; inset: 0; background: rgba(255,255,255,0.92); display: flex; align-items: center; justify-content: center; opacity: 0; transition: 0.3s; padding: 15px; text-align: center; }
+        .item-wrapper:hover .overlay { opacity: 1; }
+
+        /* UI Elements */
+        .close-x { position: fixed; top: 20px; right: 40px; background: none; border: none; font-size: 3rem; cursor: pointer; color: var(--txt); z-index: 1001; }
+        .post-nav { position: fixed; bottom: 18vh; left: 50%; transform: translateX(-50%); display: none; gap: 15px; z-index: 10; }
+        .btn { background: var(--bg); border: 1.5px solid var(--txt); color: var(--txt); padding: 8px 20px; font-weight: bold; cursor: pointer; text-transform: uppercase; font-size: 0.85rem; }
+        #modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--bg); padding: 50px; border: 2px solid var(--c1); z-index: 6000; text-align: center; transition: 0.3s; }
+        #modal.visible { display: block; }
     </style>
 </head>
 <body>
@@ -169,166 +71,119 @@
     <header>
         <div class="site-name-wrapper" onclick="goHome()">
             <div class="site-name inv-grad-box">Ben Chmieleski</div>
-            <div class="site-subheading inv-grad-box">
-                <span>Artist</span>
-                <span>|</span>
-                <span>Designer</span>
-                <span>|</span>
-                <span>Creator</span>
-            </div>
+            <div class="site-subheading inv-grad-box"><span>Artist</span><span>|</span><span>Designer</span><span>|</span><span>Creator</span></div>
             <nav class="nav-menu">
-                <a class="nav-link inv-grad-box" onclick="event.stopPropagation(); openModal('about')">About</a>
-                <a class="nav-link inv-grad-box" onclick="event.stopPropagation(); openModal('contact')">Contact</a>
-                <a class="nav-link inv-grad-box" onclick="event.stopPropagation(); openBlogOnly()">Blog</a>
-                <div class="color-controls-dropdown" id="theme-selector"></div>
+                <a class="nav-link inv-grad-box" onclick="ui.modal('about')">About</a>
+                <a class="nav-link inv-grad-box" onclick="ui.modal('contact')">Contact</a>
+                <a class="nav-link inv-grad-box" onclick="ui.blogOnly()">Blog</a>
+                <div class="theme-grid" id="theme-selector"></div>
             </nav>
         </div>
     </header>
 
-    <button class="close-blog-x" id="close-x" style="display:none" onclick="closeBlog()">&times;</button>
+    <button class="close-x" id="close-x" style="display:none" onclick="ui.closeBlog()">&times;</button>
+    
     <main class="blog-container" id="blog-area"></main>
+
     <div class="post-nav" id="blog-nav">
-        <button class="nav-btn" onclick="navigatePost(-1)">Previous</button>
-        <button class="nav-btn" onclick="navigatePost(1)">Next</button>
+        <button class="btn" onclick="ui.nav(-1)">Previous</button>
+        <button class="btn" onclick="ui.nav(1)">Next</button>
     </div>
+
     <div class="gallery-container" id="gallery-container">
         <div class="scroll-wrapper" id="gallery-scroll"></div>
     </div>
+
     <div id="modal">
         <div id="modal-body"></div>
-        <button class="close-btn" onclick="closeModal()">Close</button>
+        <button class="btn" style="margin-top:25px" onclick="ui.closeModal()">Close</button>
     </div>
 
     <script>
-        const textPosts = [
-            { id: 'post-second', title: 'Site Design Complete', date: 'Mar. 01, 2026', content: 'Part test post, past confirmation of the completion (for now) of the html/code portion of this site. Next up I am planning on uploading some pieces from times passed/past. ' },
-            { id: 'post-intro', title: 'Portfolio Site Conception', date: 'Feb. 25, 2026', content: 'After having most of my creative work live in a transient state for most of my adult life, I wanted to begin to compile things together in order to weave together the story that is my creative life.' }
+        /** EDIT YOUR POSTS HERE **/
+        const POSTS = [
+            { id: 'p1', title: 'Site Design Complete', date: 'Mar. 01, 2026', body: 'Part test post, past confirmation of the completion of the code portion of this site.' },
+            { id: 'p2', title: 'Portfolio Site Conception', date: 'Feb. 25, 2026', body: 'After having most of my creative work live in a transient state, I wanted to compile things together.' },
+            { id: 'p3', title: 'Floral', date: 'FEB 25, 2026', body: 'Floral Study', img: 'art_flowers.jpg' },
+            { id: 'p4', title: 'Garden', date: 'FEB 25, 2026', body: 'Frederik Meijer Sculpture Gardens', img: 'art_garden.jpg' },
+            { id: 'p5', title: 'Riverside', date: 'FEB 25, 2026', body: 'Riverside Park', img: 'art_riverside.jpg' },
+            { id: 'p6', title: 'Sunset', date: 'FEB 25, 2026', body: 'Sunset Study', img: 'art_sunset.jpg' },
+            { id: 'p7', title: 'Bella', date: 'FEB 25, 2026', body: 'Frederik Meijer Sculpture Gardens', img: 'art_bella.jpg' }
         ];
 
-        const paintings = [
-            { id: 'post-floral', img: 'art_flowers.jpg', title: 'Floral', date: 'FEB 25, 2026', desc: 'Floral Study' },
-            { id: 'post-garden', img: 'art_garden.jpg', title: 'Garden', date: 'FEB 25, 2026', desc: 'Frederik Meijer Sculpture Gardens' },
-            { id: 'post-riverside', img: 'art_riverside.jpg', title: 'Riverside', date: 'FEB 25, 2026', desc: 'Riverside Park' },
-            { id: 'post-reflection', img: 'art_sunset.jpg', title: 'Sunset', date: 'FEB 25, 2026', desc: 'Sunset Study' },
-            { id: 'post-sunset', img: 'art_bella.jpg', title: 'Bella', date: 'FEB 25, 2026', desc: 'Frederik Meijer Sculpture Gardens' }
-        ];
-
-        const themes = {
-            misty: { colors: ['#6cccb6', '#57648a', '#ab5c95'], bg: '#ffffff', text: '#1a1a1a' }, 
-            electric: { colors: ['#d9b3f2', '#b3d9d9', '#efb9da'], bg: '#ffffff', text: '#1a1a1a' },
-            monochromeDark: { colors: ['#fff', '#fff', '#fff'], bg: '#000000', text: '#f0f0f0' },
-            monochromeStatic: { colors: ['#000', '#000', '#000'], bg: '#ffffff', text: '#1a1a1a' }
+        const THEMES = {
+            misty: { c: ['#6cccb6', '#57648a', '#ab5c95'], bg: '#ffffff', txt: '#1a1a1a' },
+            electric: { c: ['#d9b3f2', '#b3d9d9', '#efb9da'], bg: '#ffffff', txt: '#1a1a1a' },
+            dark: { c: ['#fff', '#fff', '#fff'], bg: '#000', txt: '#f0f0f0' },
+            static: { c: ['#000', '#000', '#000'], bg: '#fff', txt: '#1a1a1a' }
         };
 
         let currentIdx = 0;
-        const postIds = [];
 
-        function initSite() {
-            const blogArea = document.getElementById('blog-area');
-            const galleryScroll = document.getElementById('gallery-scroll');
-            const themeSelector = document.getElementById('theme-selector');
-            
-            Object.keys(themes).forEach(key => {
-                const t = themes[key];
-                themeSelector.innerHTML += `<div class="theme-option ${key === 'misty' ? 'active' : ''}" style="background: ${t.bg};" onclick="event.stopPropagation(); setTheme('${key}', this)"><div class="swatch" style="background:${t.colors[0]}"></div><div class="swatch" style="background:${t.colors[1]}"></div><div class="swatch" style="background:${t.colors[2]}"></div></div>`;
-            });
+        const ui = {
+            init() {
+                const blog = document.getElementById('blog-area');
+                const scroll = document.getElementById('gallery-scroll');
+                const themes = document.getElementById('theme-selector');
 
-            let galleryHTML = '';
-            [...textPosts, ...paintings].forEach(item => {
-                postIds.push(item.id);
-                blogArea.innerHTML += `<article class="blog-post" id="${item.id}"><div class="blog-content"><h2 class="inv-grad-box">${item.title}</h2><span class="blog-date">${item.date}</span><p>${item.content || item.desc}</p></div>${item.img ? `<div class="blog-img-frame"><img src="${item.img}"></div>` : ''}</article>`;
-                
-                const isBlog = !item.img;
-                galleryHTML += `<div class="item-wrapper ${isBlog ? 'blog-item' : ''}" onclick="scrollToPost('${item.id}')">
-                    ${item.img 
-                        ? `<img src="${item.img}" class="painting"><div class="hover-overlay"><div class="hover-text inv-grad-box">${item.title}</div></div>` 
-                        : `<div class="text-item-preview"><div class="preview-title inv-grad-box">${item.title}</div><div class="preview-date">${item.date}</div></div>`
-                    }
-                </div>`;
-            });
+                // Build Themes
+                Object.entries(THEMES).forEach(([k, v]) => {
+                    themes.innerHTML += `<div class="theme-opt ${k==='misty'?'active':''}" onclick="event.stopPropagation();ui.setTheme('${k}', this)">${v.c.map(c=>`<div class="swatch" style="background:${c}"></div>`).join('')}</div>`;
+                });
 
-            galleryScroll.innerHTML = galleryHTML + galleryHTML; 
-        }
+                // Build Content
+                let gHTML = '';
+                POSTS.forEach(p => {
+                    blog.innerHTML += `<article class="blog-post" id="${p.id}"><div class="blog-content"><h2 class="inv-grad-box">${p.title}</h2><span class="blog-date">${p.date}</span><p>${p.body}</p></div>${p.img?`<div class="img-frame"><img src="${p.img}"></div>`:''}</article>`;
+                    gHTML += `<div class="item-wrapper ${!p.img?'is-blog':''}" onclick="ui.view('${p.id}')">
+                        ${p.img ? `<img src="${p.img}" style="height:100%"><div class="overlay"><div class="inv-grad-box" style="font-weight:bold">${p.title}</div></div>` : 
+                        `<div class="preview-card"><div class="pre-title inv-grad-box">${p.title}</div><div class="pre-date">${p.date}</div></div>`}
+                    </div>`;
+                });
+                scroll.innerHTML = gHTML + gHTML;
+            },
+            setTheme(k, el) {
+                const t = THEMES[k];
+                const r = document.documentElement.style;
+                r.setProperty('--c1', t.c[0]); r.setProperty('--c2', t.c[1]); r.setProperty('--c3', t.c[2]);
+                r.setProperty('--bg', t.bg); r.setProperty('--txt', t.txt);
+                r.setProperty('--frame', k.includes('dark') ? '#fff' : t.c[0]);
+                document.querySelectorAll('.inv-grad-box').forEach(b => b.classList.toggle('no-grad', k === 'static'));
+                document.querySelectorAll('.theme-opt').forEach(o => o.classList.remove('active'));
+                el.classList.add('active');
+            },
+            view(id) {
+                this.closeModal();
+                const b = document.getElementById('blog-area'), g = document.getElementById('gallery-container');
+                b.style.display = 'block'; g.classList.add('min', 'blog-mode');
+                document.getElementById('blog-nav').style.display = 'flex';
+                document.getElementById('close-x').style.display = 'block';
+                currentIdx = POSTS.findIndex(p => p.id === id);
+                setTimeout(() => { b.classList.add('active'); document.getElementById(id).scrollIntoView({behavior:'smooth', block:'center'}); }, 50);
+            },
+            nav(dir) {
+                currentIdx = (currentIdx + dir + POSTS.length) % POSTS.length;
+                document.getElementById(POSTS[currentIdx].id).scrollIntoView({behavior:'smooth', block:'center'});
+            },
+            closeBlog() {
+                const b = document.getElementById('blog-area'), g = document.getElementById('gallery-container');
+                b.classList.remove('active'); g.classList.remove('min', 'blog-mode');
+                document.getElementById('close-x', 'blog-nav').style.display = 'none';
+                document.getElementById('blog-nav').style.display = 'none';
+            },
+            modal(type) {
+                this.closeBlog();
+                const m = document.getElementById('modal');
+                document.getElementById('modal-body').innerHTML = type === 'about' ? `<h3>Ben Chmieleski</h3><p>Artist & Designer in West Michigan.</p>` : `<h3>Contact</h3><p>benchmieleski@gmail.com</p>`;
+                m.style.display = 'block'; setTimeout(() => m.classList.add('visible'), 10);
+            },
+            closeModal() { document.getElementById('modal').classList.remove('visible'); setTimeout(()=>document.getElementById('modal').style.display='none', 300); },
+            blogOnly() { document.getElementById('gallery-container').classList.add('blog-mode'); this.view(POSTS[0].id); }
+        };
 
-        function setTheme(key, el) {
-            const t = themes[key];
-            const root = document.documentElement.style;
-            root.setProperty('--theme-c1', t.colors[0]);
-            root.setProperty('--theme-c2', t.colors[1]);
-            root.setProperty('--theme-c3', t.colors[2]);
-            root.setProperty('--bg-main', t.bg);
-            root.setProperty('--text-base', t.text);
-            root.setProperty('--painting-frame', key.includes('monochrome') ? '#ffffff' : t.colors[0]);
-            document.querySelectorAll('.inv-grad-box').forEach(b => b.classList.toggle('no-grad', key === 'monochromeStatic'));
-            document.querySelectorAll('.theme-option').forEach(o => o.classList.remove('active'));
-            el.classList.add('active');
-        }
-
-        function scrollToPost(id) {
-            closeModal();
-            const blog = document.getElementById('blog-area');
-            const gallery = document.getElementById('gallery-container');
-            blog.style.display = 'block';
-            document.getElementById('blog-nav').style.display = 'flex';
-            document.getElementById('close-x').style.display = 'block';
-            gallery.classList.add('minimized');
-            gallery.classList.add('blog-mode');
-
-            currentIdx = postIds.indexOf(id);
-            setTimeout(() => {
-                blog.classList.add('active');
-                document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }, 50);
-        }
-
-        function navigatePost(dir) {
-            currentIdx = (currentIdx + dir + postIds.length) % postIds.length;
-            document.getElementById(postIds[currentIdx])?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-
-        function closeBlog() {
-            const blog = document.getElementById('blog-area');
-            const gallery = document.getElementById('gallery-container');
-            blog.classList.remove('active');
-            gallery.classList.remove('blog-mode');
-            document.getElementById('close-x').style.display = 'none';
-            gallery.classList.remove('minimized');
-            document.getElementById('blog-nav').style.display = 'none';
-            setTimeout(() => { if(!blog.classList.contains('active')) blog.style.display = 'none'; }, 500);
-        }
-
-        function openModal(type) {
-            closeBlog();
-            closeModal(); 
-            const modal = document.getElementById('modal');
-            document.getElementById('modal-body').innerHTML = type === 'about' 
-                ? `<h3 class="inv-grad-box" style="font-size:1.8rem;">Benjamin Chmieleski</h3><p>Artist & Designer in West Michigan.<br>Landscape and botanical focus.</p>`
-                : `<h3 class="inv-grad-box" style="font-size:1.8rem;">Contact</h3><p>benchmieleski@gmail.com</p>`;
-            modal.style.display = 'block';
-            setTimeout(() => modal.classList.add('visible'), 10);
-        }
-
-        function closeModal() {
-            const modal = document.getElementById('modal');
-            modal.classList.remove('visible');
-            setTimeout(() => { if(!modal.classList.contains('visible')) modal.style.display = 'none'; }, 300);
-        }
-
-        function goHome() { closeModal(); closeBlog(); }
-        function openBlogOnly() { 
-            document.getElementById('gallery-container').classList.add('blog-mode');
-            scrollToPost(postIds[0]); 
-        }
-
-        window.addEventListener('keydown', e => {
-            if (e.key === 'Escape') goHome();
-            if (document.getElementById('blog-area').classList.contains('active')) {
-                if (['ArrowRight', 'ArrowDown'].includes(e.key)) navigatePost(1);
-                if (['ArrowLeft', 'ArrowUp'].includes(e.key)) navigatePost(-1);
-            }
-        });
-
-        document.addEventListener('DOMContentLoaded', initSite);
+        function goHome() { ui.closeModal(); ui.closeBlog(); }
+        window.onkeydown = e => { if(e.key==='Escape') goHome(); if(['ArrowRight','ArrowDown'].includes(e.key)) ui.nav(1); if(['ArrowLeft','ArrowUp'].includes(e.key)) ui.nav(-1); };
+        document.addEventListener('DOMContentLoaded', () => ui.init());
     </script>
 </body>
 </html>
