@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,7 +30,7 @@
         ::-webkit-scrollbar-thumb { background: var(--theme-c1); border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--theme-c3); }
         
-        .blog-container, .gallery-container { scrollbar-color: var(--theme-c1) var(--bg-main); scrollbar-width: thin; }
+        .-container, .gallery-container { scrollbar-color: var(--theme-c1) var(--bg-main); scrollbar-width: thin; }
 
         header { position: fixed; top: 40px; left: 40px; z-index: 1000; }
 
@@ -172,7 +171,6 @@
     </div>
 
     <script>
-        // --- ADD VISUAL WORK HERE ---
         const galleryItems = [
             { id: 'post-floral', img: 'art_flowers.jpg' },
             { id: 'post-garden', img: 'art_garden.jpg' },
@@ -181,10 +179,8 @@
             { id: 'post-sunset', img: 'art_bella.jpg' }
         ];
 
-        // --- ADD TEXT-ONLY BLOG POSTS HERE ---
         const blogPosts = [
-            { id: 'post-intro', title: 'Portfolio Site Conception', date: 'FEBRUARY 25, 2026', body: 'After having most of my creative work live in a transient state for most of my adult life, I wanted to begin to compile things together in order to weave together the story that is my creative life.' },
-            { id: 'post-philosophy', title: 'Creative Philosophy', date: 'MARCH 1, 2026', body: 'I believe in the power of art and design and their ability to inspire, challenge, and uplift. My work often explores the intersection of nature and modern structure.' }
+            { id: 'post-intro', title: 'Portfolio Site Conception', date: 'February 25, 2026', body: 'After having most of my creative work live in a transient state for most of my adult life, I wanted to begin to compile things together in order to weave together the story that is my creative life.' }
         ];
 
         const themes = {
@@ -202,14 +198,12 @@
             const gWrapper = document.getElementById('gallery-wrapper');
             const bArea = document.getElementById('blog-area');
 
-            // Render Gallery
             const gHtml = galleryItems.map(item => `
                 <div class="painting-wrapper" onclick="scrollToWork('${item.id}', '${item.img}')">
                     <img src="${item.img}" class="painting">
                 </div>`).join('');
             gWrapper.innerHTML = gHtml + gHtml;
 
-            // Render Blog Posts (Text Only)
             bArea.innerHTML = blogPosts.map(post => `
                 <article class="blog-post" id="${post.id}">
                     <div class="blog-content">
@@ -220,15 +214,9 @@
                 </article>`).join('');
         }
 
-        // Expanded view for gallery items (remains visual)
         function scrollToWork(id, imgPath) {
             const bArea = document.getElementById('blog-area');
-            // Create a temporary view for the work
-            bArea.innerHTML = `
-                <article class="blog-post active">
-                    <div class="blog-img-frame"><img src="${imgPath}"></div>
-                </article>`;
-            
+            bArea.innerHTML = `<article class="blog-post active"><div class="blog-img-frame"><img src="${imgPath}"></div></article>`;
             document.getElementById('blog-nav').style.display = 'none';
             document.getElementById('close-x').style.display = 'block';
             document.getElementById('gallery-container').classList.add('minimized');
@@ -237,15 +225,15 @@
         }
 
         function openBlogOnly() {
-            init(); // Reset to show the actual blog list
+            init(); 
             currentIdx = 0;
             document.getElementById('blog-area').style.display = 'block';
-            document.getElementById('blog-nav').style.display = 'flex';
+            document.getElementById('blog-nav').style.display = (postIds.length > 1) ? 'flex' : 'none';
             document.getElementById('close-x').style.display = 'block';
             document.getElementById('gallery-container').classList.add('minimized');
             setTimeout(() => {
                 document.getElementById('blog-area').classList.add('active');
-                document.getElementById(postIds[0]).scrollIntoView({ behavior: 'smooth', block: 'center' });
+                if(postIds[0]) document.getElementById(postIds[0]).scrollIntoView({ behavior: 'smooth', block: 'center' });
             }, 50);
         }
 
@@ -265,6 +253,7 @@
         }
 
         function navigatePost(dir) {
+            if (postIds.length <= 1) return;
             currentIdx = (currentIdx + dir + postIds.length) % postIds.length;
             document.getElementById(postIds[currentIdx]).scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
@@ -277,7 +266,7 @@
             setTimeout(() => { 
                 if(!document.getElementById('blog-area').classList.contains('active')) {
                     document.getElementById('blog-area').style.display = 'none';
-                    init(); // Refresh for next interaction
+                    init(); 
                 }
             }, 500);
         }
@@ -285,7 +274,7 @@
         function openModal(type) {
             const body = document.getElementById('modal-body');
             const gradClass = activeTheme === 'monochromeStatic' ? 'inv-grad-box no-grad' : 'inv-grad-box';
-            body.innerHTML = type === 'about' 
+            body.innerHTML = type === 'About' 
                 ? `<h3 class="${gradClass}">Ben Chmieleski</h3><p>Artist & Designer in West Michigan.<br>Biophilia + botanical inspirations.<br>I believe in the power of art and design and their ability to inspire, challenge, and uplift.</p>`
                 : `<h3 class="${gradClass}">Contact</h3><p>benchmieleski@gmail.com</p>`;
             document.getElementById('modal').style.display = 'block';
@@ -295,7 +284,7 @@
 
         window.addEventListener('keydown', e => {
             if (e.key === 'Escape') goHome();
-            if (document.getElementById('blog-area').classList.contains('active')) {
+            if (document.getElementById('-area').classList.contains('active')) {
                 if (e.key === 'ArrowRight' || e.key === 'ArrowDown') navigatePost(1);
                 if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') navigatePost(-1);
             }
