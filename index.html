@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -88,19 +87,17 @@
         .gallery-container.blog-mode .item-wrapper.blog-item { display: flex; } 
         .gallery-container.minimized .item-wrapper { height: 12vh; margin: 0 10px; padding: 2px; }
 
-        /* Microscopic Preview Typography (50% of previous size) */
-        .text-item-preview { width: 100%; height: 100%; background: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--painting-frame); border: 1px solid #eee; aspect-ratio: 1 / 1; text-align: center; padding: 10px; box-sizing: border-box; }
-        .preview-title { font-size: 0.17rem; font-weight: bold; text-transform: uppercase; margin-bottom: 1px; line-height: 1.2; opacity: 0.4; transition: 0.3s; }
-        .preview-date { font-size: 0.13rem; opacity: 0.3; }
+        /* Typography optimized for small containers across browsers */
+        .text-item-preview { width: 100%; height: 100%; background: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text-base); border: 1px solid rgba(0,0,0,0.05); aspect-ratio: 1 / 1; text-align: center; padding: 8px; box-sizing: border-box; }
+        .preview-title { font-size: 0.5rem; font-weight: bold; text-transform: uppercase; margin-bottom: 2px; line-height: 1.2; width: 100%; overflow: hidden; }
+        .preview-date { font-size: 0.35rem; opacity: 0.6; }
         
-        /* Hover Overlay for Titles */
         .hover-overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255,255,255,0.85); display: flex; align-items: center; justify-content: center;
+            background: rgba(255,255,255,0.92); display: flex; align-items: center; justify-content: center;
             opacity: 0; transition: opacity 0.3s ease; pointer-events: none; padding: 15px; box-sizing: border-box;
         }
         .item-wrapper:hover .hover-overlay { opacity: 1; }
-        .item-wrapper:hover .preview-title { opacity: 1; }
         .hover-text { font-size: 0.8rem; font-weight: bold; text-transform: uppercase; text-align: center; line-height: 1.2; }
 
         .painting { height: 100%; display: block; background: #fff; }
@@ -157,7 +154,7 @@
         const themes = {
             misty: { colors: ['#6cccb6', '#57648a', '#ab5c95'], bg: '#ffffff', text: '#1a1a1a'}, 
             electric: { colors: ['#d9b3f2', '#b3d9d9', '#efb9da'], bg: '#ffffff', text: '#1a1a1a'},
-            monochromeDark: { colors: ['#ccc', '#eee', '#fff'], bg: '#000000', text: '#f0f0f0'},
+            monochromeDark: { colors: ['#fff', '#fff', '#fff'], bg: '#000000', text: '#f0f0f0'},
             monochromeStatic: { colors: ['#000', '#000', '#000'], bg: '#ffffff', text: '#1a1a1a'}
         };
 
@@ -183,7 +180,7 @@
                 galleryHTML += `<div class="item-wrapper ${isBlog ? 'blog-item' : ''}" onclick="scrollToPost('${item.id}')">
                     ${item.img 
                         ? `<img src="${item.img}" class="painting"><div class="hover-overlay"><div class="hover-text inv-grad-box">${item.title}</div></div>` 
-                        : `<div class="text-item-preview"><div class="preview-title inv-grad-box">${item.title}</div><div class="preview-date">${item.date}</div></div>`
+                        : `<div class="text-item-preview"><div class="preview-title">${item.title}</div><div class="preview-date">${item.date}</div></div>`
                     }
                 </div>`;
             });
@@ -199,7 +196,10 @@
             root.setProperty('--theme-c3', t.colors[2]);
             root.setProperty('--bg-main', t.bg);
             root.setProperty('--text-base', t.text);
-            root.setProperty('--painting-frame', key.includes('mono') ? '#d3d3d3' : t.colors[0]);
+            
+            // Set pure white border for monochrome themes
+            root.setProperty('--painting-frame', key.includes('monochrome') ? '#ffffff' : t.colors[0]);
+            
             document.querySelectorAll('.inv-grad-box').forEach(b => b.classList.toggle('no-grad', key === 'monochromeStatic'));
             document.querySelectorAll('.theme-option').forEach(o => o.classList.remove('active'));
             el.classList.add('active');
