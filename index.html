@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -141,9 +140,9 @@
             <div class="site-name inv-grad-box">Ben Chmieleski</div>
             <div class="site-subheading inv-grad-box">Artist | Designer | Creator</div>
             <nav class="nav-menu">
-                <a class="nav-link inv-grad-box" onclick="event.stopPropagation(); openModal('about')">About</a>
-                <a class="nav-link inv-grad-box" onclick="event.stopPropagation(); openModal('contact')">Contact</a>
-                <a class="nav-link inv-grad-box" onclick="event.stopPropagation(); openBlogOnly()">Blog</a>
+                <a class="nav-link inv-grad-box" onclick="handleNavClick('about')">About</a>
+                <a class="nav-link inv-grad-box" onclick="handleNavClick('contact')">Contact</a>
+                <a class="nav-link inv-grad-box" onclick="handleNavClick('blog')">Blog</a>
                 <div class="color-controls-dropdown">
                     <div class="theme-option active" onclick="event.stopPropagation(); setTheme('misty', this)"><div class="swatch" style="background:#6cccb6"></div><div class="swatch" style="background:#57648a"></div><div class="swatch" style="background:#ab5c95"></div></div>
                     <div class="theme-option" onclick="event.stopPropagation(); setTheme('electric', this)"><div class="swatch" style="background:#d9b3f2"></div><div class="swatch" style="background:#b3d9d9"></div><div class="swatch" style="background:#efb9da"></div></div>
@@ -168,7 +167,7 @@
 
     <div id="modal">
         <div id="modal-body"></div>
-        <button class="close-btn" onclick="document.getElementById('modal').style.display='none'">Close</button>
+        <button class="close-btn" onclick="closeModal()">Close</button>
     </div>
 
     <script>
@@ -215,7 +214,21 @@
                 </article>`).join('');
         }
 
+        // New Helper: Ensures clean navigation by closing existing open views
+        function handleNavClick(type) {
+            event.stopPropagation();
+            closeModal();
+            closeBlog();
+            
+            if (type === 'blog') {
+                openBlogOnly();
+            } else {
+                openModal(type);
+            }
+        }
+
         function scrollToWork(id, imgPath, title) {
+            closeModal(); // Clean state
             const bArea = document.getElementById('blog-area');
             bArea.innerHTML = `
                 <article class="blog-post active">
@@ -266,13 +279,16 @@
         }
 
         function closeBlog() {
-            document.getElementById('blog-area').classList.remove('active');
+            const blog = document.getElementById('blog-area');
+            if (blog.style.display === 'none') return;
+            
+            blog.classList.remove('active');
             document.getElementById('close-x').style.display = 'none';
             document.getElementById('gallery-container').classList.remove('minimized');
             document.getElementById('blog-nav').style.display = 'none';
             setTimeout(() => { 
-                if(!document.getElementById('blog-area').classList.contains('active')) {
-                    document.getElementById('blog-area').style.display = 'none';
+                if(!blog.classList.contains('active')) {
+                    blog.style.display = 'none';
                     init(); 
                 }
             }, 500);
@@ -287,7 +303,8 @@
             document.getElementById('modal').style.display = 'block';
         }
 
-        function goHome() { closeBlog(); document.getElementById('modal').style.display = 'none'; }
+        function closeModal() { document.getElementById('modal').style.display = 'none'; }
+        function goHome() { closeBlog(); closeModal(); }
 
         window.addEventListener('keydown', e => {
             if (e.key === 'Escape') goHome();
