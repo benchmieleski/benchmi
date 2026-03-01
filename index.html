@@ -10,18 +10,19 @@
         
         /* Layout */
         header { position: fixed; top: 40px; left: 40px; z-index: 5000; }
-        .site-name-wrapper { display: inline-flex; flex-direction: column; cursor: pointer; padding-bottom: 30px; width: fit-content; }
-        .site-name { font-size: 2.2rem; font-weight: bold; line-height: 1.1; width: 100%; }
+        .site-name-wrapper { display: inline-flex; flex-direction: column; cursor: pointer; padding-bottom: 30px; width: fit-content; min-width: 250px; }
+        .site-name { font-size: 2.2rem; font-weight: bold; line-height: 1.1; width: 100%; text-align: justify; }
         
-        /* Subheading with reintroduced spacing */
+        /* Fixed Subheading Spacing */
         .site-subheading { 
-            font-size: 1rem; 
+            font-size: 0.9rem; 
             line-height: 1.2; 
-            margin: 8px 0 15px; 
+            margin: 10px 0 15px; 
             display: flex; 
-            justify-content: center; 
-            gap: 15px; 
-            width: 100%; 
+            justify-content: space-between; 
+            width: 100%;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
         }
         
         /* Gradient Text */
@@ -63,7 +64,7 @@
 
         /* Centered Preview Card Titles */
         .preview-card { width: 100%; height: 100%; background: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 12% 10%; box-sizing: border-box; aspect-ratio: 1.25/1; text-align: center; }
-        .pre-title { font-size: 0.88rem; font-weight: bold; text-transform: uppercase; margin-bottom: 5%; line-height: 1.1; width: 100%; }
+        .pre-title { font-size: 0.88rem; font-weight: bold; text-transform: uppercase; margin-bottom: 5%; line-height: 1.1; width: 100%; display: block; }
         .pre-date { font-size: 0.62rem; opacity: 0.6; font-weight: bold; margin-top: auto; }
         
         .overlay { position: absolute; inset: 0; background: rgba(255,255,255,0.92); display: flex; align-items: center; justify-content: center; opacity: 0; transition: 0.3s; padding: 15px; text-align: center; }
@@ -79,13 +80,14 @@
         /* Mobile Responsiveness */
         @media (max-width: 600px) {
             header { top: 20px; left: 20px; }
-            .site-name { font-size: 1.5rem; }
-            .site-subheading { font-size: 0.8rem; gap: 8px; margin: 4px 0 10px; }
-            .item-wrapper { height: 45vh; margin: 0 15px; }
+            .site-name-wrapper { min-width: 180px; }
+            .site-name { font-size: 1.6rem; }
+            .site-subheading { font-size: 0.7rem; margin: 6px 0 10px; }
+            .item-wrapper { height: 40vh; margin: 0 15px; }
             .gallery-container.min { height: 15vh; }
-            .blog-container { top: 100px; height: 65vh; }
+            .blog-container { top: 110px; height: 65vh; }
             .close-x { right: 20px; font-size: 2.5rem; }
-            .post-nav { bottom: 12vh; scale: 0.9; }
+            .post-nav { bottom: 12vh; transform: translateX(-50%) scale(0.85); }
         }
     </style>
 </head>
@@ -123,7 +125,6 @@
     </div>
 
     <script>
-        /** EDIT YOUR POSTS HERE **/
         const POSTS = [
             { id: 'p1', title: 'Site Design Complete', date: 'Mar. 01, 2026', body: 'Part test post, past confirmation of the completion of the code portion of this site.' },
             { id: 'p2', title: 'Portfolio Site Conception', date: 'Feb. 25, 2026', body: 'After having most of my creative work live in a transient state, I wanted to compile things together.' },
@@ -148,13 +149,9 @@
                 const blog = document.getElementById('blog-area');
                 const scroll = document.getElementById('gallery-scroll');
                 const themes = document.getElementById('theme-selector');
-
-                // Build Themes
                 Object.entries(THEMES).forEach(([k, v]) => {
                     themes.innerHTML += `<div class="theme-opt ${k==='misty'?'active':''}" onclick="event.stopPropagation();ui.setTheme('${k}', this)">${v.c.map(c=>`<div class="swatch" style="background:${c}"></div>`).join('')}</div>`;
                 });
-
-                // Build Content
                 let gHTML = '';
                 POSTS.forEach(p => {
                     blog.innerHTML += `<article class="blog-post" id="${p.id}"><div class="blog-content"><h2 class="inv-grad-box">${p.title}</h2><span class="blog-date">${p.date}</span><p>${p.body}</p></div>${p.img?`<div class="img-frame"><img src="${p.img}"></div>`:''}</article>`;
