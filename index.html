@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,20 +23,23 @@
             font-family: sans-serif;
             height: 100vh;
             transition: background 0.4s, color 0.4s;
+            /* Improved rendering for Chrome */
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         header { position: fixed; top: 40px; left: 40px; z-index: 5000; }
         
-        /* Updated Header Alignment */
+        /* Header Alignment: Subheading ends exactly where Name ends */
         .site-name-wrapper { 
             display: inline-flex; 
             flex-direction: column; 
-            align-items: flex-end; /* Aligns subheading to the end of the name */
+            align-items: flex-end; 
             cursor: pointer; 
             padding-bottom: 30px; 
         }
-        .site-name { font-size: 1.25rem; font-weight: bold; line-height: 1.1; white-space: nowrap; }
-        .site-subheading { font-size: 0.53rem; line-height: 1; margin: 2px 0 12px; white-space: nowrap; }
+        .site-name { font-size: 1.5rem; font-weight: bold; line-height: 1.1; white-space: nowrap; }
+        .site-subheading { font-size: 0.65rem; line-height: 1; margin: 4px 0 15px; white-space: nowrap; letter-spacing: 0.02em; }
 
         .inv-grad-box {
             background: linear-gradient(to right, var(--theme-c1), var(--theme-c2), var(--theme-c3), var(--theme-c1));
@@ -50,15 +54,15 @@
         .no-grad { -webkit-text-fill-color: var(--text-base) !important; background: none !important; animation: none !important; }
         @keyframes gradient-flow { to { background-position: 400% center; } }
 
-        .nav-menu { display: none; flex-direction: column; align-items: flex-end; gap: 6px; width: 100%; }
+        .nav-menu { display: none; flex-direction: column; align-items: flex-end; gap: 8px; width: 100%; }
         .site-name-wrapper:hover .nav-menu { display: flex; }
-        .nav-link { font-size: 0.6rem; font-weight: bold; text-decoration: none; transition: 0.2s; width: fit-content; cursor: pointer; color: inherit;}
+        .nav-link { font-size: 0.8rem; font-weight: bold; text-decoration: none; transition: 0.2s; width: fit-content; cursor: pointer; color: inherit;}
         .nav-link:hover { transform: translateX(-3px); opacity: 0.8; }
 
         .color-controls-dropdown { margin-top: 15px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
         .theme-option { cursor: pointer; border: 1px solid #ccc; padding: 4px; display: flex; gap: 2px; width: fit-content; transition: border 0.2s; }
         .theme-option.active { border: 2px solid var(--text-base); padding: 3px; }
-        .swatch { width: 10px; height: 10px; border-radius: 1px; border: 1px solid rgba(0,0,0,0.05); }
+        .swatch { width: 12px; height: 12px; border-radius: 1px; border: 1px solid rgba(0,0,0,0.05); }
 
         .blog-container {
             position: absolute; top: 80px; height: 75vh; left: 50%;
@@ -68,34 +72,34 @@
             scroll-behavior: smooth; scroll-snap-type: y mandatory;
         }
         .blog-container.active { display: block; opacity: 1; }
-        .close-blog-x { position: fixed; top: 20px; right: 40px; background: none; border: none; font-size: 2.5rem; cursor: pointer; color: var(--text-base); z-index: 1001; font-family: serif; }
+        .close-blog-x { position: fixed; top: 20px; right: 40px; background: none; border: none; font-size: 3rem; cursor: pointer; color: var(--text-base); z-index: 1001; font-family: serif; }
 
         .post-nav { position: fixed; bottom: 18vh; left: 50%; transform: translateX(-50%); display: none; justify-content: center; gap: 15px; width: fit-content; z-index: 10; }
-        .nav-btn { background: var(--bg-main); border: 1px solid var(--text-base); color: var(--text-base); padding: 6px 16px; font-size: 0.7rem; font-weight: bold; cursor: pointer; text-transform: uppercase; }
+        .nav-btn { background: var(--bg-main); border: 1.5px solid var(--text-base); color: var(--text-base); padding: 8px 20px; font-size: 0.85rem; font-weight: bold; cursor: pointer; text-transform: uppercase; }
 
-        .blog-post { display: flex; flex-direction: column; min-height: 75vh; gap: 24px; align-items: center; justify-content: flex-start; scroll-snap-align: center; box-sizing: border-box; padding: 40px 0; }
-        .blog-img-frame { flex-shrink: 0; padding: 8px; background: var(--painting-frame); display: flex; align-items: center; justify-content: center; box-sizing: border-box; max-width: 90%; }
-        .blog-img-frame img { max-height: 40vh; max-width: 100%; object-fit: contain; display: block; background: #fff; }
+        .blog-post { display: flex; flex-direction: column; min-height: 75vh; gap: 30px; align-items: center; justify-content: flex-start; scroll-snap-align: center; box-sizing: border-box; padding: 40px 0; }
+        .blog-img-frame { flex-shrink: 0; padding: 10px; background: var(--painting-frame); display: flex; align-items: center; justify-content: center; box-sizing: border-box; max-width: 90%; }
+        .blog-img-frame img { max-height: 45vh; max-width: 100%; object-fit: contain; display: block; background: #fff; }
 
-        .blog-content { max-width: 600px; font-size: 0.95rem; line-height: 1.6; text-align: center; }
-        .blog-content h2 { margin: 0 0 4px; font-size: 1.6rem; text-transform: none; }
-        .blog-date { display: block; font-size: 0.65rem; font-weight: bold; opacity: 0.6; margin-bottom: 8px; }
+        .blog-content { max-width: 700px; font-size: 1.1rem; line-height: 1.6; text-align: center; }
+        .blog-content h2 { margin: 0 0 10px; font-size: 2rem; text-transform: none; }
+        .blog-date { display: block; font-size: 0.8rem; font-weight: bold; opacity: 0.6; margin-bottom: 12px; }
 
         .gallery-container { position: absolute; bottom: 0; width: 100vw; height: 90vh; display: flex; align-items: center; overflow-x: auto; overflow-y: hidden; transition: height 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
-        .gallery-container.minimized { height: 18vh; }
+        .gallery-container.minimized { height: 20vh; }
         .scroll-wrapper { display: flex; width: max-content; animation: scroll 65s linear infinite; padding: 0 20px; }
         .scroll-wrapper:hover { animation-play-state: paused; } 
 
         .item-wrapper { 
-            position: relative; height: 65vh; margin: 0 40px; padding: 5px; 
+            position: relative; height: 65vh; margin: 0 40px; padding: 8px; 
             background: var(--painting-frame); transition: 0.6s; cursor: pointer; 
             display: flex; align-items: center; justify-content: center; overflow: hidden;
         }
         .item-wrapper.blog-item { display: none; } 
         .gallery-container.blog-mode .item-wrapper.blog-item { display: flex; } 
-        .gallery-container.minimized .item-wrapper { height: 12vh; margin: 0 10px; padding: 2px; }
+        .gallery-container.minimized .item-wrapper { height: 14vh; margin: 0 12px; padding: 4px; }
 
-        /* Aspect Ratio: 1:1.25 Height:Width */
+        /* Preview Aspect Ratio: 1.25 / 1 Width to Height */
         .text-item-preview { 
             width: 100%; 
             height: 100%; 
@@ -108,26 +112,25 @@
             border: 1px solid rgba(0,0,0,0.05); 
             aspect-ratio: 1.25 / 1; 
             text-align: center; 
-            padding: 10%; 
+            padding: 15%; 
             box-sizing: border-box; 
         }
         
-        /* Fixed Line Clamping Logic */
+        /* Font Sizes increased for Chrome Legibility */
         .preview-title { 
-            font-size: 0.42rem; 
+            font-size: 0.65rem; 
             font-weight: bold; 
             text-transform: uppercase; 
-            margin-bottom: 5%; 
+            margin-bottom: 8%; 
             line-height: 1.2; 
             width: 100%; 
             overflow: hidden; 
             display: -webkit-box; 
             -webkit-line-clamp: 3; 
             -webkit-box-orient: vertical; 
-            /* Fallback for browsers not supporting line-clamp */
-            max-height: 3.6em; 
+            max-height: 3.8em; 
         }
-        .preview-date { font-size: 0.32rem; opacity: 0.6; }
+        .preview-date { font-size: 0.45rem; opacity: 0.6; font-weight: bold; }
         
         .hover-overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
@@ -135,14 +138,14 @@
             opacity: 0; transition: opacity 0.3s ease; pointer-events: none; padding: 15px; box-sizing: border-box;
         }
         .item-wrapper:hover .hover-overlay { opacity: 1; }
-        .hover-text { font-size: 0.8rem; font-weight: bold; text-transform: uppercase; text-align: center; line-height: 1.2; }
+        .hover-text { font-size: 1rem; font-weight: bold; text-transform: uppercase; text-align: center; line-height: 1.2; }
 
         .painting { height: 100%; display: block; background: #fff; }
         @keyframes scroll { to { transform: translateX(-50%); } }
 
-        #modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--bg-main); padding: 40px; border: 2px solid var(--theme-c1); z-index: 6000; text-align: center; color: var(--text-base); opacity: 0; transition: opacity 0.3s ease; }
+        #modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--bg-main); padding: 50px; border: 2px solid var(--theme-c1); z-index: 6000; text-align: center; color: var(--text-base); opacity: 0; transition: opacity 0.3s ease; min-width: 300px; }
         #modal.visible { display: block; opacity: 1; }
-        .close-btn { margin-top: 20px; font-size: 0.6rem; font-weight: bold; cursor: pointer; background: none; border: 1px solid var(--theme-c3); color: var(--theme-c3); padding: 5px 10px; }
+        .close-btn { margin-top: 25px; font-size: 0.8rem; font-weight: bold; cursor: pointer; background: none; border: 1.5px solid var(--theme-c3); color: var(--theme-c3); padding: 8px 16px; text-transform: uppercase; }
     </style>
 </head>
 <body>
@@ -277,8 +280,8 @@
             closeModal(); 
             const modal = document.getElementById('modal');
             document.getElementById('modal-body').innerHTML = type === 'about' 
-                ? `<h3 class="inv-grad-box">Benjamin Chmieleski</h3><p>Artist & Designer in West Michigan.<br>Landscape and botanical focus.</p>`
-                : `<h3 class="inv-grad-box">Contact</h3><p>benchmieleski@gmail.com</p>`;
+                ? `<h3 class="inv-grad-box" style="font-size:1.8rem;">Benjamin Chmieleski</h3><p>Artist & Designer in West Michigan.<br>Landscape and botanical focus.</p>`
+                : `<h3 class="inv-grad-box" style="font-size:1.8rem;">Contact</h3><p>benchmieleski@gmail.com</p>`;
             modal.style.display = 'block';
             setTimeout(() => modal.classList.add('visible'), 10);
         }
