@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -119,6 +118,7 @@
             display: flex; align-items: center; justify-content: center;
         }
 
+        /* Logic to hide text placeholders on home page */
         .painting-wrapper.text-item { display: none; }
         .gallery-container.minimized .painting-wrapper.text-item { display: flex; height: 14vh; margin: 0 10px; padding: 2px; }
         .gallery-container.minimized .painting-wrapper { height: 14vh; margin: 0 10px; padding: 2px; }
@@ -186,11 +186,6 @@
     </div>
 
     <script>
-        /* ==========================================
-           EDIT CONTENT HERE (NO AI NEEDED)
-           ========================================== */
-
-        // 1. ADD NEW PAINTINGS HERE
         const paintings = [
             { id: 'post-floral',    img: 'art_flowers.jpg', title: 'Floral',    date: 'FEB 25, 2026', desc: 'Floral Study' },
             { id: 'post-garden',    img: 'art_garden.jpg',  title: 'Garden',    date: 'FEB 25, 2026', desc: 'Frederik Meijer Sculpture Gardens' },
@@ -199,33 +194,29 @@
             { id: 'post-sunset',    img: 'art_bella.jpg',   title: 'Bella',     date: 'FEB 25, 2026', desc: 'Frederik Meijer Sculpture Gardens' }
         ];
 
-        // 2. ADD NEW TEXT POSTS HERE
         const textPosts = [
             { 
                 id: 'post-intro', 
                 title: 'Portfolio Site Conception', 
-                date: 'March 01, 2026', 
-                content: 'Its so frustrating how AI frequently oversteps its ask and creates things out of thin air. I was doing some editing work on this personal site and when adding a blog area Gemini decided to add an entire second post. This seemed far too uncanny and unsettling to say the least.. With oversteps like this AI seems borderline useless. The development of this personal site was my first real foray into an AI-driven project, and to be frank Ive been proven right about my hesitations over blind AI adaptation. Clearly Im not opposed to any and all use as this site itself is a product of AI, but I implore everyone to run over any data theyve input into any AI models with a fine-toothed comb...
-
-'
-            }
-             id: 'post-intro', 
-                title: 'Portfolio Site Conception', 
-                date: 'February 25, 2026', 
+                date: 'FEBRUARY 25, 2026', 
                 content: 'After having most of my creative work live in a transient state for most of my adult life, I wanted to begin to compile things together in order to weave together the story that is my creative life.'
+            }
         ];
 
-        /* ==========================================
-           SYSTEM LOGIC (DON'T TOUCH UNLESS NEEDED)
-           ========================================== */
-
-        const blogArea = document.getElementById('blog-area');
-        const galleryScroll = document.getElementById('gallery-scroll');
+        let currentIdx = 0;
         const postIds = [];
+        const themes = {
+            misty: { colors: ['#6cccb6', '#57648a', '#ab5c95'], bg: '#fff', text: '#1a1a1a' }, 
+            electric: { colors: ['#d9b3f2', '#b3d9d9', '#efb9da'], bg: '#fff', text: '#1a1a1a' },
+            monochromeDark: { colors: ['#ccc', '#eee', '#fff'], bg: '#000', text: '#f0f0f0' },
+            monochromeStatic: { colors: ['#000', '#000', '#000'], bg: '#fff', text: '#1a1a1a' }
+        };
 
-        // Build the Site
         function initSite() {
-            // Build Text Posts
+            const blogArea = document.getElementById('blog-area');
+            const galleryScroll = document.getElementById('gallery-scroll');
+            
+            // 1. Build Text Posts
             textPosts.forEach(post => {
                 postIds.push(post.id);
                 blogArea.innerHTML += `
@@ -238,7 +229,7 @@
                     </article>`;
             });
 
-            // Build Painting Posts
+            // 2. Build Painting Posts
             paintings.forEach(art => {
                 postIds.push(art.id);
                 blogArea.innerHTML += `
@@ -252,16 +243,10 @@
                     </article>`;
             });
 
-            // Build Gallery (Original + Clone for infinite scroll)
-            const galleryContent = generateGalleryHTML();
-            galleryScroll.innerHTML = galleryContent + galleryContent;
-        }
-
-        function generateGalleryHTML() {
-            let html = '';
-            // Add Text Placeholders
+            // 3. Build Gallery
+            let galleryHTML = '';
             textPosts.forEach(post => {
-                html += `
+                galleryHTML += `
                 <div class="painting-wrapper text-item" onclick="scrollToPost('${post.id}')">
                     <div class="text-post-placeholder">
                         <div class="placeholder-label">Blog Post</div>
@@ -269,24 +254,14 @@
                     </div>
                 </div>`;
             });
-            // Add Painting Images
             paintings.forEach(art => {
-                html += `
+                galleryHTML += `
                 <div class="painting-wrapper" onclick="scrollToPost('${art.id}')">
                     <img src="${art.img}" class="painting">
                 </div>`;
             });
-            return html;
+            galleryScroll.innerHTML = galleryHTML + galleryHTML; 
         }
-
-        // Global functions
-        let currentIdx = 0;
-        const themes = {
-            misty: { colors: ['#6cccb6', '#57648a', '#ab5c95'], bg: '#fff', text: '#1a1a1a' }, 
-            electric: { colors: ['#d9b3f2', '#b3d9d9', '#efb9da'], bg: '#fff', text: '#1a1a1a' },
-            monochromeDark: { colors: ['#ccc', '#eee', '#fff'], bg: '#000', text: '#f0f0f0' },
-            monochromeStatic: { colors: ['#000', '#000', '#000'], bg: '#fff', text: '#1a1a1a' }
-        };
 
         function setTheme(key, el) {
             const t = themes[key];
@@ -303,13 +278,14 @@
         }
 
         function scrollToPost(id) {
-            blogArea.style.display = 'block';
+            const blog = document.getElementById('blog-area');
+            blog.style.display = 'block';
             document.getElementById('blog-nav').style.display = 'flex';
             document.getElementById('close-x').style.display = 'block';
             document.getElementById('gallery-container').classList.add('minimized');
             currentIdx = postIds.indexOf(id);
             setTimeout(() => {
-                blogArea.classList.add('active');
+                blog.classList.add('active');
                 document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'center' });
             }, 50);
         }
@@ -320,11 +296,12 @@
         }
 
         function closeBlog() {
-            blogArea.classList.remove('active');
+            const blog = document.getElementById('blog-area');
+            blog.classList.remove('active');
             document.getElementById('close-x').style.display = 'none';
             document.getElementById('gallery-container').classList.remove('minimized');
             document.getElementById('blog-nav').style.display = 'none';
-            setTimeout(() => { if(!blogArea.classList.contains('active')) blogArea.style.display = 'none'; }, 500);
+            setTimeout(() => { if(!blog.classList.contains('active')) blog.style.display = 'none'; }, 500);
         }
 
         function goHome() { closeBlog(); document.getElementById('modal').style.display = 'none'; }
@@ -340,13 +317,14 @@
 
         window.addEventListener('keydown', e => {
             if (e.key === 'Escape') goHome();
-            if (blogArea.classList.contains('active')) {
+            if (document.getElementById('blog-area').classList.contains('active')) {
                 if (e.key === 'ArrowRight' || e.key === 'ArrowDown') navigatePost(1);
                 if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') navigatePost(-1);
             }
         });
 
-        initSite(); // Run on load
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', initSite);
     </script>
 </body>
 </html>
