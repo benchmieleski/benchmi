@@ -52,19 +52,12 @@
 
         /* THEME SWATCHES */
         .color-controls-dropdown { margin-top: 15px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-        
         .theme-option { 
-            cursor: pointer; 
-            border: 1px solid #ccc; 
-            padding: 4px; 
-            display: flex; 
-            gap: 2px;
-            width: fit-content;
-            transition: border 0.2s;
+            cursor: pointer; border: 1px solid #ccc; padding: 4px; 
+            display: flex; gap: 2px; width: fit-content; transition: border 0.2s;
         }
         .theme-option.active { border: 2px solid var(--text-base); padding: 3px; }
-        
-        .swatch { width: 10px; height: 10px; border-radius: 1px; }
+        .swatch { width: 10px; height: 10px; border-radius: 1px; border: 1px solid rgba(0,0,0,0.05); }
 
         /* BLOG CONTAINER */
         .blog-container {
@@ -101,19 +94,13 @@
         }
 
         .blog-img-frame { 
-            flex-shrink: 0; padding: 8px; 
-            background: var(--painting-frame); 
+            flex-shrink: 0; padding: 8px; background: var(--painting-frame); 
             display: flex; align-items: center; justify-content: center;
             box-sizing: border-box; max-width: 90%;
         }
-        .blog-img-frame img { 
-            max-height: 40vh; max-width: 100%; 
-            object-fit: contain; display: block; background: #fff; 
-        }
+        .blog-img-frame img { max-height: 40vh; max-width: 100%; object-fit: contain; display: block; background: #fff; }
 
-        .blog-content { 
-            max-width: 600px; font-size: 0.95rem; line-height: 1.6; text-align: center;
-        }
+        .blog-content { max-width: 600px; font-size: 0.95rem; line-height: 1.6; text-align: center; }
         .blog-content h2 { margin: 0 0 4px; font-size: 1.6rem; text-transform: none; }
         .blog-date { display: block; font-size: 0.65rem; font-weight: bold; opacity: 0.6; margin-bottom: 8px; }
 
@@ -167,8 +154,7 @@
                 <a class="nav-link inv-grad-box" onclick="event.stopPropagation(); openModal('about')">About</a>
                 <a class="nav-link inv-grad-box" onclick="event.stopPropagation(); openModal('contact')">Contact</a>
                 <a class="nav-link inv-grad-box" onclick="event.stopPropagation(); openBlogOnly()">Blog</a>
-                <div class="color-controls-dropdown" id="theme-selector">
-                    </div>
+                <div class="color-controls-dropdown" id="theme-selector"></div>
             </nav>
         </div>
     </header>
@@ -184,7 +170,7 @@
     </div>
     <div id="modal">
         <div id="modal-body"></div>
-        <button class="close-btn" onclick="document.getElementById('modal').style.display='none'">Close</button>
+        <button class="close-btn" onclick="closeModal()">Close</button>
     </div>
 
     <script>
@@ -200,7 +186,7 @@
             { 
                 id: 'post-intro', 
                 title: 'Portfolio Site Conception', 
-                date: 'Feb. 25, 2026', 
+                date: 'FEBRUARY 25, 2026', 
                 content: 'After having most of my creative work live in a transient state for most of my adult life, I wanted to begin to compile things together in order to weave together the story that is my creative life.'
             }
         ];
@@ -212,72 +198,44 @@
             monochromeStatic: { colors: ['#000', '#000', '#000'], bg: '#ffffff', text: '#1a1a1a' }
         };
 
+        let currentIdx = 0;
+        const postIds = [];
+
         function initSite() {
             const blogArea = document.getElementById('blog-area');
             const galleryScroll = document.getElementById('gallery-scroll');
             const themeSelector = document.getElementById('theme-selector');
             
-            // Build Theme UI
             Object.keys(themes).forEach(key => {
                 const t = themes[key];
                 const isActive = key === 'misty' ? 'active' : '';
                 themeSelector.innerHTML += `
-                    <div class="theme-option ${isActive}" 
-                         style="background: ${t.bg};" 
-                         onclick="event.stopPropagation(); setTheme('${key}', this)">
+                    <div class="theme-option ${isActive}" style="background: ${t.bg};" onclick="event.stopPropagation(); setTheme('${key}', this)">
                         <div class="swatch" style="background:${t.colors[0]}"></div>
                         <div class="swatch" style="background:${t.colors[1]}"></div>
                         <div class="swatch" style="background:${t.colors[2]}"></div>
                     </div>`;
             });
 
-            // Build Posts
             textPosts.forEach(post => {
                 postIds.push(post.id);
-                blogArea.innerHTML += `
-                    <article class="blog-post" id="${post.id}">
-                        <div class="blog-content">
-                            <h2 class="inv-grad-box">${post.title}</h2>
-                            <span class="blog-date">${post.date}</span>
-                            <p>${post.content}</p>
-                        </div>
-                    </article>`;
+                blogArea.innerHTML += `<article class="blog-post" id="${post.id}"><div class="blog-content"><h2 class="inv-grad-box">${post.title}</h2><span class="blog-date">${post.date}</span><p>${post.content}</p></div></article>`;
             });
 
             paintings.forEach(art => {
                 postIds.push(art.id);
-                blogArea.innerHTML += `
-                    <article class="blog-post" id="${art.id}">
-                        <div class="blog-content">
-                            <h2 class="inv-grad-box">${art.title}</h2>
-                            <span class="blog-date">${art.date}</span>
-                            <p>${art.desc}</p>
-                        </div>
-                        <div class="blog-img-frame"><img src="${art.img}"></div>
-                    </article>`;
+                blogArea.innerHTML += `<article class="blog-post" id="${art.id}"><div class="blog-content"><h2 class="inv-grad-box">${art.title}</h2><span class="blog-date">${art.date}</span><p>${art.desc}</p></div><div class="blog-img-frame"><img src="${art.img}"></div></article>`;
             });
 
             let galleryHTML = '';
             textPosts.forEach(post => {
-                galleryHTML += `
-                <div class="painting-wrapper text-item" onclick="scrollToPost('${post.id}')">
-                    <div class="text-post-placeholder">
-                        <div class="placeholder-label">Blog Post</div>
-                        <div class="placeholder-date">${post.date}</div>
-                    </div>
-                </div>`;
+                galleryHTML += `<div class="painting-wrapper text-item" onclick="scrollToPost('${post.id}')"><div class="text-post-placeholder"><div class="placeholder-label">Blog Post</div><div class="placeholder-date">${post.date}</div></div></div>`;
             });
             paintings.forEach(art => {
-                galleryHTML += `
-                <div class="painting-wrapper" onclick="scrollToPost('${art.id}')">
-                    <img src="${art.img}" class="painting">
-                </div>`;
+                galleryHTML += `<div class="painting-wrapper" onclick="scrollToPost('${art.id}')"><img src="${art.img}" class="painting"></div>`;
             });
             galleryScroll.innerHTML = galleryHTML + galleryHTML; 
         }
-
-        let currentIdx = 0;
-        const postIds = [];
 
         function setTheme(key, el) {
             const t = themes[key];
@@ -293,7 +251,17 @@
             el.classList.add('active');
         }
 
+        // NEW: Handles mutual exclusivity
+        function clearOverlays() {
+            closeModal();
+            const blog = document.getElementById('blog-area');
+            if (blog.classList.contains('active')) {
+                closeBlog();
+            }
+        }
+
         function scrollToPost(id) {
+            closeModal(); // Close any open modals first
             const blog = document.getElementById('blog-area');
             blog.style.display = 'block';
             document.getElementById('blog-nav').style.display = 'flex';
@@ -320,10 +288,21 @@
             setTimeout(() => { if(!blog.classList.contains('active')) blog.style.display = 'none'; }, 500);
         }
 
-        function goHome() { closeBlog(); document.getElementById('modal').style.display = 'none'; }
-        function openBlogOnly() { scrollToPost(postIds[0]); }
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+
+        function goHome() { 
+            closeModal(); 
+            closeBlog(); 
+        }
+
+        function openBlogOnly() { 
+            scrollToPost(postIds[0]); 
+        }
         
         function openModal(type) {
+            closeBlog(); // Close blog if open
             const body = document.getElementById('modal-body');
             body.innerHTML = type === 'about' 
                 ? `<h3 class="inv-grad-box">Benjamin Chmieleski</h3><p>Artist & Designer in West Michigan.<br>Landscape and botanical focus.</p>`
