@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -78,16 +79,29 @@
         .scroll-wrapper { display: flex; width: max-content; animation: scroll 65s linear infinite; padding: 0 20px; }
         .scroll-wrapper:hover { animation-play-state: paused; } 
 
-        .item-wrapper { height: 65vh; margin: 0 40px; padding: 5px; background: var(--painting-frame); transition: 0.6s; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-        .item-wrapper.blog-item { display: none; } /* Hidden by default */
-        .gallery-container.blog-mode .item-wrapper.blog-item { display: flex; } /* Shown when blog is clicked */
-        
+        .item-wrapper { 
+            position: relative; height: 65vh; margin: 0 40px; padding: 5px; 
+            background: var(--painting-frame); transition: 0.6s; cursor: pointer; 
+            display: flex; align-items: center; justify-content: center; overflow: hidden;
+        }
+        .item-wrapper.blog-item { display: none; } 
+        .gallery-container.blog-mode .item-wrapper.blog-item { display: flex; } 
         .gallery-container.minimized .item-wrapper { height: 12vh; margin: 0 10px; padding: 2px; }
-        
-        /* Updated typography for previews */
+
+        /* Microscopic Preview Typography (50% of previous size) */
         .text-item-preview { width: 100%; height: 100%; background: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--painting-frame); border: 1px solid #eee; aspect-ratio: 1 / 1; text-align: center; padding: 10px; box-sizing: border-box; }
-        .preview-title { font-size: 0.35rem; font-weight: bold; text-transform: uppercase; margin-bottom: 2px; line-height: 1.2; }
-        .preview-date { font-size: 0.26rem; opacity: 0.7; }
+        .preview-title { font-size: 0.17rem; font-weight: bold; text-transform: uppercase; margin-bottom: 1px; line-height: 1.2; opacity: 0.4; transition: 0.3s; }
+        .preview-date { font-size: 0.13rem; opacity: 0.3; }
+        
+        /* Hover Overlay for Titles */
+        .hover-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255,255,255,0.85); display: flex; align-items: center; justify-content: center;
+            opacity: 0; transition: opacity 0.3s ease; pointer-events: none; padding: 15px; box-sizing: border-box;
+        }
+        .item-wrapper:hover .hover-overlay { opacity: 1; }
+        .item-wrapper:hover .preview-title { opacity: 1; }
+        .hover-text { font-size: 0.8rem; font-weight: bold; text-transform: uppercase; text-align: center; line-height: 1.2; }
 
         .painting { height: 100%; display: block; background: #fff; }
         @keyframes scroll { to { transform: translateX(-50%); } }
@@ -165,10 +179,12 @@
                 postIds.push(item.id);
                 blogArea.innerHTML += `<article class="blog-post" id="${item.id}"><div class="blog-content"><h2 class="inv-grad-box">${item.title}</h2><span class="blog-date">${item.date}</span><p>${item.content || item.desc}</p></div>${item.img ? `<div class="blog-img-frame"><img src="${item.img}"></div>` : ''}</article>`;
                 
-                // If it's a text post, add the blog-item class so we can hide it by default
                 const isBlog = !item.img;
                 galleryHTML += `<div class="item-wrapper ${isBlog ? 'blog-item' : ''}" onclick="scrollToPost('${item.id}')">
-                    ${item.img ? `<img src="${item.img}" class="painting">` : `<div class="text-item-preview"><div class="preview-title">${item.title}</div><div class="preview-date">${item.date}</div></div>`}
+                    ${item.img 
+                        ? `<img src="${item.img}" class="painting"><div class="hover-overlay"><div class="hover-text inv-grad-box">${item.title}</div></div>` 
+                        : `<div class="text-item-preview"><div class="preview-title inv-grad-box">${item.title}</div><div class="preview-date">${item.date}</div></div>`
+                    }
                 </div>`;
             });
 
@@ -197,8 +213,6 @@
             document.getElementById('blog-nav').style.display = 'flex';
             document.getElementById('close-x').style.display = 'block';
             gallery.classList.add('minimized');
-            
-            // Show blog posts in the minimized gallery for easy navigation
             gallery.classList.add('blog-mode');
 
             currentIdx = postIds.indexOf(id);
@@ -217,7 +231,7 @@
             const blog = document.getElementById('blog-area');
             const gallery = document.getElementById('gallery-container');
             blog.classList.remove('active');
-            gallery.classList.remove('blog-mode'); // Hide blog items again
+            gallery.classList.remove('blog-mode');
             document.getElementById('close-x').style.display = 'none';
             gallery.classList.remove('minimized');
             document.getElementById('blog-nav').style.display = 'none';
@@ -225,10 +239,8 @@
         }
 
         function openModal(type) {
-            // Close other active views when opening a modal
             closeBlog();
-            closeModal(); // Clears existing content/state if any
-
+            closeModal(); 
             const modal = document.getElementById('modal');
             document.getElementById('modal-body').innerHTML = type === 'about' 
                 ? `<h3 class="inv-grad-box">Benjamin Chmieleski</h3><p>Artist & Designer in West Michigan.<br>Landscape and botanical focus.</p>`
@@ -246,7 +258,6 @@
         function goHome() { closeModal(); closeBlog(); }
         
         function openBlogOnly() { 
-            // This is the trigger that shows the blog items in the gallery
             document.getElementById('gallery-container').classList.add('blog-mode');
             scrollToPost(postIds[0]); 
         }
