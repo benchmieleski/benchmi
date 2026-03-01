@@ -25,9 +25,17 @@
         }
 
         header { position: fixed; top: 40px; left: 40px; z-index: 5000; }
-        .site-name-wrapper { display: inline-flex; flex-direction: column; cursor: pointer; padding-bottom: 30px; }
-        .site-name { font-size: 1.25rem; font-weight: bold; line-height: 1.1; }
-        .site-subheading { font-size: 0.53rem; line-height: 1; margin: 2px 0 12px; }
+        
+        /* Updated Header Alignment */
+        .site-name-wrapper { 
+            display: inline-flex; 
+            flex-direction: column; 
+            align-items: flex-end; /* Aligns subheading to the end of the name */
+            cursor: pointer; 
+            padding-bottom: 30px; 
+        }
+        .site-name { font-size: 1.25rem; font-weight: bold; line-height: 1.1; white-space: nowrap; }
+        .site-subheading { font-size: 0.53rem; line-height: 1; margin: 2px 0 12px; white-space: nowrap; }
 
         .inv-grad-box {
             background: linear-gradient(to right, var(--theme-c1), var(--theme-c2), var(--theme-c3), var(--theme-c1));
@@ -42,10 +50,10 @@
         .no-grad { -webkit-text-fill-color: var(--text-base) !important; background: none !important; animation: none !important; }
         @keyframes gradient-flow { to { background-position: 400% center; } }
 
-        .nav-menu { display: none; flex-direction: column; gap: 6px; }
+        .nav-menu { display: none; flex-direction: column; align-items: flex-end; gap: 6px; width: 100%; }
         .site-name-wrapper:hover .nav-menu { display: flex; }
         .nav-link { font-size: 0.6rem; font-weight: bold; text-decoration: none; transition: 0.2s; width: fit-content; cursor: pointer; color: inherit;}
-        .nav-link:hover { transform: translateX(3px); opacity: 0.8; }
+        .nav-link:hover { transform: translateX(-3px); opacity: 0.8; }
 
         .color-controls-dropdown { margin-top: 15px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
         .theme-option { cursor: pointer; border: 1px solid #ccc; padding: 4px; display: flex; gap: 2px; width: fit-content; transition: border 0.2s; }
@@ -87,7 +95,7 @@
         .gallery-container.blog-mode .item-wrapper.blog-item { display: flex; } 
         .gallery-container.minimized .item-wrapper { height: 12vh; margin: 0 10px; padding: 2px; }
 
-        /* Updated Aspect Ratio: 1:1.25 Height:Width */
+        /* Aspect Ratio: 1:1.25 Height:Width */
         .text-item-preview { 
             width: 100%; 
             height: 100%; 
@@ -98,12 +106,13 @@
             justify-content: center; 
             color: var(--text-base); 
             border: 1px solid rgba(0,0,0,0.05); 
-            aspect-ratio: 1.25 / 1; /* Width / Height */
+            aspect-ratio: 1.25 / 1; 
             text-align: center; 
             padding: 10%; 
             box-sizing: border-box; 
         }
         
+        /* Fixed Line Clamping Logic */
         .preview-title { 
             font-size: 0.42rem; 
             font-weight: bold; 
@@ -111,11 +120,12 @@
             margin-bottom: 5%; 
             line-height: 1.2; 
             width: 100%; 
-            max-height: 3.6em; 
             overflow: hidden; 
             display: -webkit-box; 
             -webkit-line-clamp: 3; 
             -webkit-box-orient: vertical; 
+            /* Fallback for browsers not supporting line-clamp */
+            max-height: 3.6em; 
         }
         .preview-date { font-size: 0.32rem; opacity: 0.6; }
         
@@ -136,6 +146,7 @@
     </style>
 </head>
 <body>
+
     <header>
         <div class="site-name-wrapper" onclick="goHome()">
             <div class="site-name inv-grad-box">Ben Chmieleski</div>
@@ -164,7 +175,6 @@
     </div>
 
     <script>
-        /* Logic for content rendering and theme switching preserved from index-25.html */
         const textPosts = [
             { id: 'post-second', title: 'Site Design Complete', date: 'Mar. 01, 2026', content: 'Part test post, past confirmation of the completion (for now) of the html/code portion of this site. Next up I am planning on uploading some pieces from times passed/past. ' },
             { id: 'post-intro', title: 'Portfolio Site Conception', date: 'Feb. 25, 2026', content: 'After having most of my creative work live in a transient state for most of my adult life, I wanted to begin to compile things together in order to weave together the story that is my creative life.' }
