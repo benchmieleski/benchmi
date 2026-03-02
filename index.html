@@ -11,7 +11,7 @@
             --theme-c1: #6cccb6; 
             --theme-c2: #57648a; 
             --theme-c3: #ab5c95; 
-            --accent: var(--theme-c1);
+            --painting-frame: #6cccb6; 
         }
 
         body, html {
@@ -26,9 +26,9 @@
 
         header { position: fixed; top: 40px; left: 40px; z-index: 1000; }
 
-        .site-name-wrapper { display: inline-flex; flex-direction: column; cursor: pointer; padding-bottom: 30px; }
-        .site-name { font-size: 1.25rem; font-weight: bold; line-height: 1.2; margin: 0; }
-        .site-subheading { font-size: 0.53rem; line-height: 1.2; margin: 2px 0 12px; opacity: 0.8; }
+        .site-name-wrapper { display: inline-flex; flex-direction: column; cursor: pointer; padding-bottom: 30px; align-items: flex-start; }
+        .site-name { font-size: 1.25rem; font-weight: bold; line-height: 1.2; margin: 0; text-transform: none; }
+        .site-subheading { font-size: 0.53rem; line-height: 1.2; margin: 2px 0 12px; text-transform: none; }
 
         .inv-grad-box {
             background: linear-gradient(to right, var(--theme-c1), var(--theme-c2), var(--theme-c3), var(--theme-c1));
@@ -37,59 +37,60 @@
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
+            display: block; 
         }
+
+        .no-grad { -webkit-text-fill-color: var(--text-base) !important; background: none !important; animation: none !important; }
 
         @keyframes gradient-flow { to { background-position: 400% center; } }
 
         .nav-menu { display: none; flex-direction: column; gap: 6px; }
         .site-name-wrapper:hover .nav-menu { display: flex; }
-        .nav-link { font-size: 0.6rem; font-weight: bold; text-decoration: none; cursor: pointer; }
 
-        /* Gallery Core */
+        .nav-link { font-size: 0.6rem; font-weight: bold; text-decoration: none; transition: 0.2s; cursor: pointer; line-height: 1.2; }
+        .nav-link:hover { transform: translateX(3px); opacity: 0.8; }
+
+        .color-controls-dropdown { margin-top: 15px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+        .theme-option { cursor: pointer; border: 1px solid var(--theme-c3); padding: 1px; background: #fff; display: flex; align-items: center; justify-content: center; height: 20px; }
+        .theme-option.active { border: 2px solid var(--text-base); }
+        .swatch { width: 10px; height: 10px; margin: 0 1px; }
+
         .gallery-container {
-            position: absolute; bottom: 0; width: 100vw; height: 100vh;
-            display: flex; align-items: center; overflow-x: auto;
+            position: absolute; bottom: 0; width: 100vw; height: 90vh;
+            display: flex; align-items: center; overflow-x: auto; overflow-y: hidden;
         }
 
-        .scroll-wrapper { 
-            display: flex; width: max-content; padding: 0 10vw; 
-            align-items: center; gap: 60px;
+        .scroll-wrapper { display: flex; width: max-content; padding: 0 100px; animation: slow-scroll 80s linear infinite; }
+        .scroll-wrapper:hover { animation-play-state: paused; }
+
+        @keyframes slow-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+        .item-wrapper { 
+            height: 65vh; margin: 0 40px; padding: 5px; background: var(--painting-frame); 
+            transition: 0.6s; cursor: pointer; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
         }
 
-        /* Unified Card Style */
-        .item-card { 
-            height: 60vh; width: auto; min-width: 300px;
-            padding: 10px; background: var(--accent); 
-            transition: transform 0.3s ease; cursor: pointer;
-            display: flex; flex-direction: column;
+        .item-inner { 
+            height: 100%; width: 320px; background: #fff; 
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            padding: 30px; box-sizing: border-box; color: #1a1a1a;
         }
-        .item-card:hover { transform: translateY(-10px); }
+        
+        .painting { height: 100%; display: block; background: #fff; }
 
-        .card-inner { 
-            background: #fff; height: 100%; width: 100%; 
-            display: flex; flex-direction: column; 
-            justify-content: center; align-items: center;
-            overflow: hidden; color: #1a1a1a; padding: 20px; box-sizing: border-box;
+        .text-card-preview { text-align: center; }
+        .text-card-preview h2 { font-size: 1.2rem; margin-bottom: 12px; line-height: 1.2; }
+        .text-card-preview p { font-size: 0.75rem; line-height: 1.5; opacity: 0.8; margin: 0; }
+
+        #modal {
+            display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background: var(--bg-main); padding: 40px; border: 2px solid var(--theme-c1);
+            z-index: 2000; text-align: center; color: var(--text-base); max-width: 85vw;
         }
-
-        .item-img { height: 100%; width: auto; object-fit: contain; }
-
-        /* Text Post Style within Gallery */
-        .text-preview h2 { font-size: 1.4rem; margin-bottom: 10px; text-align: center; }
-        .text-preview p { font-size: 0.8rem; line-height: 1.5; text-align: center; display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical; overflow: hidden; }
-
-        /* Detail Overlay */
-        #detail-view {
-            display: none; position: fixed; inset: 0;
-            background: var(--bg-main); z-index: 2000;
-            padding: 10vw; box-sizing: border-box;
-            overflow-y: auto;
-        }
-        .detail-content { max-width: 800px; margin: 0 auto; text-align: center; }
-        .detail-content img { max-width: 100%; max-height: 70vh; border: 10px solid var(--accent); }
-        .close-view { position: fixed; top: 40px; right: 40px; font-size: 2rem; cursor: pointer; border: none; background: none; color: var(--text-base); }
-
-        .theme-option { cursor: pointer; border: 1px solid var(--theme-c3); padding: 5px; margin-top: 10px; display: inline-block; font-size: 10px; }
+        #modal-body img { max-height: 60vh; max-width: 100%; object-fit: contain; }
+        #modal-body p { margin-top: 15px; font-size: 0.9rem; line-height: 1.5; opacity: 0.9; max-width: 600px; margin-left: auto; margin-right: auto; }
+        .close-btn { margin-top: 25px; font-size: 0.6rem; font-weight: bold; cursor: pointer; background: none; border: 1px solid var(--theme-c3); color: var(--theme-c3); padding: 5px 15px; }
     </style>
 </head>
 <body>
@@ -99,88 +100,111 @@
             <div class="site-name inv-grad-box">Ben Chmieleski</div>
             <div class="site-subheading inv-grad-box">Artist | Designer | Creator</div>
             <nav class="nav-menu">
-                <a class="nav-link inv-grad-box" onclick="showSection('about')">About</a>
-                <a class="nav-link inv-grad-box" onclick="showSection('contact')">Contact</a>
+                <a class="nav-link inv-grad-box" onclick="event.stopPropagation(); openSection('about')">About</a>
+                <a class="nav-link inv-grad-box" onclick="event.stopPropagation(); openSection('contact')">Contact</a>
+                <div class="color-controls-dropdown">
+                    <div class="theme-option active" onclick="event.stopPropagation(); setTheme('misty', this)"><div class="swatch" style="background:#6cccb6"></div><div class="swatch" style="background:#57648a"></div><div class="swatch" style="background:#ab5c95"></div></div>
+                    <div class="theme-option" onclick="event.stopPropagation(); setTheme('electric', this)"><div class="swatch" style="background:#d9b3f2"></div><div class="swatch" style="background:#b3d9d9"></div><div class="swatch" style="background:#efb9da"></div></div>
+                    <div class="theme-option" onclick="event.stopPropagation(); setTheme('monochromeDark', this)" style="background:#000; border-color: #555;"><div class="swatch" style="background:#fff"></div><div class="swatch" style="background:#fff"></div><div class="swatch" style="background:#fff"></div></div>
+                    <div class="theme-option" onclick="event.stopPropagation(); setTheme('monochromeStatic', this)"><div class="swatch" style="background:#000"></div><div class="swatch" style="background:#000"></div><div class="swatch" style="background:#000"></div></div>
+                </div>
             </nav>
         </div>
     </header>
 
     <div class="gallery-container">
-        <div class="scroll-wrapper" id="main-feed">
-            </div>
+        <div class="scroll-wrapper" id="gallery-wrapper"></div>
     </div>
 
-    <div id="detail-view">
-        <button class="close-view" onclick="closeDetail()">&times;</button>
-        <div class="detail-content" id="detail-content"></div>
+    <div id="modal">
+        <div id="modal-body"></div>
+        <button class="close-btn" onclick="closeModal()">Close</button>
     </div>
 
     <script>
-        // Combined Feed: Images and Text Posts
+        /*******************************************************
+         * 1. EDIT YOUR CONTENT HERE
+         * To add an image: { type: 'image', path: 'file.jpg', title: 'Title', description: 'Desc' }
+         * To add text:     { type: 'text', title: 'Title', body: 'Content...' }
+         *******************************************************/
         const feedItems = [
-            { type: 'image', content: 'art_flowers.jpg', title: 'Floral Study' },
-            { type: 'text', title: 'On Process', content: 'Creativity isn’t a lightbulb; it’s a slow-burning candle. I find that my best work comes not from sudden inspiration, but from the quiet repetition of observation. West Michigan’s seasonal shifts provide the perfect tempo for this.' },
-            { type: 'image', content: 'art_garden.jpg', title: 'The Garden' },
-            { type: 'image', content: 'art_riverside.jpg', title: 'Riverside Reflection' },
-            { type: 'text', title: '2026 Vision', content: 'This year is about texture. Moving away from smooth digital gradients and back toward the tactile resistance of physical media, even when the final output remains screen-based.' },
-            { type: 'image', content: 'art_sunset.jpg', title: 'Sunset' }
+            { type: 'image', path: 'art_flowers.jpg', title: 'Flowers', description: 'Flowers' },
+            { type: 'text', title: 'Portfolio Site Conception', body: 'After having most of my creative work live in a transient state for most of my adult life, I wanted to begin to compile things together in order to weave together the story that is my creative life.' },
+            { type: 'image', path: 'art_garden.jpg', title: 'Garden', description: 'Garden' },
+            { type: 'image', path: 'art_riverside.jpg', title: 'Riverside', description: 'Riverside' },
+            { type: 'image', path: 'art_sunset.jpg', title: 'Sunset', description: 'Sunset' },
+            { type: 'image', path: 'art_bella.jpg', title: 'Bella', description: 'Bella' }
         ];
 
+        /*******************************************************
+         * 2. EDIT YOUR THEME COLORS HERE
+         *******************************************************/
+        const themes = {
+            misty: { colors: ['#6cccb6', '#57648a', '#ab5c95'], bg: '#fff', text: '#1a1a1a' }, 
+            electric: { colors: ['#d9b3f2', '#b3d9d9', '#efb9da'], bg: '#fff', text: '#1a1a1a' },
+            monochromeDark: { colors: ['#ffffff', '#ffffff', '#ffffff'], bg: '#000', text: '#f0f0f0' },
+            monochromeStatic: { colors: ['#000', '#000', '#000'], bg: '#fff', text: '#1a1a1a' }
+        };
+
+        /*******************************************************
+         * 3. SYSTEM LOGIC (DO NOT EDIT)
+         *******************************************************/
+        let activeTheme = 'misty';
+
         function init() {
-            const feed = document.getElementById('main-feed');
-            feed.innerHTML = feedItems.map((item, idx) => `
-                <div class="item-card" onclick="openDetail(${idx})">
-                    <div class="card-inner">
-                        ${item.type === 'image' 
-                            ? `<img src="${item.content}" class="item-img" alt="${item.title}">` 
-                            : `<div class="text-preview">
-                                <h2 class="inv-grad-box">${item.title}</h2>
-                                <p>${item.content}</p>
-                                <small style="font-weight:bold; opacity:0.5">[READ POST]</small>
-                               </div>`
-                        }
-                    </div>
-                </div>
-            `).join('');
+            const gWrapper = document.getElementById('gallery-wrapper');
+            const gHtml = feedItems.map((item, idx) => {
+                if(item.type === 'image') {
+                    return `<div class="item-wrapper" onclick="openItem(${idx})"><img src="${item.path}" class="painting" alt="${item.title}"></div>`;
+                } else {
+                    return `<div class="item-wrapper" onclick="openItem(${idx})"><div class="item-inner text-card-preview"><h2 class="inv-grad-box">${item.title}</h2><p>${item.body.substring(0, 110)}...</p></div></div>`;
+                }
+            }).join('');
+            gWrapper.innerHTML = gHtml + gHtml;
         }
 
-        function openDetail(index) {
+        function openItem(index) {
             const item = feedItems[index];
-            const container = document.getElementById('detail-content');
-            const view = document.getElementById('detail-view');
-
-            if (item.type === 'image') {
-                container.innerHTML = `
-                    <img src="${item.content}">
-                    <h2 class="inv-grad-box" style="margin-top:20px">${item.title}</h2>
+            const body = document.getElementById('modal-body');
+            const gradClass = activeTheme === 'monochromeStatic' ? 'inv-grad-box no-grad' : 'inv-grad-box';
+            if(item.type === 'image') {
+                body.innerHTML = `
+                    <img src="${item.path}">
+                    <h3 class="${gradClass}" style="margin-top:15px; font-size: 1.2rem;">${item.title}</h3>
+                    <p>${item.description}</p>
                 `;
             } else {
-                container.innerHTML = `
-                    <h1 class="inv-grad-box" style="font-size:3rem">${item.title}</h1>
-                    <p style="font-size:1.2rem; line-height:1.8; text-align:left; margin-top:40px">${item.content}</p>
-                `;
+                body.innerHTML = `<h3 class="${gradClass}" style="font-size: 1.5rem;">${item.title}</h3><p style="line-height:1.6; max-width:500px; margin: 25px auto; font-size: 0.95rem; opacity: 1;">${item.body}</p>`;
             }
-            view.style.display = 'block';
+            document.getElementById('modal').style.display = 'block';
         }
 
-        function showSection(type) {
-            const container = document.getElementById('detail-content');
-            const view = document.getElementById('detail-view');
-            if(type === 'about') {
-                container.innerHTML = `<h1 class="inv-grad-box">About Ben</h1><p>Artist & Designer in West Michigan. Focused on the intersection of biological forms and digital precision.</p>`;
-            } else {
-                container.innerHTML = `<h1 class="inv-grad-box">Contact</h1><p>benchmieleski@gmail.com</p>`;
-            }
-            view.style.display = 'block';
+        function openSection(type) {
+            const body = document.getElementById('modal-body');
+            const gradClass = activeTheme === 'monochromeStatic' ? 'inv-grad-box no-grad' : 'inv-grad-box';
+            body.innerHTML = type === 'about' 
+                ? `<h3 class="${gradClass}" style="font-size: 1.5rem;">Ben Chmieleski</h3><p style="font-size: 0.95rem; line-height:1.6; opacity: 1;">Artist & Designer in West Michigan.<br>Biophilia + botanical inspirations.<br>I believe in the power of art to inspire and uplift.</p>`
+                : `<h3 class="${gradClass}" style="font-size: 1.5rem;">Contact</h3><p style="font-size: 0.95rem; opacity: 1;">benchmieleski@gmail.com</p>`;
+            document.getElementById('modal').style.display = 'block';
         }
 
-        function closeDetail() {
-            document.getElementById('detail-view').style.display = 'none';
+        function setTheme(key, el) {
+            activeTheme = key;
+            const t = themes[key];
+            const root = document.documentElement.style;
+            root.setProperty('--theme-c1', t.colors[0]);
+            root.setProperty('--theme-c2', t.colors[1]);
+            root.setProperty('--theme-c3', t.colors[2]);
+            root.setProperty('--bg-main', t.bg);
+            root.setProperty('--text-base', t.text);
+            root.setProperty('--painting-frame', key === 'monochromeStatic' ? '#000' : t.colors[0]);
+            document.querySelectorAll('.inv-grad-box').forEach(b => b.classList.toggle('no-grad', key === 'monochromeStatic'));
+            document.querySelectorAll('.theme-option').forEach(o => o.classList.remove('active'));
+            el.classList.add('active');
         }
 
-        // Close on Escape
-        window.addEventListener('keydown', e => { if (e.key === 'Escape') closeDetail(); });
-
+        function closeModal() { document.getElementById('modal').style.display = 'none'; }
+        window.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
         init();
     </script>
 </body>
