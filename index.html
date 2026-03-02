@@ -1,154 +1,187 @@
-<script>
-    /* --- EDIT YOUR CONTENT HERE --- */
-    const contentConfig = {
-        gallery: [
-            { id: 'post-floral', img: 'art_flowers.jpg', title: 'Flowers', desc: 'test description 1' },
-            { id: 'post-garden', img: 'art_garden.jpg', title: 'Garden', desc: 'test description 2' },
-            { id: 'post-riverside', img: 'art_riverside.jpg', title: 'Riverside', desc: 'test description 3' },
-            { id: 'post-reflection', img: 'art_sunset.jpg', title: 'Sunset', desc: 'test description 4' },
-            { id: 'post-sunset', img: 'art_bella.jpg', title: 'Bella', desc: 'test description 5' }
-        ],
-        blog: [
-            { 
-                id: 'post-intro', 
-                title: 'Portfolio Site Conception', 
-                date: 'February 25, 2026', 
-                body: 'After having most of my creative work live in a transient state for most of my adult life, I wanted to begin to compile things together in order to weave together the story that is my creative life.' 
-            }
-        ]
-    };
-
-    /* --- THEMES CONFIGURATION --- */
-    const themes = {
-        misty: { colors: ['#6cccb6', '#57648a', '#ab5c95'], bg: '#fff', text: '#1a1a1a' }, 
-        electric: { colors: ['#d9b3f2', '#b3d9d9', '#efb9da'], bg: '#fff', text: '#1a1a1a' },
-        monochromeDark: { colors: ['#ffffff', '#ffffff', '#ffffff'], bg: '#000', text: '#f0f0f0' },
-        monochromeStatic: { colors: ['#000', '#000', '#000'], bg: '#fff', text: '#1a1a1a' }
-    };
-
-    let currentIdx = 0;
-    let activeTheme = 'misty';
-
-    function init() {
-        const gWrapper = document.getElementById('gallery-wrapper');
-        const bArea = document.getElementById('blog-area');
-
-        // Build Gallery
-        const gHtml = contentConfig.gallery.map(item => `
-            <div class="painting-wrapper" onclick="scrollToWork('${item.id}', '${item.img}', '${item.title}', '${item.desc}')">
-                <img src="${item.img}" class="painting">
-            </div>`).join('');
-        gWrapper.innerHTML = gHtml + gHtml; // Duplicate for infinite scroll effect
-
-        // Build Blog
-        bArea.innerHTML = contentConfig.blog.map(post => `
-            <article class="blog-post" id="${post.id}">
-                <div class="blog-content">
-                    <h2 class="inv-grad-box">${post.title}</h2>
-                    <span class="blog-date">${post.date}</span>
-                    <p>${post.body}</p>
-                </div>
-            </article>`).join('');
-    }
-
-    function scrollToWork(id, imgPath, title, description) {
-        closeModal();
-        const bArea = document.getElementById('blog-area');
-        
-        // Added the description paragraph below the title
-        bArea.innerHTML = `
-            <article class="blog-post active">
-                <div class="blog-content">
-                    <h2 class="inv-grad-box">${title}</h2>
-                    <p style="font-size: 0.8rem; margin-top: 0; opacity: 0.8;">${description}</p>
-                </div>
-                <div class="blog-img-frame"><img src="${imgPath}"></div>
-            </article>`;
-            
-        document.getElementById('blog-nav').style.display = 'none';
-        document.getElementById('close-x').style.display = 'block';
-        document.getElementById('gallery-container').classList.add('minimized');
-        bArea.style.display = 'block';
-        setTimeout(() => { bArea.classList.add('active'); }, 50);
-    }
-
-    function handleNavClick(type) {
-        event.stopPropagation();
-        closeModal();
-        closeBlog();
-        if (type === 'blog') { openBlogOnly(); } else { openModal(type); }
-    }
-
-    function openBlogOnly() {
-        init(); 
-        currentIdx = 0;
-        const postIds = contentConfig.blog.map(p => p.id);
-        document.getElementById('blog-area').style.display = 'block';
-        document.getElementById('blog-nav').style.display = (postIds.length > 1) ? 'flex' : 'none';
-        document.getElementById('close-x').style.display = 'block';
-        document.getElementById('gallery-container').classList.add('minimized');
-        setTimeout(() => {
-            document.getElementById('blog-area').classList.add('active');
-            if(postIds[0]) document.getElementById(postIds[0]).scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }, 50);
-    }
-
-    function setTheme(key, el) {
-        activeTheme = key;
-        const t = themes[key];
-        const root = document.documentElement.style;
-        root.setProperty('--theme-c1', t.colors[0]);
-        root.setProperty('--theme-c2', t.colors[1]);
-        root.setProperty('--theme-c3', t.colors[2]);
-        root.setProperty('--bg-main', t.bg);
-        root.setProperty('--text-base', t.text);
-        root.setProperty('--painting-frame', key === 'monochromeStatic' ? '#000' : t.colors[0]);
-        document.querySelectorAll('.inv-grad-box').forEach(b => b.classList.toggle('no-grad', key === 'monochromeStatic'));
-        document.querySelectorAll('.theme-option').forEach(o => o.classList.remove('active'));
-        el.classList.add('active');
-    }
-
-    function navigatePost(dir) {
-        const postIds = contentConfig.blog.map(p => p.id);
-        if (postIds.length <= 1) return;
-        currentIdx = (currentIdx + dir + postIds.length) % postIds.length;
-        document.getElementById(postIds[currentIdx]).scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
-
-    function closeBlog() {
-        const blog = document.getElementById('blog-area');
-        if (blog.style.display === 'none') return;
-        blog.classList.remove('active');
-        document.getElementById('close-x').style.display = 'none';
-        document.getElementById('gallery-container').classList.remove('minimized');
-        document.getElementById('blog-nav').style.display = 'none';
-        setTimeout(() => { 
-            if(!blog.classList.contains('active')) {
-                blog.style.display = 'none';
-                init(); 
-            }
-        }, 500);
-    }
-
-    function openModal(type) {
-        const body = document.getElementById('modal-body');
-        const gradClass = activeTheme === 'monochromeStatic' ? 'inv-grad-box no-grad' : 'inv-grad-box';
-        body.innerHTML = type === 'about' 
-            ? `<h3 class="${gradClass}">Ben Chmieleski</h3><p>Artist & Designer in West Michigan.<br>Biophilia + botanical inspirations.<br>I believe in the power of art and design and their ability to inspire, challenge, and uplift.</p>`
-            : `<h3 class="${gradClass}">Contact</h3><p>benchmieleski@gmail.com</p>`;
-        document.getElementById('modal').style.display = 'block';
-    }
-
-    function closeModal() { document.getElementById('modal').style.display = 'none'; }
-    function goHome() { closeBlog(); closeModal(); }
-
-    window.addEventListener('keydown', e => {
-        if (e.key === 'Escape') goHome();
-        if (document.getElementById('blog-area').classList.contains('active')) {
-            if (e.key === 'ArrowRight' || e.key === 'ArrowDown') navigatePost(1);
-            if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') navigatePost(-1);
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ben Chmieleski | Portfolio</title>
+    <style>
+        :root {
+            --bg-main: #ffffff;
+            --text-base: #1a1a1a;
+            --theme-c1: #6cccb6; 
+            --theme-c2: #57648a; 
+            --theme-c3: #ab5c95; 
+            --accent: var(--theme-c1);
         }
-    });
 
-    init();
-</script>
+        body, html {
+            margin: 0; padding: 0;
+            overflow: hidden;
+            background: var(--bg-main);
+            color: var(--text-base);
+            font-family: sans-serif;
+            height: 100vh;
+            transition: background 0.4s, color 0.4s;
+        }
+
+        header { position: fixed; top: 40px; left: 40px; z-index: 1000; }
+
+        .site-name-wrapper { display: inline-flex; flex-direction: column; cursor: pointer; padding-bottom: 30px; }
+        .site-name { font-size: 1.25rem; font-weight: bold; line-height: 1.2; margin: 0; }
+        .site-subheading { font-size: 0.53rem; line-height: 1.2; margin: 2px 0 12px; opacity: 0.8; }
+
+        .inv-grad-box {
+            background: linear-gradient(to right, var(--theme-c1), var(--theme-c2), var(--theme-c3), var(--theme-c1));
+            background-size: 400% auto;
+            animation: gradient-flow 18s linear infinite;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        @keyframes gradient-flow { to { background-position: 400% center; } }
+
+        .nav-menu { display: none; flex-direction: column; gap: 6px; }
+        .site-name-wrapper:hover .nav-menu { display: flex; }
+        .nav-link { font-size: 0.6rem; font-weight: bold; text-decoration: none; cursor: pointer; }
+
+        /* Gallery Core */
+        .gallery-container {
+            position: absolute; bottom: 0; width: 100vw; height: 100vh;
+            display: flex; align-items: center; overflow-x: auto;
+        }
+
+        .scroll-wrapper { 
+            display: flex; width: max-content; padding: 0 10vw; 
+            align-items: center; gap: 60px;
+        }
+
+        /* Unified Card Style */
+        .item-card { 
+            height: 60vh; width: auto; min-width: 300px;
+            padding: 10px; background: var(--accent); 
+            transition: transform 0.3s ease; cursor: pointer;
+            display: flex; flex-direction: column;
+        }
+        .item-card:hover { transform: translateY(-10px); }
+
+        .card-inner { 
+            background: #fff; height: 100%; width: 100%; 
+            display: flex; flex-direction: column; 
+            justify-content: center; align-items: center;
+            overflow: hidden; color: #1a1a1a; padding: 20px; box-sizing: border-box;
+        }
+
+        .item-img { height: 100%; width: auto; object-fit: contain; }
+
+        /* Text Post Style within Gallery */
+        .text-preview h2 { font-size: 1.4rem; margin-bottom: 10px; text-align: center; }
+        .text-preview p { font-size: 0.8rem; line-height: 1.5; text-align: center; display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical; overflow: hidden; }
+
+        /* Detail Overlay */
+        #detail-view {
+            display: none; position: fixed; inset: 0;
+            background: var(--bg-main); z-index: 2000;
+            padding: 10vw; box-sizing: border-box;
+            overflow-y: auto;
+        }
+        .detail-content { max-width: 800px; margin: 0 auto; text-align: center; }
+        .detail-content img { max-width: 100%; max-height: 70vh; border: 10px solid var(--accent); }
+        .close-view { position: fixed; top: 40px; right: 40px; font-size: 2rem; cursor: pointer; border: none; background: none; color: var(--text-base); }
+
+        .theme-option { cursor: pointer; border: 1px solid var(--theme-c3); padding: 5px; margin-top: 10px; display: inline-block; font-size: 10px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="site-name-wrapper" onclick="location.reload()">
+            <div class="site-name inv-grad-box">Ben Chmieleski</div>
+            <div class="site-subheading inv-grad-box">Artist | Designer | Creator</div>
+            <nav class="nav-menu">
+                <a class="nav-link inv-grad-box" onclick="showSection('about')">About</a>
+                <a class="nav-link inv-grad-box" onclick="showSection('contact')">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="gallery-container">
+        <div class="scroll-wrapper" id="main-feed">
+            </div>
+    </div>
+
+    <div id="detail-view">
+        <button class="close-view" onclick="closeDetail()">&times;</button>
+        <div class="detail-content" id="detail-content"></div>
+    </div>
+
+    <script>
+        // Combined Feed: Images and Text Posts
+        const feedItems = [
+            { type: 'image', content: 'art_flowers.jpg', title: 'Floral Study' },
+            { type: 'text', title: 'On Process', content: 'Creativity isn’t a lightbulb; it’s a slow-burning candle. I find that my best work comes not from sudden inspiration, but from the quiet repetition of observation. West Michigan’s seasonal shifts provide the perfect tempo for this.' },
+            { type: 'image', content: 'art_garden.jpg', title: 'The Garden' },
+            { type: 'image', content: 'art_riverside.jpg', title: 'Riverside Reflection' },
+            { type: 'text', title: '2026 Vision', content: 'This year is about texture. Moving away from smooth digital gradients and back toward the tactile resistance of physical media, even when the final output remains screen-based.' },
+            { type: 'image', content: 'art_sunset.jpg', title: 'Sunset' }
+        ];
+
+        function init() {
+            const feed = document.getElementById('main-feed');
+            feed.innerHTML = feedItems.map((item, idx) => `
+                <div class="item-card" onclick="openDetail(${idx})">
+                    <div class="card-inner">
+                        ${item.type === 'image' 
+                            ? `<img src="${item.content}" class="item-img" alt="${item.title}">` 
+                            : `<div class="text-preview">
+                                <h2 class="inv-grad-box">${item.title}</h2>
+                                <p>${item.content}</p>
+                                <small style="font-weight:bold; opacity:0.5">[READ POST]</small>
+                               </div>`
+                        }
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function openDetail(index) {
+            const item = feedItems[index];
+            const container = document.getElementById('detail-content');
+            const view = document.getElementById('detail-view');
+
+            if (item.type === 'image') {
+                container.innerHTML = `
+                    <img src="${item.content}">
+                    <h2 class="inv-grad-box" style="margin-top:20px">${item.title}</h2>
+                `;
+            } else {
+                container.innerHTML = `
+                    <h1 class="inv-grad-box" style="font-size:3rem">${item.title}</h1>
+                    <p style="font-size:1.2rem; line-height:1.8; text-align:left; margin-top:40px">${item.content}</p>
+                `;
+            }
+            view.style.display = 'block';
+        }
+
+        function showSection(type) {
+            const container = document.getElementById('detail-content');
+            const view = document.getElementById('detail-view');
+            if(type === 'about') {
+                container.innerHTML = `<h1 class="inv-grad-box">About Ben</h1><p>Artist & Designer in West Michigan. Focused on the intersection of biological forms and digital precision.</p>`;
+            } else {
+                container.innerHTML = `<h1 class="inv-grad-box">Contact</h1><p>benchmieleski@gmail.com</p>`;
+            }
+            view.style.display = 'block';
+        }
+
+        function closeDetail() {
+            document.getElementById('detail-view').style.display = 'none';
+        }
+
+        // Close on Escape
+        window.addEventListener('keydown', e => { if (e.key === 'Escape') closeDetail(); });
+
+        init();
+    </script>
+</body>
+</html>
