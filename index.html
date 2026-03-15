@@ -63,7 +63,6 @@
             position: relative; 
             cursor: crosshair;
         }
-        /* Width is 25% to accommodate 50% decrease from original 50% */
         #breakoutCanvas { display: none; width: 25%; height: 100px; border: 2px solid var(--theme-c1); background: transparent; }
         #close-game-btn { display: none; cursor: pointer; font-weight: bold; font-size: 1.2rem; color: var(--theme-c3); padding: 5px 10px; }
 
@@ -113,9 +112,7 @@
             -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
         }
         .no-grad { -webkit-text-fill-color: var(--text-base) !important; background: none !important; animation: none !important; }
-        @keyframes gradient-flow { to { background-position: 400% center; } }
 
-        /* Mobile Tweaks */
         @media (max-width: 600px) {
             header { top: 20px; left: 20px; right: 20px; }
             .site-name { font-size: 1.5rem; }
@@ -246,7 +243,7 @@
         function closeModal() { document.getElementById('modal').style.display = 'none'; }
         window.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
-        /* --- 3. GAME LOGIC (2x Resolution / 50% Scale) --- */
+        /* --- 3. GAME LOGIC (2x Res, Bricks in Top 20%) --- */
         const canvas = document.getElementById('breakoutCanvas');
         const ctx = canvas.getContext('2d');
         const triggerZone = document.getElementById('game-easter-egg');
@@ -254,15 +251,18 @@
         
         let gameActive = false, ballReleased = false;
         let x, y, dx, dy, paddleX, bricks, starRain = [];
-        const scale = 2; // Increases internal resolution
-        const brickRowCount = 2, paddleWidth = 60 * scale, brickHeight = 16 * scale, baseSpeed = 2.8 * scale;
+        const scale = 2; 
+        const paddleWidth = 60 * scale, brickHeight = 10 * scale, baseSpeed = 2.8 * scale;
 
         function initGame() {
-            // Internal coordinate resolution is 2x the visual CSS size
             canvas.width = (triggerZone.offsetWidth * (window.innerWidth < 600 ? 0.5 : 0.25)) * scale;
             canvas.height = 100 * scale;
             
             const brickCols = Math.floor(canvas.width / (34 * scale));
+            // Limit bricks to top 20% of area
+            const maxBrickRows = Math.floor((canvas.height * 0.2) / (brickHeight + (4 * scale))); 
+            const rows = Math.max(1, maxBrickRows);
+
             paddleX = (canvas.width - paddleWidth) / 2;
             ballReleased = false; starRain = [];
             x = paddleX + paddleWidth / 2; y = canvas.height - (15 * scale);
@@ -270,7 +270,7 @@
             bricks = [];
             for(let c=0; c<brickCols; c++) {
                 bricks[c] = [];
-                for(let r=0; r<brickRowCount; r++) bricks[c][r] = { status: 1 };
+                for(let r=0; r<rows; r++) bricks[c][r] = { status: 1 };
             }
         }
 
@@ -300,7 +300,7 @@
                     col.forEach((b, r) => {
                         if(b.status === 1) {
                             activeBricks++;
-                            const bX = i * (bWidth + (4 * scale)), bY = r * (brickHeight + (12 * scale)) + (5 * scale); 
+                            const bX = i * (bWidth + (4 * scale)), bY = r * (brickHeight + (4 * scale)) + (5 * scale); 
                             ctx.fillStyle = (activeTheme === 'monochromeStatic') ? t.text : t.colors[0];
                             ctx.fillRect(bX, bY, bWidth, brickHeight);
                             if(ballReleased && x > bX && x < bX + bWidth && y > bY && y < bY + brickHeight) { dy = -dy; b.status = 0; }
@@ -337,7 +337,6 @@
 
         triggerZone.addEventListener('mousemove', e => {
             const rect = canvas.getBoundingClientRect();
-            // Maps visual mouse position back to high-res internal canvas coordinates
             let visualX = e.clientX - rect.left;
             paddleX = (visualX * scale) - (paddleWidth / 2);
             paddleX = Math.max(0, Math.min(canvas.width - paddleWidth, paddleX));
