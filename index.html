@@ -65,10 +65,24 @@
         /* --- 4. GAME AREA --- */
         #game-easter-egg {
             flex-grow: 1; height: 140px; margin-left: 30px;
-            position: relative; cursor: crosshair; display: flex; justify-content: center; align-items: center; gap: 15px;
+            position: relative; cursor: crosshair; display: flex; justify-content: center; align-items: center;
         }
-        #breakoutCanvas { display: none; width: 45%; height: 100%; border: 2px solid var(--theme-c1); }
-        #close-game-btn { display: none; cursor: pointer; font-size: 1.4rem; color: var(--theme-c3); user-select: none; padding: 5px; align-self: flex-start; }
+        #breakoutCanvas { 
+            display: none; width: 45%; height: 100%; 
+            border: 2px solid var(--theme-c1); 
+            border-radius: 15px; /* Rounded corners for the game window */
+        }
+        #close-game-btn { 
+            display: none; cursor: pointer; position: absolute;
+            top: 0; right: 27.5%; /* Positioned to center on the upper right corner of the 45% wide canvas */
+            transform: translate(50%, -50%); /* Centered on the corner */
+            width: 24px; height: 24px;
+            background: var(--bg-main);
+            border: 2px solid var(--theme-c1);
+            border-radius: 6px; /* Rounded corner box for the X */
+            color: var(--theme-c3); font-size: 1rem; font-weight: bold;
+            display: none; align-items: center; justify-content: center; z-index: 1001;
+        }
 
         /* --- 5. EFFECTS --- */
         .inv-grad-box {
@@ -81,11 +95,7 @@
         @keyframes gradient-flow { to { background-position: 400% center; } }
 
         /* --- 6. GALLERY --- */
-        .gallery-container { 
-            position: absolute; bottom: 0; width: 100vw; height: 85vh; 
-            display: flex; align-items: center; overflow-x: auto; overflow-y: hidden;
-            -webkit-overflow-scrolling: touch;
-        }
+        .gallery-container { position: absolute; bottom: 0; width: 100vw; height: 85vh; display: flex; align-items: center; overflow: hidden; }
         .scroll-wrapper { 
             display: flex; width: max-content; padding: 0 100px; 
             animation: slow-scroll 80s linear infinite; will-change: transform; 
@@ -112,20 +122,9 @@
             header { top: 20px; left: 20px; right: 20px; position: absolute; }
             .site-name { font-size: 1.5rem; }
             .site-subheading { font-size: 1rem; }
-            
-            .gallery-container { 
-                position: relative; height: auto; margin-top: 160px; 
-                display: block; padding: 0 20px 80px 20px; width: 100%;
-            }
-            .scroll-wrapper { 
-                animation: none; 
-                display: block; width: 100%; padding: 0; 
-            }
-            .item-wrapper { 
-                height: auto; width: 100%; max-width: 400px;
-                margin: 0 auto 40px auto; /* Added bottom margin for spacing */
-                padding: 5px; 
-            }
+            .gallery-container { position: relative; height: auto; margin-top: 160px; display: block; padding: 0 20px 80px 20px; width: 100%; }
+            .scroll-wrapper { animation: none; display: block; width: 100%; padding: 0; }
+            .item-wrapper { height: auto; width: 100%; max-width: 400px; margin: 0 auto 40px auto; padding: 5px; }
             .painting { width: 100%; height: auto; }
         }
     </style>
@@ -259,7 +258,7 @@
 
         triggerZone.onclick = () => {
             if (window.innerWidth <= 768) return; 
-            if (!gameActive) { gameActive = true; canvas.style.display = 'block'; closeBtn.style.display = 'block'; gallery.classList.add('paused'); initGame(); drawGame(); }
+            if (!gameActive) { gameActive = true; canvas.style.display = 'block'; closeBtn.style.display = 'flex'; gallery.classList.add('paused'); initGame(); drawGame(); }
             else ballReleased = true;
         };
 
