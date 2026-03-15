@@ -48,6 +48,8 @@
             cursor: crosshair;
             display: flex;
             justify-content: center;
+            align-items: center;
+            gap: 15px;
         }
 
         #breakoutCanvas { 
@@ -56,6 +58,15 @@
             height: 100%; 
             border: 2px solid var(--theme-c1); 
             box-sizing: border-box;
+        }
+
+        #close-game-btn {
+            display: none;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: var(--theme-c3);
+            user-select: none;
         }
 
         .inv-grad-box {
@@ -150,6 +161,7 @@
         
         <div id="game-easter-egg">
             <canvas id="breakoutCanvas"></canvas>
+            <div id="close-game-btn" onclick="event.stopPropagation(); closeGame()">✕</div>
         </div>
     </header>
 
@@ -184,6 +196,7 @@
         const canvas = document.getElementById('breakoutCanvas');
         const ctx = canvas.getContext('2d');
         const triggerZone = document.getElementById('game-easter-egg');
+        const closeGameBtn = document.getElementById('close-game-btn');
         const galleryWrapper = document.getElementById('gallery-wrapper');
         
         let gameActive = false;
@@ -216,6 +229,15 @@
                     bricks[c][r] = { status: 1 };
                 }
             }
+        }
+
+        function closeGame() {
+            gameActive = false;
+            ballReleased = false;
+            canvas.style.display = 'none';
+            closeGameBtn.style.display = 'none';
+            galleryWrapper.classList.remove('paused');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
         }
 
         function createStarRain() {
@@ -252,9 +274,7 @@
                 });
                 ctx.globalAlpha = 1;
                 if (starRain.length === 0) {
-                    gameActive = false;
-                    canvas.style.display = 'none';
-                    galleryWrapper.classList.remove('paused');
+                    closeGame();
                 }
             } else {
                 bricks.forEach((col, i) => {
@@ -311,6 +331,7 @@
             if (!gameActive) {
                 gameActive = true;
                 canvas.style.display = 'block';
+                closeGameBtn.style.display = 'block';
                 galleryWrapper.classList.add('paused');
                 initGame();
                 drawGame();
@@ -375,7 +396,7 @@
                     <p>
                         <a href="mailto:benchmieleski@gmail.com" style="color: inherit; text-decoration: underline;">Email</a>
                         <span style="margin: 0 10px;">|</span>
-                        <a href="https://www.linkedin.com/in/benjamin-chmieleski-29045256" target="_blank" style="color: inherit; text-decoration: underline;">LinkedIn</a>
+                        <a href="https://www.linkedin.com/in/benjamin-chmieleski-29045256/" target="_blank" style="color: inherit; text-decoration: underline;">LinkedIn</a>
                     </p>`;
             }
             document.getElementById('modal').style.display = 'block';
