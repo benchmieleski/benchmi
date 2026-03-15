@@ -53,7 +53,7 @@
         .theme-option.active { border: 2px solid var(--text-base); }
         .swatch { width: 8px; height: 8px; margin: 0 1px; }
 
-        /* --- 4. CENTERED GAME CANVAS (Scaled 50%) --- */
+        /* --- 4. CENTERED GAME CANVAS --- */
         #game-easter-egg { 
             flex: 1; 
             height: 100px; 
@@ -170,7 +170,7 @@
         ];
 
         const pageContent = {
-            about: "Artist & Designer located in West Michigan.",
+            about: "Artist & Designer in West Michigan. Biophilia + botanical inspirations. I believe in the power of art and design and their ability to inspire, challenge, and uplift.",
             email: "benchmieleski@gmail.com",
             linkedin: "https://www.linkedin.com/in/benjamin-chmieleski-29045256/"
         };
@@ -243,7 +243,7 @@
         function closeModal() { document.getElementById('modal').style.display = 'none'; }
         window.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
-        /* --- 3. GAME LOGIC (2x Res, Bricks in Top 20%) --- */
+        /* --- 3. GAME LOGIC --- */
         const canvas = document.getElementById('breakoutCanvas');
         const ctx = canvas.getContext('2d');
         const triggerZone = document.getElementById('game-easter-egg');
@@ -259,7 +259,6 @@
             canvas.height = 100 * scale;
             
             const brickCols = Math.floor(canvas.width / (34 * scale));
-            // Limit bricks to top 20% of area
             const maxBrickRows = Math.floor((canvas.height * 0.2) / (brickHeight + (4 * scale))); 
             const rows = Math.max(1, maxBrickRows);
 
