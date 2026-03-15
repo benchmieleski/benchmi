@@ -23,7 +23,7 @@
 
         body, html {
             margin: 0; padding: 0;
-            overflow: hidden; /* Kept for desktop */
+            overflow: hidden;
             background: var(--bg-main);
             color: var(--text-base);
             font-family: sans-serif;
@@ -107,21 +107,26 @@
 
         /* --- 8. MOBILE OPTIMIZATION --- */
         @media (max-width: 768px) {
-            body, html { overflow: auto; height: auto; }
+            body, html { overflow-y: auto; overflow-x: hidden; height: auto; }
             #game-easter-egg { display: none !important; }
             header { top: 20px; left: 20px; right: 20px; position: absolute; }
             .site-name { font-size: 1.5rem; }
             .site-subheading { font-size: 1rem; }
             
             .gallery-container { 
-                position: relative; height: auto; margin-top: 180px; 
-                overflow-x: auto; display: block; padding-bottom: 50px;
+                position: relative; height: auto; margin-top: 160px; 
+                display: block; padding: 0 20px 80px 20px; width: 100%;
             }
             .scroll-wrapper { 
-                animation: none; /* Disable auto-scroll for manual swiping */
-                padding: 0 20px; 
+                animation: none; 
+                display: block; width: 100%; padding: 0; 
             }
-            .item-wrapper { height: 45vh; margin: 20px auto; display: block; width: fit-content; }
+            .item-wrapper { 
+                height: auto; width: 100%; max-width: 400px;
+                margin: 0 auto 40px auto; /* Added bottom margin for spacing */
+                padding: 5px; 
+            }
+            .painting { width: 100%; height: auto; }
         }
     </style>
 </head>
@@ -294,7 +299,6 @@
         window.onkeydown = e => { if (e.key === 'Escape') closeModal(); };
         window.onresize = () => { if(gameActive) initGame(); };
         
-        // Initialize Gallery - for mobile, we skip duplicating the items if the animation is off
         const isMobile = window.innerWidth <= 768;
         const html = feedItems.map((item, idx) => `<div class="item-wrapper" onclick="openItem(${idx})"><img src="${item.path}" class="painting"></div>`).join('');
         gallery.innerHTML = isMobile ? html : html + html;
