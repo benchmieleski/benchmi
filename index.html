@@ -35,34 +35,41 @@
             z-index: 1000; 
             display: flex; 
             align-items: flex-start;
+            justify-content: space-between; /* Keeps name left and game/close centered */
         }
 
-        .site-name-wrapper { display: inline-flex; flex-direction: column; cursor: pointer; padding-bottom: 20px; align-items: flex-start; }
+        .site-name-wrapper { display: inline-flex; flex-direction: column; cursor: pointer; padding-bottom: 20px; align-items: flex-start; flex-shrink: 0; }
         .site-name { font-size: 1.8rem; font-weight: bold; line-height: 1.2; margin: 0; }
         .site-subheading { font-size: 1.1rem; line-height: 1.2; margin: 2px 0 10px; }
 
-        /* Nav Menu: Appears on Hover */
         .nav-menu { display: none; flex-direction: row; align-items: center; gap: 15px; margin-top: 5px; }
         .site-name-wrapper:hover .nav-menu { display: flex; }
         
         .nav-links-column { display: flex; flex-direction: column; gap: 4px; }
         .nav-link { font-size: 0.85rem; font-weight: bold; text-decoration: none; transition: 0.2s; cursor: pointer; }
 
-        /* Theme Pickers */
         .color-controls-dropdown { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
         .theme-option { cursor: pointer; border: 1px solid var(--theme-c3); padding: 1px; background: #fff; display: flex; height: 18px; align-items: center; }
         .theme-option.active { border: 2px solid var(--text-base); }
         .swatch { width: 8px; height: 8px; margin: 0 1px; }
 
-        /* --- 4. THE GAME CANVAS --- */
-        #game-easter-egg { flex-grow: 1; height: 100px; margin-left: 20px; position: relative; cursor: crosshair; display: flex; align-items: center; gap: 10px; }
-        #breakoutCanvas { display: none; width: 45%; height: 100%; border: 2px solid var(--theme-c1); box-sizing: border-box; }
-        #close-game-btn { display: none; cursor: pointer; font-weight: bold; font-size: 1.2rem; color: var(--theme-c3); align-self: flex-start; padding-top: 5px; }
+        /* --- 4. CENTERED GAME CANVAS --- */
+        #game-easter-egg { 
+            flex: 1; 
+            height: 100px; 
+            display: flex; 
+            justify-content: center; /* This centers the game */
+            align-items: center; 
+            position: relative; 
+            cursor: crosshair;
+        }
+        #breakoutCanvas { display: none; width: 45%; height: 100%; border: 2px solid var(--theme-c1); background: transparent; }
+        #close-game-btn { display: none; cursor: pointer; font-weight: bold; font-size: 1.2rem; color: var(--theme-c3); padding: 5px 10px; }
 
         /* --- 5. GALLERY SCROLL --- */
         .gallery-container {
             position: absolute; 
-            top: 190px; /* Padding below the header to prevent clipping */
+            top: 190px; 
             bottom: 40px; 
             width: 100vw; 
             display: flex; 
@@ -83,16 +90,9 @@
         @keyframes slow-scroll { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(-50%, 0, 0); } }
 
         .item-wrapper { 
-            height: 100%; 
-            margin: 0 30px; 
-            padding: 8px; 
-            background: var(--painting-frame); 
-            transition: 0.4s; 
-            cursor: pointer; 
-            flex-shrink: 0;
-            display: flex; 
-            align-items: center; 
-            justify-content: center;
+            height: 100%; margin: 0 30px; padding: 8px; background: var(--painting-frame); 
+            transition: 0.4s; cursor: pointer; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
         }
         .painting { height: 100%; width: auto; display: block; background: #fff; }
 
@@ -115,20 +115,15 @@
         .no-grad { -webkit-text-fill-color: var(--text-base) !important; background: none !important; animation: none !important; }
         @keyframes gradient-flow { to { background-position: 400% center; } }
 
-        /* --- MOBILE ADJUSTMENTS --- */
+        /* Mobile Tweaks */
         @media (max-width: 600px) {
             header { top: 20px; left: 20px; right: 20px; }
             .site-name { font-size: 1.5rem; }
             .site-subheading { font-size: 0.95rem; }
-            #game-easter-egg { margin-left: 10px; }
-            
-            /* Maximize gallery space on small screens */
             .gallery-container { top: 165px; bottom: 20px; }
             .item-wrapper { margin: 0 15px; padding: 5px; }
-            
-            /* Single line contact links */
             .contact-links { font-size: 0.85rem; white-space: nowrap; }
-            .contact-links span { margin: 0 4px !important; }
+            #breakoutCanvas { width: 70%; } /* Wider on mobile for playability */
         }
     </style>
 </head>
@@ -154,8 +149,9 @@
         
         <div id="game-easter-egg">
             <canvas id="breakoutCanvas"></canvas>
-            <div id="close-game-btn" onclick="event.stopPropagation(); closeGame()">✕</div>
         </div>
+
+        <div id="close-game-btn" onclick="event.stopPropagation(); closeGame()">✕</div>
     </header>
 
     <div class="gallery-container">
@@ -168,7 +164,7 @@
     </div>
 
     <script>
-        /* --- EDIT YOUR ART & TEXT HERE --- */
+        /* --- 1. EDITABLE CONTENT --- */
         const feedItems = [
             { path: 'art_flowers.jpg', title: 'Flowers', description: 'oil on paper, 2025' },
             { path: 'art_garden.jpg', title: 'Garden', description: 'oil on paper, 2025' },
@@ -190,7 +186,7 @@
             monochromeStatic: { colors: ['#000', '#000', '#000'], bg: '#fff', text: '#1a1a1a' }
         };
 
-        /* --- SYSTEM LOGIC (Scoll & Themes) --- */
+        /* --- 2. GALLERY & THEME LOGIC --- */
         let activeTheme = 'misty';
         const galleryWrapper = document.getElementById('gallery-wrapper');
         
@@ -200,7 +196,7 @@
                     <img src="${item.path}" class="painting" alt="${item.title}">
                 </div>
             `).join('');
-            galleryWrapper.innerHTML = itemsHtml + itemsHtml; // Create infinite loop
+            galleryWrapper.innerHTML = itemsHtml + itemsHtml; 
         }
 
         function setTheme(key, el) {
@@ -220,7 +216,6 @@
             if(gameActive) initGame();
         }
 
-        /* --- MODAL LOGIC --- */
         function openItem(index) {
             const item = feedItems[index];
             const gradClass = activeTheme === 'monochromeStatic' ? 'inv-grad-box no-grad' : 'inv-grad-box';
@@ -252,7 +247,7 @@
         function closeModal() { document.getElementById('modal').style.display = 'none'; }
         window.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
-        /* --- GAME LOGIC (Fully Restored) --- */
+        /* --- 3. GAME LOGIC --- */
         const canvas = document.getElementById('breakoutCanvas');
         const ctx = canvas.getContext('2d');
         const triggerZone = document.getElementById('game-easter-egg');
@@ -263,8 +258,8 @@
         const brickRowCount = 2, paddleWidth = 60, brickHeight = 16, baseSpeed = 2.8;
 
         function initGame() {
-            canvas.width = triggerZone.offsetWidth * 0.45;
-            canvas.height = triggerZone.offsetHeight;
+            canvas.width = triggerZone.offsetWidth * (window.innerWidth < 600 ? 0.7 : 0.45);
+            canvas.height = 100;
             const brickCols = Math.floor(canvas.width / 34);
             paddleX = (canvas.width - paddleWidth) / 2;
             ballReleased = false; starRain = [];
