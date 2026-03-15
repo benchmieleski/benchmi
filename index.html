@@ -42,8 +42,8 @@
 
         #game-easter-egg {
             flex-grow: 1;
-            height: 120px;
-            margin-left: 40px;
+            height: 140px; /* Slightly taller for more play area */
+            margin-left: 20px; /* Decreased breathing room by half */
             position: relative;
             cursor: crosshair;
             display: flex;
@@ -52,7 +52,7 @@
 
         #breakoutCanvas { 
             display: none; 
-            width: 40%; 
+            width: 60%; /* Increased game area */
             height: 100%; 
             border: 2px solid var(--theme-c1); 
             box-sizing: border-box;
@@ -99,13 +99,11 @@
             width: max-content; 
             padding: 0 100px; 
             animation: slow-scroll 80s linear infinite; 
-            /* Fix: Hardware Acceleration */
             will-change: transform;
             backface-visibility: hidden;
             transform: translate3d(0,0,0);
         }
         
-        /* Stop animation when game is playing or hovered */
         .scroll-wrapper:hover, .scroll-wrapper.paused { animation-play-state: paused; }
 
         @keyframes slow-scroll { 
@@ -195,15 +193,15 @@
         let starRain = [];
         
         const brickRowCount = 2;
-        const paddleWidth = 53;  
+        const paddleWidth = 65;  /* Slightly wider paddle for the wider canvas */
         const brickHeight = 16;
-        const baseSpeed = 2.7; 
+        const baseSpeed = 3.0; /* Snappier speed for wider area */
 
         function initGame() {
-            canvas.width = triggerZone.offsetWidth * 0.4;
+            canvas.width = triggerZone.offsetWidth * 0.6;
             canvas.height = triggerZone.offsetHeight;
             
-            const brickColumnCount = Math.floor(canvas.width / 32);
+            const brickColumnCount = Math.floor(canvas.width / 36);
             paddleX = (canvas.width - paddleWidth) / 2;
             ballReleased = false;
             starRain = [];
@@ -222,11 +220,11 @@
 
         function createStarRain() {
             const t = themes[activeTheme];
-            for (let i = 0; i < 40; i++) {
+            for (let i = 0; i < 50; i++) {
                 starRain.push({
                     x: Math.random() * canvas.width,
                     y: -Math.random() * 100,
-                    speed: 1 + Math.random() * 1.5,
+                    speed: 1 + Math.random() * 2,
                     color: t.colors[Math.floor(Math.random() * t.colors.length)],
                     opacity: 1
                 });
@@ -256,7 +254,7 @@
                 if (starRain.length === 0) {
                     gameActive = false;
                     canvas.style.display = 'none';
-                    galleryWrapper.classList.remove('paused'); // Resume gallery
+                    galleryWrapper.classList.remove('paused');
                 }
             } else {
                 bricks.forEach((col, i) => {
@@ -299,7 +297,7 @@
                                 dy = -dy;
                             } else { 
                                 ballReleased = false; 
-                                galleryWrapper.classList.remove('paused'); // Resume if ball drops
+                                galleryWrapper.classList.remove('paused');
                             }
                         }
                         x += dx; y += dy;
@@ -313,7 +311,7 @@
             if (!gameActive) {
                 gameActive = true;
                 canvas.style.display = 'block';
-                galleryWrapper.classList.add('paused'); // Pause gallery when game starts
+                galleryWrapper.classList.add('paused');
                 initGame();
                 drawGame();
             } else { 
