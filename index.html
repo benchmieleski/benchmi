@@ -29,6 +29,8 @@
             font-family: sans-serif;
             height: 100vh;
             transition: background 0.4s, color 0.4s;
+            display: flex;
+            flex-direction: column;
         }
 
         header { 
@@ -71,13 +73,6 @@
             align-self: flex-start; 
         }
 
-        /* Disable game on mobile devices */
-        @media (max-width: 768px) {
-            #game-easter-egg {
-                display: none !important;
-            }
-        }
-
         .inv-grad-box {
             background: linear-gradient(to right, var(--theme-c1), var(--theme-c2), var(--theme-c3), var(--theme-c1));
             background-size: 400% auto;
@@ -114,6 +109,30 @@
             overflow-y: hidden;
         }
 
+        /* Mobile specific fixes */
+        @media (max-width: 768px) {
+            header {
+                position: relative;
+                top: 0;
+                left: 0;
+                right: 0;
+                padding: 40px 20px 0 20px; /* Increased top/side padding */
+                margin-bottom: 60px; /* Increased visible white space below links */
+            }
+            .gallery-container {
+                position: relative;
+                height: 55vh; /* Slightly reduced height to ensure it fits without crowding */
+                margin-top: auto;
+            }
+            #game-easter-egg {
+                display: none !important;
+            }
+            .nav-menu {
+                margin-top: 15px; /* More space between title and menu */
+                padding-bottom: 10px;
+            }
+        }
+
         .scroll-wrapper { 
             display: flex; 
             width: max-content; 
@@ -137,6 +156,11 @@
             transition: 0.6s; cursor: pointer; flex-shrink: 0;
             display: flex; align-items: center; justify-content: center;
         }
+        
+        @media (max-width: 768px) {
+            .item-wrapper { height: 50vh; } /* Scale down paintings slightly on mobile */
+        }
+
         .painting { height: 100%; display: block; background: #fff; }
 
         #modal {
