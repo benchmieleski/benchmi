@@ -48,7 +48,6 @@
 
         .color-controls-dropdown { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
         
-        /* Centered the color tiles within the boxes */
         .theme-option { 
             cursor: pointer; 
             border: 1px solid var(--theme-c3); 
@@ -101,6 +100,20 @@
         }
         #modal-body img { max-height: 60vh; max-width: 100%; object-fit: contain; }
         .close-btn { margin-top: 25px; font-size: 0.6rem; font-weight: bold; cursor: pointer; background: none; border: 1px solid var(--theme-c3); padding: 5px 15px; }
+
+        /* --- 8. MOBILE OPTIMIZATION --- */
+        @media (max-width: 768px) {
+            #game-easter-egg {
+                display: none !important;
+            }
+            header {
+                top: 20px; left: 20px; right: 20px;
+            }
+            .site-name { font-size: 1.5rem; }
+            .site-subheading { font-size: 1rem; }
+            .gallery-container { height: 75vh; }
+            .item-wrapper { height: 50vh; margin: 0 20px; }
+        }
     </style>
 </head>
 <body>
@@ -139,7 +152,6 @@
     </div>
 
     <script>
-        /* --- A. EDITABLE CONTENT SETTINGS --- */
         const pageContent = {
             about: "Artist & Designer located in West Michigan. I am inspired by nature and the world around me.",
             email: "benchmieleski@gmail.com",
@@ -154,7 +166,6 @@
             { path: 'art_bella.jpg', title: 'Botanics', description: 'acrylic on wood, 2026' }
         ];
 
-        /* --- B. EDITABLE GAME SETTINGS --- */
         const gameConfig = {
             rows: 2,
             paddleWidth: 60,
@@ -162,7 +173,6 @@
             speed: 2.8
         };
 
-        /* --- C. CORE LOGIC --- */
         const themes = {
             misty: { colors: ['#6cccb6', '#57648a', '#ab5c95'], bg: '#fff', text: '#1a1a1a' }, 
             electric: { colors: ['#d9b3f2', '#b3d9d9', '#efb9da'], bg: '#fff', text: '#1a1a1a' },
@@ -240,6 +250,7 @@
         }
 
         triggerZone.onclick = () => {
+            if (window.innerWidth <= 768) return; 
             if (!gameActive) { gameActive = true; canvas.style.display = 'block'; closeBtn.style.display = 'block'; gallery.classList.add('paused'); initGame(); drawGame(); }
             else ballReleased = true;
         };
@@ -280,7 +291,6 @@
         window.onkeydown = e => { if (e.key === 'Escape') closeModal(); };
         window.onresize = () => { if(gameActive) initGame(); };
         
-        // Initialize Gallery
         const html = feedItems.map((item, idx) => `<div class="item-wrapper" onclick="openItem(${idx})"><img src="${item.path}" class="painting"></div>`).join('');
         gallery.innerHTML = html + html;
     </script>
