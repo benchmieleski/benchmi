@@ -134,7 +134,6 @@
     </div>
 
     <script>
-        // --- DATA ---
         const feedItems = [
             { path: 'art_flowers.jpg', title: 'Flowers', description: 'oil on paper, 2025' },
             { path: 'art_garden.jpg', title: 'Garden', description: 'oil on paper, 2025' },
@@ -165,7 +164,7 @@
         
         const brickRowCount = 2;
         const paddleWidth = 53;  
-        const brickHeight = 16;  
+        const brickHeight = 32;  // Doubled from 16
         const baseSpeed = 2.7; 
 
         function initGame() {
@@ -210,7 +209,6 @@
 
             gradOffset = (gradOffset + 2) % (canvas.width * 2);
 
-            // Winning Sequence
             if (starRain.length > 0) {
                 starRain.forEach((s, i) => {
                     ctx.globalAlpha = s.opacity;
@@ -227,7 +225,6 @@
                     canvas.style.display = 'none';
                 }
             } else {
-                // Gameplay
                 bricks.forEach((col, i) => {
                     col.forEach((b, r) => {
                         if(b.status === 1) {
@@ -275,7 +272,6 @@
             requestAnimationFrame(drawGame);
         }
 
-        // --- INTERACTIONS ---
         triggerZone.addEventListener('click', () => {
             if (!gameActive) {
                 gameActive = true;
@@ -293,7 +289,6 @@
             if(paddleX > canvas.width - paddleWidth) paddleX = canvas.width - paddleWidth;
         });
 
-        // --- SITE FUNCTIONS ---
         function init() {
             const gWrapper = document.getElementById('gallery-wrapper');
             const gHtml = feedItems.map((item, idx) => {
@@ -338,7 +333,6 @@
         function closeModal() { document.getElementById('modal').style.display = 'none'; }
         window.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
         window.addEventListener('resize', () => { if(gameActive) initGame(); });
-        
         init();
     </script>
 </body>
