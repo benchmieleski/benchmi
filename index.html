@@ -49,7 +49,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 15px; /* Space between canvas and the X */
+            gap: 15px; 
         }
 
         #breakoutCanvas { 
@@ -68,7 +68,14 @@
             color: var(--theme-c3);
             user-select: none;
             padding: 5px;
-            align-self: flex-start; /* Keeps it near the top of the canvas height */
+            align-self: flex-start; 
+        }
+
+        /* Disable game on mobile devices */
+        @media (max-width: 768px) {
+            #game-easter-egg {
+                display: none !important;
+            }
         }
 
         .inv-grad-box {
@@ -144,7 +151,7 @@
 <body>
 
     <header>
-       <div class="site-name-wrapper" onclick="window.location.href='/'">
+       <div class="site-name-wrapper" onclick="window.location.href=window.location.origin">
             <div class="site-name inv-grad-box">Ben Chmieleski</div>
             <div class="site-subheading inv-grad-box">Artist | Designer | Creator</div>
             <nav class="nav-menu">
