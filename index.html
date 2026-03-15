@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ben Chmieleski | Home</title>
     <style>
-        /* --- 1. CORE VARIABLES & THEMES --- */
+        /* --- 1. CORE THEME VARIABLES --- */
         :root {
             --bg-main: #ffffff;
             --text-base: #1a1a1a;
@@ -41,6 +41,7 @@
         .site-name { font-size: 1.8rem; font-weight: bold; line-height: 1.2; margin: 0; }
         .site-subheading { font-size: 1.1rem; line-height: 1.2; margin: 2px 0 10px; }
 
+        /* Nav Menu: Appears on Hover */
         .nav-menu { display: none; flex-direction: row; align-items: center; gap: 15px; margin-top: 5px; }
         .site-name-wrapper:hover .nav-menu { display: flex; }
         
@@ -55,13 +56,13 @@
 
         /* --- 4. THE GAME CANVAS --- */
         #game-easter-egg { flex-grow: 1; height: 100px; margin-left: 20px; position: relative; cursor: crosshair; display: flex; align-items: center; gap: 10px; }
-        #breakoutCanvas { display: none; width: 45%; height: 100%; border: 2px solid var(--theme-c1); }
-        #close-game-btn { display: none; cursor: pointer; font-weight: bold; font-size: 1.2rem; color: var(--theme-c3); }
+        #breakoutCanvas { display: none; width: 45%; height: 100%; border: 2px solid var(--theme-c1); box-sizing: border-box; }
+        #close-game-btn { display: none; cursor: pointer; font-weight: bold; font-size: 1.2rem; color: var(--theme-c3); align-self: flex-start; padding-top: 5px; }
 
         /* --- 5. GALLERY SCROLL --- */
         .gallery-container {
             position: absolute; 
-            top: 180px; /* Provides padding below the contact link */
+            top: 190px; /* Padding below the header to prevent clipping */
             bottom: 40px; 
             width: 100vw; 
             display: flex; 
@@ -82,7 +83,7 @@
         @keyframes slow-scroll { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(-50%, 0, 0); } }
 
         .item-wrapper { 
-            height: 100%; /* Fills the container height minus padding */
+            height: 100%; 
             margin: 0 30px; 
             padding: 8px; 
             background: var(--painting-frame); 
@@ -95,7 +96,7 @@
         }
         .painting { height: 100%; width: auto; display: block; background: #fff; }
 
-        /* --- 6. MODALS & UI --- */
+        /* --- 6. MODALS --- */
         #modal {
             display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
             background: var(--bg-main); padding: 30px; border: 2px solid var(--theme-c1);
@@ -114,19 +115,20 @@
         .no-grad { -webkit-text-fill-color: var(--text-base) !important; background: none !important; animation: none !important; }
         @keyframes gradient-flow { to { background-position: 400% center; } }
 
-        /* Mobile Specific Tweaks */
+        /* --- MOBILE ADJUSTMENTS --- */
         @media (max-width: 600px) {
-            header { top: 20px; left: 20px; }
+            header { top: 20px; left: 20px; right: 20px; }
             .site-name { font-size: 1.5rem; }
-            .site-subheading { font-size: 1rem; }
+            .site-subheading { font-size: 0.95rem; }
+            #game-easter-egg { margin-left: 10px; }
             
-            /* Increase gallery height on mobile */
-            .gallery-container { top: 160px; bottom: 30px; }
+            /* Maximize gallery space on small screens */
+            .gallery-container { top: 165px; bottom: 20px; }
             .item-wrapper { margin: 0 15px; padding: 5px; }
             
-            /* Keep contact links small and on one line */
-            .contact-links { font-size: 0.9rem; white-space: nowrap; }
-            .contact-links span { margin: 0 5px !important; }
+            /* Single line contact links */
+            .contact-links { font-size: 0.85rem; white-space: nowrap; }
+            .contact-links span { margin: 0 4px !important; }
         }
     </style>
 </head>
@@ -166,7 +168,7 @@
     </div>
 
     <script>
-        /* --- EDITABLE CONTENT --- */
+        /* --- EDIT YOUR ART & TEXT HERE --- */
         const feedItems = [
             { path: 'art_flowers.jpg', title: 'Flowers', description: 'oil on paper, 2025' },
             { path: 'art_garden.jpg', title: 'Garden', description: 'oil on paper, 2025' },
@@ -188,10 +190,8 @@
             monochromeStatic: { colors: ['#000', '#000', '#000'], bg: '#fff', text: '#1a1a1a' }
         };
 
-        /* --- LOGIC --- */
+        /* --- SYSTEM LOGIC (Scoll & Themes) --- */
         let activeTheme = 'misty';
-        const canvas = document.getElementById('breakoutCanvas');
-        const ctx = canvas.getContext('2d');
         const galleryWrapper = document.getElementById('gallery-wrapper');
         
         function init() {
@@ -200,35 +200,7 @@
                     <img src="${item.path}" class="painting" alt="${item.title}">
                 </div>
             `).join('');
-            galleryWrapper.innerHTML = itemsHtml + itemsHtml; // Infinite scroll loop
-        }
-
-        function openItem(index) {
-            const item = feedItems[index];
-            const gradClass = activeTheme === 'monochromeStatic' ? 'inv-grad-box no-grad' : 'inv-grad-box';
-            document.getElementById('modal-body').innerHTML = `
-                <img src="${item.path}">
-                <h3 class="${gradClass}" style="margin-top:15px;">${item.title}</h3>
-                <p>${item.description}</p>
-            `;
-            document.getElementById('modal').style.display = 'block';
-        }
-
-        function openSection(type) {
-            const body = document.getElementById('modal-body');
-            const gradClass = activeTheme === 'monochromeStatic' ? 'inv-grad-box no-grad' : 'inv-grad-box';
-            if (type === 'about') {
-                body.innerHTML = `<h3 class="${gradClass}">Ben Chmieleski</h3><p>${pageContent.about}</p>`;
-            } else {
-                body.innerHTML = `
-                    <h3 class="${gradClass}">Contact</h3>
-                    <p class="contact-links">
-                        <a href="mailto:${pageContent.email}" style="color:inherit">Email</a>
-                        <span style="margin:0 10px">|</span>
-                        <a href="${pageContent.linkedin}" target="_blank" style="color:inherit">LinkedIn</a>
-                    </p>`;
-            }
-            document.getElementById('modal').style.display = 'block';
+            galleryWrapper.innerHTML = itemsHtml + itemsHtml; // Create infinite loop
         }
 
         function setTheme(key, el) {
@@ -245,13 +217,133 @@
             document.querySelectorAll('.inv-grad-box').forEach(b => b.classList.toggle('no-grad', key === 'monochromeStatic'));
             document.querySelectorAll('.theme-option').forEach(o => o.classList.remove('active'));
             el.classList.add('active');
+            if(gameActive) initGame();
+        }
+
+        /* --- MODAL LOGIC --- */
+        function openItem(index) {
+            const item = feedItems[index];
+            const gradClass = activeTheme === 'monochromeStatic' ? 'inv-grad-box no-grad' : 'inv-grad-box';
+            document.getElementById('modal-body').innerHTML = `
+                <img src="${item.path}">
+                <h3 class="${gradClass}" style="margin-top:15px; font-size:1.2rem;">${item.title}</h3>
+                <p>${item.description}</p>
+            `;
+            document.getElementById('modal').style.display = 'block';
+        }
+
+        function openSection(type) {
+            const body = document.getElementById('modal-body');
+            const gradClass = activeTheme === 'monochromeStatic' ? 'inv-grad-box no-grad' : 'inv-grad-box';
+            if (type === 'about') {
+                body.innerHTML = `<h3 class="${gradClass}" style="font-size:1.5rem;">Ben Chmieleski</h3><p>${pageContent.about}</p>`;
+            } else {
+                body.innerHTML = `
+                    <h3 class="${gradClass}" style="font-size:1.5rem;">Contact</h3>
+                    <p class="contact-links">
+                        <a href="mailto:${pageContent.email}" style="color:inherit">Email</a>
+                        <span style="margin:0 10px">|</span>
+                        <a href="${pageContent.linkedin}" target="_blank" style="color:inherit">LinkedIn</a>
+                    </p>`;
+            }
+            document.getElementById('modal').style.display = 'block';
         }
 
         function closeModal() { document.getElementById('modal').style.display = 'none'; }
         window.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+        /* --- GAME LOGIC (Fully Restored) --- */
+        const canvas = document.getElementById('breakoutCanvas');
+        const ctx = canvas.getContext('2d');
+        const triggerZone = document.getElementById('game-easter-egg');
+        const closeGameBtn = document.getElementById('close-game-btn');
         
+        let gameActive = false, ballReleased = false;
+        let x, y, dx, dy, paddleX, bricks, starRain = [];
+        const brickRowCount = 2, paddleWidth = 60, brickHeight = 16, baseSpeed = 2.8;
+
+        function initGame() {
+            canvas.width = triggerZone.offsetWidth * 0.45;
+            canvas.height = triggerZone.offsetHeight;
+            const brickCols = Math.floor(canvas.width / 34);
+            paddleX = (canvas.width - paddleWidth) / 2;
+            ballReleased = false; starRain = [];
+            x = paddleX + paddleWidth / 2; y = canvas.height - 15;
+            dx = baseSpeed; dy = -baseSpeed;
+            bricks = [];
+            for(let c=0; c<brickCols; c++) {
+                bricks[c] = [];
+                for(let r=0; r<brickRowCount; r++) bricks[c][r] = { status: 1 };
+            }
+        }
+
+        function closeGame() {
+            gameActive = false; ballReleased = false;
+            canvas.style.display = 'none'; closeGameBtn.style.display = 'none';
+            galleryWrapper.classList.remove('paused');
+        }
+
+        function drawGame() {
+            if(!gameActive) return;
+            ctx.clearRect(0,0, canvas.width, canvas.height);
+            const t = themes[activeTheme];
+            let activeBricks = 0;
+            const bWidth = (canvas.width / bricks.length) - 4;
+
+            if (starRain.length > 0) {
+                starRain.forEach((s, i) => {
+                    ctx.globalAlpha = s.opacity; ctx.fillStyle = s.color; ctx.fillText("*", s.x, s.y);
+                    s.y += s.speed; if (s.y > canvas.height) s.opacity -= 0.01;
+                    if (s.opacity <= 0) starRain.splice(i, 1);
+                });
+                if (starRain.length === 0) closeGame();
+            } else {
+                bricks.forEach((col, i) => {
+                    col.forEach((b, r) => {
+                        if(b.status === 1) {
+                            activeBricks++;
+                            const bX = i * (bWidth + 4), bY = r * (brickHeight + 12) + 5; 
+                            ctx.fillStyle = (activeTheme === 'monochromeStatic') ? t.text : t.colors[0];
+                            ctx.fillRect(bX, bY, bWidth, brickHeight);
+                            if(ballReleased && x > bX && x < bX + bWidth && y > bY && y < bY + brickHeight) { dy = -dy; b.status = 0; }
+                        }
+                    });
+                });
+
+                if(activeBricks === 0 && bricks.length > 0) {
+                    for (let i = 0; i < 30; i++) starRain.push({x: Math.random()*canvas.width, y: 0, speed: 1+Math.random()*2, color: t.colors[Math.floor(Math.random()*3)], opacity: 1});
+                } else {
+                    ctx.fillStyle = t.text; ctx.fillRect(paddleX, canvas.height - 10, paddleWidth, 5);
+                    if (!ballReleased) { x = paddleX + paddleWidth / 2; y = canvas.height - 15; }
+                    ctx.beginPath(); ctx.arc(x, y, 4, 0, Math.PI*2); ctx.fill();
+                    if (ballReleased) {
+                        if(x + dx > canvas.width || x + dx < 0) dx = -dx;
+                        if(y + dy < 0) dy = -dy;
+                        else if(y + dy > canvas.height - 10) {
+                            if(x > paddleX && x < paddleX + paddleWidth) {
+                                let hitPos = (x - (paddleX + paddleWidth / 2)) / (paddleWidth / 2);
+                                dx = hitPos * (baseSpeed + 2); dy = -dy;
+                            } else { ballReleased = false; galleryWrapper.classList.remove('paused'); }
+                        }
+                        x += dx; y += dy;
+                    }
+                }
+            }
+            requestAnimationFrame(drawGame);
+        }
+
+        triggerZone.addEventListener('click', () => {
+            if (!gameActive) { gameActive = true; canvas.style.display = 'block'; closeGameBtn.style.display = 'block'; initGame(); drawGame(); }
+            else { ballReleased = true; galleryWrapper.classList.add('paused'); }
+        });
+
+        triggerZone.addEventListener('mousemove', e => {
+            const rect = canvas.getBoundingClientRect();
+            paddleX = Math.max(0, Math.min(canvas.width - paddleWidth, e.clientX - rect.left - paddleWidth / 2));
+        });
+
+        window.addEventListener('resize', () => { if(gameActive) initGame(); });
         init();
-        // Game logic (unchanged from index-37.html) follows here if desired...
     </script>
 </body>
 </html>
