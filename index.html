@@ -97,9 +97,11 @@
             background: var(--painting-frame); transition: 0.6s; 
             cursor: pointer; flex-shrink: 0;
             border-radius: 10px; overflow: hidden;
+            /* Update to a soft shadow that also covers the bottom */
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
         }
-        .item-wrapper:hover { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(0,0,0,0.15); }
+        /* Increased shadow and lift on hover for the full gallery items */
+        .item-wrapper:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.15); }
         body.game-on .item-wrapper { height: 30vh; } 
         .painting { height: 100%; display: block; background: #fff; border-radius: 8px; }
 
