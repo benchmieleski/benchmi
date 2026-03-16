@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ben Chmieleski | Home</title>
     <style>
-        /* --- 1. THEME COLORS --- */
         :root {
             --bg-main: #ffffff;
             --text-base: #1a1a1a;
@@ -15,7 +14,6 @@
             --painting-frame: #6cccb6; 
         }
 
-        /* --- 2. LAYOUT & SCROLLBAR --- */
         ::-webkit-scrollbar { width: 8px; height: 8px; }
         ::-webkit-scrollbar-track { background: var(--bg-main); }
         ::-webkit-scrollbar-thumb { background: var(--theme-c1); border-radius: 10px; border: 2px solid var(--bg-main); }
@@ -30,7 +28,6 @@
             height: 100vh;
         }
 
-        /* --- 3. HEADER & NAVIGATION --- */
         header { 
             position: fixed; top: 40px; left: 40px; right: 40px; 
             z-index: 1000; display: flex; align-items: flex-start; 
@@ -56,9 +53,8 @@
         .theme-option.active { border: 2px solid var(--text-base); }
         .swatch { width: 10px; height: 10px; margin: 0 1px; }
 
-        /* --- 4. GAME AREA --- */
         #game-easter-egg {
-            flex-grow: 1; height: 140px; margin-left: 30px;
+            flex-grow: 1; height: 160px; margin-left: 30px;
             position: relative; cursor: crosshair; display: flex; flex-direction: column; justify-content: center; align-items: center;
         }
         #breakoutCanvas { 
@@ -77,7 +73,7 @@
         }
         #close-game-btn { 
             display: none; cursor: pointer; position: absolute;
-            top: 5px; right: 27.5%; 
+            top: 15px; right: 27.5%; 
             transform: translate(50%, -50%); 
             width: 24px; height: 24px;
             background: var(--bg-main);
@@ -87,7 +83,6 @@
             align-items: center; justify-content: center; z-index: 1001;
         }
 
-        /* --- 5. EFFECTS --- */
         .inv-grad-box {
             background: linear-gradient(to right, var(--theme-c1), var(--theme-c2), var(--theme-c3), var(--theme-c1));
             background-size: 400% auto;
@@ -97,7 +92,6 @@
         .no-grad { -webkit-text-fill-color: var(--text-base) !important; background: none !important; animation: none !important; }
         @keyframes gradient-flow { to { background-position: 400% center; } }
 
-        /* --- 6. GALLERY --- */
         .gallery-container { position: absolute; bottom: 0; width: 100vw; height: 85vh; display: flex; align-items: center; overflow: hidden; }
         .scroll-wrapper { 
             display: flex; width: max-content; padding: 0 100px; 
@@ -109,7 +103,6 @@
         .item-wrapper { height: 60vh; margin: 0 40px; padding: 5px; background: var(--painting-frame); transition: 0.6s; cursor: pointer; flex-shrink: 0; }
         .painting { height: 100%; display: block; background: #fff; }
 
-        /* --- 7. MODALS --- */
         #modal {
             display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
             background: var(--bg-main); padding: 40px; border: 2px solid var(--theme-c1);
@@ -118,7 +111,6 @@
         #modal-body img { max-height: 60vh; max-width: 100%; object-fit: contain; }
         .close-btn { margin-top: 25px; font-size: 0.6rem; font-weight: bold; cursor: pointer; background: none; border: 1px solid var(--theme-c3); padding: 5px 15px; }
 
-        /* --- 8. MOBILE OPTIMIZATION --- */
         @media (max-width: 768px) {
             body, html { overflow-y: auto; overflow-x: hidden; height: auto; }
             #game-easter-egg { display: none !important; }
@@ -154,7 +146,7 @@
         
         <div id="game-easter-egg">
             <canvas id="breakoutCanvas"></canvas>
-            <div id="game-hud" class="inv-grad-box">Score: 0 | Level: 1</div>
+            <div id="game-hud" class="inv-grad-box">Score: 0 | Level: 1 | Lives: 3</div>
             <div id="close-game-btn" onclick="event.stopPropagation(); closeGame()">✕</div>
         </div>
     </header>
@@ -201,23 +193,36 @@
         
         let gameActive = false, ballReleased = false, activeTheme = 'misty';
         let x, y, dx, dy, paddleX, bricks, starRain = [];
-        let score = 0, level = 1;
+        let score = 0, level = 1, lives = 3;
 
         function updateHud() {
-            hud.innerText = `Score: ${score} | Level: ${level}`;
+            hud.innerText = `Score: ${score} | Level: ${level} | Lives: ${lives}`;
         }
 
-        function initGame() {
+        function resetBricks() {
+            const cols = Math.floor(canvas.width / 34);
+            bricks = Array.from({length: cols}, () => Array.from({length: gameConfig.rows}, () => ({status: 1})));
+        }
+
+        function initGame(fullReset = true) {
             canvas.width = triggerZone.offsetWidth * 0.45;
             canvas.height = 110;
-            const cols = Math.floor(canvas.width / 34);
             paddleX = (canvas.width - gameConfig.paddleWidth) / 2;
-            ballReleased = false; starRain = [];
-            score = 0; level = 1;
+            ballReleased = false; 
+            starRain = [];
+            
+            if (fullReset) {
+                score = 0; 
+                level = 1; 
+                lives = 3;
+                resetBricks();
+            }
+            
             updateHud();
-            x = paddleX + gameConfig.paddleWidth / 2; y = canvas.height - 15;
-            dx = gameConfig.speed; dy = -gameConfig.speed;
-            bricks = Array.from({length: cols}, () => Array.from({length: gameConfig.rows}, () => ({status: 1})));
+            x = paddleX + gameConfig.paddleWidth / 2; 
+            y = canvas.height - 15;
+            dx = gameConfig.speed; 
+            dy = -gameConfig.speed;
         }
 
         function drawGame() {
@@ -234,7 +239,12 @@
                     ctx.fillText("*", s.x, s.y); s.y += s.speed; if (s.y > canvas.height) s.opacity -= 0.01;
                     if (s.opacity <= 0) starRain.splice(i, 1);
                 });
-                if (starRain.length === 0) closeGame();
+                if (starRain.length === 0) {
+                    level++;
+                    if(level > 99) level = 1; // Reset Level at 99
+                    resetBricks();
+                    initGame(false); // Reset ball but keep score/lives
+                }
             } else {
                 bricks.forEach((col, i) => {
                     col.forEach((b, r) => {
@@ -242,7 +252,6 @@
                             activeCount++;
                             const bX = startX + i * (bWidth + 4), bY = r * (gameConfig.brickHeight + 12) + 5;
                             
-                            // Brick Gradient Effect
                             if (activeTheme === 'monochromeStatic') {
                                 ctx.fillStyle = t.text;
                             } else {
@@ -257,7 +266,7 @@
                             if(ballReleased && x > bX && x < bX + bWidth && y > bY && y < bY + gameConfig.brickHeight) { 
                                 dy = -dy; 
                                 b.status = 0; 
-                                score += 10;
+                                score += 1; // 1 point per block
                                 updateHud();
                             }
                         }
@@ -275,7 +284,17 @@
                         if(y + dy < 0) dy = -dy;
                         else if(y + dy > canvas.height - 10) {
                             if(x > paddleX && x < paddleX + gameConfig.paddleWidth) { dy = -dy; }
-                            else { ballReleased = false; gallery.classList.remove('paused'); }
+                            else { 
+                                lives--;
+                                ballReleased = false; 
+                                if (lives <= 0) {
+                                    initGame(true); // Complete reset on death
+                                    gallery.classList.remove('paused');
+                                } else {
+                                    initGame(false); // Lose life, reset ball position
+                                }
+                                updateHud();
+                            }
                         }
                         x += dx; y += dy;
                     }
@@ -292,7 +311,7 @@
                 hud.style.display = 'block';
                 closeBtn.style.display = 'flex'; 
                 gallery.classList.add('paused'); 
-                initGame(); 
+                initGame(true); 
                 drawGame(); 
             }
             else ballReleased = true;
@@ -319,7 +338,7 @@
             root.setProperty('--painting-frame', key === 'monochromeStatic' ? '#000' : t.colors[0]);
             document.querySelectorAll('.inv-grad-box').forEach(b => b.classList.toggle('no-grad', key === 'monochromeStatic'));
             document.querySelectorAll('.theme-option').forEach(o => o.classList.remove('active'));
-            el.classList.add('active'); if(gameActive) initGame();
+            el.classList.add('active'); if(gameActive) initGame(false);
         }
 
         function openItem(idx) {
@@ -338,7 +357,7 @@
 
         function closeModal() { document.getElementById('modal').style.display = 'none'; }
         window.onkeydown = e => { if (e.key === 'Escape') closeModal(); };
-        window.onresize = () => { if(gameActive) initGame(); };
+        window.onresize = () => { if(gameActive) initGame(false); };
         
         const isMobile = window.innerWidth <= 768;
         const html = feedItems.map((item, idx) => `<div class="item-wrapper" onclick="openItem(${idx})"><img src="${item.path}" class="painting"></div>`).join('');
