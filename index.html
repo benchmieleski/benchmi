@@ -14,7 +14,7 @@
             --painting-frame: #6cccb6; 
         }
 
-        /* Scrollbar Styling */
+        /* Global Scrollbar */
         ::-webkit-scrollbar { width: 8px; height: 8px; }
         ::-webkit-scrollbar-track { background: var(--bg-main); }
         ::-webkit-scrollbar-thumb { background: var(--theme-c1); border-radius: 10px; border: 2px solid var(--bg-main); }
@@ -60,7 +60,7 @@
         .theme-option.active { border: 2px solid var(--text-base); }
         .swatch { width: 10px; height: 10px; margin: 0 1px; }
 
-        /* Game UI */
+        /* Game Elements */
         .desktop-only { display: flex; }
         #game-easter-egg {
             flex-grow: 1; height: 140px; pointer-events: auto; cursor: crosshair; 
@@ -81,17 +81,33 @@
             align-items: center; justify-content: center; z-index: 2005; top: 0; right: 0; transform: translate(50%, -50%);
         }
 
-        /* Gallery Layout */
-        .gallery-container { flex: 1; width: 100vw; display: flex; align-items: center; overflow: hidden; transition: flex 0.5s ease-in-out; margin-top: 140px; }
+        /* Gallery & Themed Scrollbar */
+        .gallery-container { 
+            flex: 1; 
+            width: 100vw; 
+            display: flex; 
+            align-items: center; 
+            overflow-x: auto; 
+            overflow-y: hidden;
+            transition: flex 0.5s ease-in-out; 
+            margin-top: 140px;
+            padding-bottom: 25px;
+        }
+        
+        .gallery-container::-webkit-scrollbar { height: 10px; }
+        .gallery-container::-webkit-scrollbar-track { background: rgba(0,0,0,0.05); border-radius: 10px; margin: 0 100px; }
+        .gallery-container::-webkit-scrollbar-thumb { background: var(--theme-c1); border-radius: 10px; border: 2px solid var(--bg-main); }
+
         body.game-on .gallery-container { margin-top: 60vh; flex: 0 0 40vh; }
         .scroll-wrapper { display: flex; width: max-content; padding: 0 100px; animation: slow-scroll 80s linear infinite; }
+        .scroll-wrapper:hover { animation-play-state: paused; }
         @keyframes slow-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
         
         .item-wrapper { 
             height: 60vh; margin: 20px 40px; padding: 5px; background: var(--painting-frame); 
             transition: 0.6s; cursor: pointer; flex-shrink: 0;
-            border-radius: 7px; /* 30% thinner border-radius */
-            box-shadow: 0 15px 35px rgba(0,0,0,0.25); /* Darker shadow */
+            border-radius: 7px; /* 30% thinner */
+            box-shadow: 0 15px 35px rgba(0,0,0,0.25);
             overflow: hidden;
         }
         .item-wrapper:hover { transform: translateY(-8px); box-shadow: 0 25px 50px rgba(0,0,0,0.35); }
@@ -99,11 +115,10 @@
         body.game-on .item-wrapper { height: 30vh; } 
         .painting { height: 100%; display: block; background: #fff; border-radius: 4px; }
 
-        /* Modal */
         #modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--bg-main); padding: 40px; border: 2px solid var(--theme-c1); z-index: 2000; text-align: center; max-width: 85vw; border-radius: 10px; box-shadow: 0 30px 60px rgba(0,0,0,0.4); }
+        #modal-body { max-height: 80vh; overflow-y: auto; }
         #modal-body img { max-height: 60vh; max-width: 100%; border-radius: 5px; }
 
-        /* Mobile Adjustments */
         @media (max-width: 768px) {
             .desktop-only { display: none !important; }
             header { position: relative; padding: 20px; pointer-events: auto; }
@@ -115,7 +130,6 @@
             body { overflow-y: auto; }
         }
 
-        /* Animations */
         .inv-grad-box { background: linear-gradient(to right, var(--theme-c1), var(--theme-c2), var(--theme-c3), var(--theme-c1)); background-size: 400% auto; animation: gradient-flow 18s linear infinite; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
         @keyframes gradient-flow { to { background-position: 400% center; } }
     </style>
@@ -225,6 +239,8 @@
                 grd.addColorStop(0, c1); grd.addColorStop(0.5, c2); grd.addColorStop(1, c3);
                 ctx.fillStyle = grd;
                 ctx.fillText("YOU WIN!", canvas.width / 2, canvas.height / 2);
+                ctx.font = "bold 15px sans-serif";
+                ctx.fillText("Final Score: " + score, canvas.width / 2, (canvas.height / 2) + 30);
             } else if (starRain.length > 0) {
                 starRain.forEach((s, i) => {
                     ctx.globalAlpha = s.opacity; ctx.fillStyle = s.color; ctx.fillText("*", s.x, s.y); s.y += s.speed;
@@ -313,7 +329,15 @@
         function closeGame() { gameActive = false; document.body.classList.remove('game-on'); hud.style.display = 'none'; closeBtn.style.display = 'none'; }
         function setTheme(key, el) { activeTheme = key; const t = themes[key]; const root = document.documentElement.style; root.setProperty('--theme-c1', t.colors[0]); root.setProperty('--theme-c2', t.colors[1]); root.setProperty('--theme-c3', t.colors[2]); root.setProperty('--bg-main', t.bg); root.setProperty('--text-base', t.text); document.querySelectorAll('.theme-option').forEach(o => o.classList.remove('active')); el.classList.add('active'); }
         function openItem(idx) { const item = feedItems[idx % feedItems.length]; document.getElementById('modal-body').innerHTML = `<img src="${item.path}"><h3 style="margin-top:15px;">${item.title}</h3><p>${item.description}</p>`; document.getElementById('modal').style.display = 'block'; }
-        function openSection(type) { const body = document.getElementById('modal-body'); body.innerHTML = type === 'about' ? `<h3>Ben Chmieleski</h3><p>Artist & Designer in West Michigan.</p>` : `<h3>Contact</h3><p>benchmieleski@gmail.com</p>`; document.getElementById('modal').style.display = 'block'; }
+        
+        function openSection(type) { 
+            const body = document.getElementById('modal-body'); 
+            body.innerHTML = type === 'about' ? 
+                `<h3>Ben Chmieleski</h3><p>Artist & Designer in West Michigan.</p>` : 
+                `<h3>Contact</h3><p>benchmieleski@gmail.com</p>`; 
+            document.getElementById('modal').style.display = 'block'; 
+        }
+        
         function closeModal() { document.getElementById('modal').style.display = 'none'; }
         
         const isMobileView = window.innerWidth <= 768;
