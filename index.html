@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -60,6 +59,20 @@
         .theme-option.active { border: 2px solid var(--text-base); }
         .swatch { width: 10px; height: 10px; margin: 0 1px; }
 
+        /* --- UNIFIED CLOSE BUTTON --- */
+        .universal-close {
+            display: none; cursor: pointer; position: absolute;
+            width: 28px; height: 28px;
+            background: var(--bg-main);
+            border: 2px solid var(--theme-c1);
+            border-radius: 4px; 
+            color: var(--text-base); font-size: 0.9rem; font-weight: bold;
+            align-items: center; justify-content: center;
+            z-index: 2005;
+            transform: translate(50%, -50%); /* Centers on the corner */
+        }
+        .universal-close:hover { background: var(--theme-c1); color: var(--bg-main); }
+
         /* --- GAME AREA --- */
         #game-easter-egg {
             flex-grow: 1;
@@ -70,7 +83,7 @@
             justify-content: center;
             align-items: center;
             transition: height 0.5s ease-in-out;
-            overflow: hidden;
+            overflow: visible; /* Allow X to overflow the corner */
             z-index: 900;
         }
         
@@ -80,10 +93,11 @@
             background: var(--bg-main);
         }
 
+        .canvas-container { position: relative; display: none; height: 80%; aspect-ratio: 4 / 3; }
+        body.game-on .canvas-container { display: block; }
+
         #breakoutCanvas { 
-            display: none; 
-            height: 80%; 
-            aspect-ratio: 4 / 3; 
+            width: 100%; height: 100%;
             border: 2px solid var(--theme-c1); border-radius: 15px;
             background: var(--bg-main);
             image-rendering: pixelated; 
@@ -98,13 +112,34 @@
             letter-spacing: 0.1em;
         }
 
-        #close-game-btn { 
-            display: none; cursor: pointer; position: absolute;
-            top: 50px; right: 40px; 
-            width: 24px; height: 24px;
-            background: var(--bg-main); border: 2px solid var(--theme-c1); border-radius: 6px; 
-            color: var(--theme-c3); font-size: 1rem; font-weight: bold;
-            align-items: center; justify-content: center; z-index: 1005;
+        /* --- GALLERY --- */
+        .gallery-container { 
+            flex: 1; width: 100vw; display: flex; align-items: center; overflow: hidden;
+            transition: flex 0.5s ease-in-out; margin-top: 140px; 
+        }
+        body.game-on .gallery-container { margin-top: 60vh; flex: 0 0 40vh; }
+
+        .scroll-wrapper { display: flex; width: max-content; padding: 0 100px; animation: slow-scroll 80s linear infinite; will-change: transform; }
+        .scroll-wrapper:hover { animation-play-state: paused; }
+        @keyframes slow-scroll { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(-50%, 0, 0); } }
+
+        .item-wrapper { height: 60vh; margin: 0 40px; padding: 5px; background: var(--painting-frame); transition: 0.6s; cursor: pointer; flex-shrink: 0; }
+        body.game-on .item-wrapper { height: 30vh; } 
+        .painting { height: 100%; display: block; background: #fff; }
+
+        /* --- MODAL --- */
+        #modal {
+            display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background: var(--bg-main); padding: 40px; border: 2px solid var(--theme-c1);
+            z-index: 2000; text-align: center; max-width: 85vw; border-radius: 15px;
+        }
+        #modal-body img { max-height: 60vh; max-width: 100%; object-fit: contain; }
+
+        @media (max-width: 768px) {
+            #game-easter-egg { display: none !important; }
+            .gallery-container { margin-top: 180px; display: block; overflow-y: auto; height: auto; }
+            .scroll-wrapper { animation: none; display: block; width: 100%; padding: 0; }
+            .item-wrapper { height: auto; width: 100%; max-width: 400px; margin: 0 auto 40px auto; }
         }
 
         .inv-grad-box {
@@ -115,46 +150,6 @@
         }
         .no-grad { -webkit-text-fill-color: var(--text-base) !important; background: none !important; animation: none !important; }
         @keyframes gradient-flow { to { background-position: 400% center; } }
-
-        /* --- GALLERY --- */
-        .gallery-container { 
-            flex: 1;
-            width: 100vw;
-            display: flex; align-items: center; overflow: hidden;
-            transition: flex 0.5s ease-in-out;
-            margin-top: 140px; 
-        }
-
-        body.game-on .gallery-container {
-            margin-top: 60vh;
-            flex: 0 0 40vh;
-        }
-
-        .scroll-wrapper { 
-            display: flex; width: max-content; padding: 0 100px; 
-            animation: slow-scroll 80s linear infinite; will-change: transform; 
-        }
-        .scroll-wrapper:hover { animation-play-state: paused; }
-        @keyframes slow-scroll { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(-50%, 0, 0); } }
-
-        .item-wrapper { height: 60vh; margin: 0 40px; padding: 5px; background: var(--painting-frame); transition: 0.6s; cursor: pointer; flex-shrink: 0; }
-        body.game-on .item-wrapper { height: 30vh; } 
-        .painting { height: 100%; display: block; background: #fff; }
-
-        #modal {
-            display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            background: var(--bg-main); padding: 40px; border: 2px solid var(--theme-c1);
-            z-index: 2000; text-align: center; max-width: 85vw;
-        }
-        #modal-body img { max-height: 60vh; max-width: 100%; object-fit: contain; }
-        .close-btn { margin-top: 25px; font-size: 0.6rem; font-weight: bold; cursor: pointer; background: none; border: 1px solid var(--theme-c3); padding: 5px 15px; }
-
-        @media (max-width: 768px) {
-            #game-easter-egg { display: none !important; }
-            .gallery-container { margin-top: 180px; display: block; overflow-y: auto; height: auto; }
-            .scroll-wrapper { animation: none; display: block; width: 100%; padding: 0; }
-            .item-wrapper { height: auto; width: 100%; max-width: 400px; margin: 0 auto 40px auto; }
-        }
     </style>
 </head>
 <body>
@@ -178,9 +173,11 @@
         </div>
 
         <div id="game-easter-egg" onclick="handleTriggerClick(event)">
-            <canvas id="breakoutCanvas"></canvas>
+            <div class="canvas-container">
+                <canvas id="breakoutCanvas"></canvas>
+                <div id="close-game-btn" class="universal-close" onclick="event.stopPropagation(); closeGame()">✕</div>
+            </div>
             <div id="game-hud" class="inv-grad-box">Score: 0 | Level: 1 | Lives: 3</div>
-            <div id="close-game-btn" onclick="event.stopPropagation(); closeGame()">✕</div>
         </div>
     </header>
 
@@ -189,8 +186,8 @@
     </div>
 
     <div id="modal">
+        <div id="modal-close-btn" class="universal-close" style="display:flex; top:0; right:0;" onclick="closeModal()">✕</div>
         <div id="modal-body"></div>
-        <button class="close-btn" onclick="closeModal()">Close</button>
     </div>
 
     <script>
@@ -202,7 +199,6 @@
             { path: 'art_bella.jpg', title: 'Botanics', description: 'acrylic on wood, 2026' }
         ];
 
-        // ROWS SET TO 2
         const gameConfig = { cols: 8, rows: 2, paddleWidth: 60, brickHeight: 20, speed: 3.8 };
         const themes = {
             misty: { colors: ['#6cccb6', '#57648a', '#ab5c95'], bg: '#fff', text: '#1a1a1a' }, 
@@ -290,7 +286,6 @@
             if (!gameActive) { 
                 gameActive = true; 
                 document.body.classList.add('game-on');
-                canvas.style.display = 'block'; 
                 hud.style.display = 'block';
                 closeBtn.style.display = 'flex'; 
                 initGame(true); drawGame();
@@ -307,7 +302,7 @@
 
         function closeGame() { 
             gameActive = false; document.body.classList.remove('game-on');
-            canvas.style.display = 'none'; hud.style.display = 'none'; closeBtn.style.display = 'none'; 
+            hud.style.display = 'none'; closeBtn.style.display = 'none'; 
         }
 
         function setTheme(key, el) {
