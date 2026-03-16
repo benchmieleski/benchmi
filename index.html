@@ -35,14 +35,14 @@
             padding: 40px 40px 0 40px;
             z-index: 1000; 
             display: flex; 
-            flex-direction: row; /* Side by side */
+            flex-direction: row; 
             align-items: flex-start;
-            pointer-events: none; /* Let clicks pass through to child elements that have auto */
+            pointer-events: none;
         }
 
         .site-name-wrapper { 
             display: inline-flex; flex-direction: column; cursor: pointer; padding-bottom: 30px; 
-            pointer-events: auto; /* Name is clickable */
+            pointer-events: auto;
             flex-shrink: 0;
             z-index: 1001;
         }
@@ -59,11 +59,11 @@
         .theme-option.active { border: 2px solid var(--text-base); }
         .swatch { width: 10px; height: 10px; margin: 0 1px; }
 
-        /* --- GAME TRIGGER & AREA --- */
+        /* --- GAME AREA --- */
         #game-easter-egg {
-            flex-grow: 1; /* Fills all space to the right of the name */
+            flex-grow: 1;
             height: 140px; 
-            pointer-events: auto; /* THIS ENABLES THE CLICK */
+            pointer-events: auto;
             cursor: crosshair; 
             display: flex; flex-direction: column; 
             justify-content: center;
@@ -71,7 +71,6 @@
             transition: height 0.5s ease-in-out;
             overflow: hidden;
             z-index: 900;
-            /* background: rgba(0,0,0,0.05); */ /* Uncomment this to see the clickable zone */
         }
         
         body.game-on #game-easter-egg {
@@ -82,9 +81,8 @@
 
         #breakoutCanvas { 
             display: none; 
-            width: 70%; 
-            max-height: 75%;
-            aspect-ratio: 4 / 3;
+            height: 80%; /* Takes height of container */
+            aspect-ratio: 4 / 3; /* STRICT 4:3 Ratio */
             border: 2px solid var(--theme-c1); border-radius: 15px;
             background: var(--bg-main);
             image-rendering: pixelated; 
@@ -123,7 +121,7 @@
             width: 100vw;
             display: flex; align-items: center; overflow: hidden;
             transition: flex 0.5s ease-in-out;
-            margin-top: 140px; /* Offset to start below header/trigger area */
+            margin-top: 140px; 
         }
 
         body.game-on .gallery-container {
@@ -203,7 +201,8 @@
             { path: 'art_bella.jpg', title: 'Botanics', description: 'acrylic on wood, 2026' }
         ];
 
-        const gameConfig = { cols: 10, rows: 2, paddleWidth: 60, brickHeight: 12, speed: 3.0 };
+        // 2:1 Brick Ratio logic: 400 wide / 8 cols = 50. 50 wide / 2 = 25 height.
+        const gameConfig = { cols: 8, rows: 3, paddleWidth: 60, brickHeight: 20, speed: 3.5 };
         const themes = {
             misty: { colors: ['#6cccb6', '#57648a', '#ab5c95'], bg: '#fff', text: '#1a1a1a' }, 
             electric: { colors: ['#d9b3f2', '#b3d9d9', '#efb9da'], bg: '#fff', text: '#1a1a1a' },
@@ -226,7 +225,7 @@
         function resetBricks() { bricks = Array.from({length: gameConfig.cols}, () => Array.from({length: gameConfig.rows}, () => ({status: 1}))); }
 
         function initGame(fullReset = true) {
-            canvas.width = 400; canvas.height = 300; 
+            canvas.width = 400; canvas.height = 300; // Hard 4:3 ratio
             paddleX = (canvas.width - gameConfig.paddleWidth) / 2;
             ballReleased = false; starRain = [];
             if (fullReset) { score = 0; level = 1; lives = 3; resetBricks(); }
@@ -240,9 +239,9 @@
             ctx.clearRect(0,0, canvas.width, canvas.height);
             const t = themes[activeTheme];
             let activeCount = 0;
-            const padding = 4;
+            const padding = 6;
             const bWidth = (canvas.width / gameConfig.cols) - padding;
-            const startX = (canvas.width - (gameConfig.cols * (bWidth + padding) - padding)) / 2;
+            const startX = padding / 2;
 
             if (starRain.length > 0) {
                 starRain.forEach((s, i) => {
@@ -256,11 +255,11 @@
                     col.forEach((b, r) => {
                         if(b.status === 1) {
                             activeCount++;
-                            const bX = startX + i * (bWidth + padding), bY = r * (gameConfig.brickHeight + 8) + 50;
+                            const bX = startX + i * (bWidth + padding), bY = r * (gameConfig.brickHeight + padding) + 50;
                             const grd = ctx.createLinearGradient(bX, bY, bX + bWidth, bY);
                             grd.addColorStop(0, t.colors[0]); grd.addColorStop(1, t.colors[2]);
                             ctx.fillStyle = activeTheme === 'monochromeStatic' ? t.text : grd;
-                            ctx.fillRect(bX, bY, bWidth, gameConfig.brickHeight);
+                            ctx.fillRect(bX, bY, bWidth, gameConfig.brickHeight); // BRICK
                             if(ballReleased && x > bX && x < bX + bWidth && y > bY && y < bY + gameConfig.brickHeight) { dy = -dy; b.status = 0; score += 1; updateHud(); }
                         }
                     });
