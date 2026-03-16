@@ -1,42 +1,23 @@
-// ... inside drawGame function ...
+const gameConfig = { 
+    cols: 8, 
+    rows: 3, // Kept to 3 rows for a faster pace
+    basePaddleWidth: 60, 
+    brickHeight: 20, 
+    baseSpeed: 3, 
+    maxLevels: 3 // Strictly capped at 3 levels
+};
 
-if (gameWon) {
-    // FIXED: The win state now renders properly
-    ctx.font = "bold 40px sans-serif";
-    ctx.textAlign = "center";
-    
-    // Using the theme gradient for the win text
-    const grd = ctx.createLinearGradient(0, 0, canvas.width, 0);
-    grd.addColorStop(0, c1); grd.addColorStop(0.5, c2); grd.addColorStop(1, c3);
-    ctx.fillStyle = grd;
-    
-    ctx.fillText("YOU WIN!", canvas.width / 2, canvas.height / 2);
-    ctx.font = "bold 15px sans-serif";
-    ctx.fillText("Final Score: " + score, canvas.width / 2, (canvas.height / 2) + 30);
-} else if (starRain.length > 0) {
-    // Level transition animation
-    starRain.forEach((s, i) => {
-        ctx.globalAlpha = s.opacity; 
-        ctx.fillStyle = s.color; 
-        ctx.fillText("*", s.x, s.y); 
-        s.y += s.speed;
-        if (s.y > canvas.height) s.opacity -= 0.01;
-        if (s.opacity <= 0) starRain.splice(i, 1);
-    });
-
-    // Check if animation is done to progress or win
-    if (starRain.length === 0 && levelTransitioning) {
-        if (level < gameConfig.maxLevels) {
-            level++;
-            resetBricks();
-            initGame(false);
-            levelTransitioning = false;
-        } else {
-            gameWon = true; // Trigger the Win screen
-            ballReleased = false;
-            levelTransitioning = false;
-        }
+// ... inside the starRain check in drawGame() ...
+if (starRain.length === 0 && levelTransitioning) {
+    if (level < gameConfig.maxLevels) {
+        level++;
+        resetBricks();
+        initGame(false);
+        levelTransitioning = false;
+    } else {
+        // This block now triggers correctly after Level 3
+        gameWon = true; 
+        ballReleased = false;
+        levelTransitioning = false;
     }
-} else {
-    // ... rest of brick and ball logic ...
 }
