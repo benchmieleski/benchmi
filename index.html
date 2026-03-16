@@ -234,19 +234,20 @@
             const t = themes[activeTheme];
             
             if (gameWon) {
-                ctx.font = "bold 40px sans-serif"; ctx.textAlign = "center";
+                ctx.font = "bold 40px sans-serif"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
                 const grd = ctx.createLinearGradient(0, 0, canvas.width, 0);
                 grd.addColorStop(0, c1); grd.addColorStop(0.5, c2); grd.addColorStop(1, c3);
                 ctx.fillStyle = grd;
                 ctx.fillText("YOU WIN!", canvas.width / 2, canvas.height / 2);
                 ctx.font = "bold 15px sans-serif";
-                ctx.fillText("Final Score: " + score, canvas.width / 2, (canvas.height / 2) + 30);
+                ctx.fillText("Final Score: " + score, canvas.width / 2, (canvas.height / 2) + 40);
             } else if (starRain.length > 0) {
                 starRain.forEach((s, i) => {
                     ctx.globalAlpha = s.opacity; ctx.fillStyle = s.color; ctx.fillText("*", s.x, s.y); s.y += s.speed;
                     if (s.y > canvas.height) s.opacity -= 0.01;
                     if (s.opacity <= 0) starRain.splice(i, 1);
                 });
+                ctx.globalAlpha = 1.0; 
                 if (starRain.length === 0 && levelTransitioning) {
                     if (level < gameConfig.maxLevels) {
                         level++; resetBricks(); initGame(false); levelTransitioning = false;
