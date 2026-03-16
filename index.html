@@ -59,7 +59,7 @@
         .theme-option.active { border: 2px solid var(--text-base); }
         .swatch { width: 10px; height: 10px; margin: 0 1px; }
 
-        /* --- UNIFIED CLOSE BUTTON --- */
+        /* --- CENTERED ON CORNER CLOSE BUTTON --- */
         .universal-close {
             display: none; cursor: pointer; position: absolute;
             width: 28px; height: 28px;
@@ -69,7 +69,10 @@
             color: var(--text-base); font-size: 0.9rem; font-weight: bold;
             align-items: center; justify-content: center;
             z-index: 2005;
-            transform: translate(50%, -50%); /* Centers on the corner */
+            /* Anchors the center of the button to the top-right corner point */
+            top: 0; 
+            right: 0;
+            transform: translate(50%, -50%);
         }
         .universal-close:hover { background: var(--theme-c1); color: var(--bg-main); }
 
@@ -83,7 +86,6 @@
             justify-content: center;
             align-items: center;
             transition: height 0.5s ease-in-out;
-            overflow: visible; /* Allow X to overflow the corner */
             z-index: 900;
         }
         
@@ -93,7 +95,13 @@
             background: var(--bg-main);
         }
 
-        .canvas-container { position: relative; display: none; height: 80%; aspect-ratio: 4 / 3; }
+        .canvas-container { 
+            position: relative; 
+            display: none; 
+            height: 80%; 
+            aspect-ratio: 4 / 3; 
+            overflow: visible; /* Crucial for the X to hang off the edge */
+        }
         body.game-on .canvas-container { display: block; }
 
         #breakoutCanvas { 
@@ -132,6 +140,7 @@
             display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
             background: var(--bg-main); padding: 40px; border: 2px solid var(--theme-c1);
             z-index: 2000; text-align: center; max-width: 85vw; border-radius: 15px;
+            overflow: visible; /* Crucial for the X to hang off the edge */
         }
         #modal-body img { max-height: 60vh; max-width: 100%; object-fit: contain; }
 
@@ -186,7 +195,7 @@
     </div>
 
     <div id="modal">
-        <div id="modal-close-btn" class="universal-close" style="display:flex; top:0; right:0;" onclick="closeModal()">✕</div>
+        <div id="modal-close-btn" class="universal-close" style="display:flex;" onclick="closeModal()">✕</div>
         <div id="modal-body"></div>
     </div>
 
