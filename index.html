@@ -44,7 +44,7 @@
         .site-name-wrapper:hover .nav-menu { display: flex; }
         
         .nav-links-column { display: flex; flex-direction: column; gap: 6px; }
-        .nav-link { font-size: 0.9rem; font-weight: bold; text-decoration: none; cursor: pointer; color: inherit; }
+        .nav-link { font-size: 0.9rem; font-weight: bold; text-decoration: none; color: inherit; cursor: pointer; }
 
         .color-controls-dropdown { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
         
@@ -56,9 +56,9 @@
         .theme-option.active { border: 2px solid var(--text-base); }
         .swatch { width: 10px; height: 10px; margin: 0 1px; }
 
-        /* --- GAME AREA (60%) --- */
+        /* --- GAME AREA (60% Height) --- */
         #game-easter-egg {
-            flex: 0 0 0;
+            flex: 0 0 0; /* Starts collapsed */
             width: 100%;
             position: relative; cursor: crosshair; 
             display: flex; flex-direction: column; justify-content: flex-end; align-items: center;
@@ -66,11 +66,13 @@
             overflow: hidden;
             padding-bottom: 20px;
         }
-        body.game-on #game-easter-egg { flex: 0 0 60vh; }
+        body.game-on #game-easter-egg {
+            flex: 0 0 60vh;
+        }
 
         #breakoutCanvas { 
             display: none; 
-            max-width: 60%; /* Slightly wider to accommodate 10 bricks comfortably */
+            max-width: 60%; 
             max-height: 85%;
             border: 2px solid var(--theme-c1); border-radius: 15px;
             background: var(--bg-main);
@@ -108,14 +110,16 @@
         .no-grad { -webkit-text-fill-color: var(--text-base) !important; background: none !important; animation: none !important; }
         @keyframes gradient-flow { to { background-position: 400% center; } }
 
-        /* --- GALLERY (40%) --- */
+        /* --- GALLERY (40% Height) --- */
         .gallery-container { 
             flex: 1;
             width: 100vw;
             display: flex; align-items: center; overflow: hidden;
             transition: flex 0.5s ease-in-out;
         }
-        body.game-on .gallery-container { flex: 0 0 40vh; }
+        body.game-on .gallery-container {
+            flex: 0 0 40vh;
+        }
 
         .scroll-wrapper { 
             display: flex; width: max-content; padding: 0 100px; 
@@ -125,7 +129,7 @@
         @keyframes slow-scroll { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(-50%, 0, 0); } }
 
         .item-wrapper { height: 60vh; margin: 0 40px; padding: 5px; background: var(--painting-frame); transition: 0.6s; cursor: pointer; flex-shrink: 0; }
-        body.game-on .item-wrapper { height: 30vh; }
+        body.game-on .item-wrapper { height: 30vh; } 
         .painting { height: 100%; display: block; background: #fff; }
 
         #modal {
@@ -149,7 +153,7 @@
         }
     </style>
 </head>
-<body class="game-off">
+<body>
 
     <header>
        <div class="site-name-wrapper" onclick="handleHeaderClick()">
@@ -200,7 +204,7 @@
             { path: 'art_bella.jpg', title: 'Botanics', description: 'acrylic on wood, 2026' }
         ];
 
-        // CONFIG: 10 columns x 2 rows = 20 bricks
+        // 10 columns across, 2 rows = 20 total
         const gameConfig = { cols: 10, rows: 2, paddleWidth: 80, brickHeight: 14, speed: 3.5 };
 
         const themes = {
@@ -213,7 +217,6 @@
         const canvas = document.getElementById('breakoutCanvas');
         const ctx = canvas.getContext('2d');
         const triggerZone = document.getElementById('game-easter-egg');
-        const mainGallery = document.getElementById('main-gallery');
         const hud = document.getElementById('game-hud');
         const closeBtn = document.getElementById('close-game-btn');
         const gallery = document.getElementById('gallery-wrapper');
@@ -231,6 +234,7 @@
         }
 
         function initGame(fullReset = true) {
+            // Force 4:3 Aspect Ratio
             const targetWidth = window.innerWidth * 0.5;
             canvas.width = targetWidth;
             canvas.height = targetWidth * (3 / 4); 
@@ -312,19 +316,22 @@
             requestAnimationFrame(drawGame);
         }
 
+        // Added this logic to handle the layout transition
         function handleHeaderClick() {
             if (window.innerWidth <= 768) { window.location.href='/'; return; }
             if (!gameActive) { 
                 gameActive = true; 
-                document.body.classList.replace('game-off', 'game-on');
+                document.body.classList.add('game-on');
                 canvas.style.display = 'block'; 
                 hud.style.display = 'block';
                 closeBtn.style.display = 'flex'; 
                 gallery.classList.add('paused');
+                // Allow transition to finish before initializing game for correct measurements
                 setTimeout(() => { initGame(true); drawGame(); }, 500);
             }
         }
 
+        // Release ball on canvas click
         triggerZone.onclick = () => { if(gameActive) ballReleased = true; };
 
         triggerZone.onmousemove = e => {
@@ -336,7 +343,7 @@
 
         function closeGame() { 
             gameActive = false; 
-            document.body.classList.replace('game-on', 'game-off');
+            document.body.classList.remove('game-on');
             canvas.style.display = 'none'; 
             hud.style.display = 'none';
             closeBtn.style.display = 'none'; 
