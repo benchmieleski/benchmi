@@ -30,7 +30,6 @@
             flex-direction: column;
         }
 
-        /* Fixed header layout to allow the trigger to occupy the rest of the row */
         header { 
             position: fixed; top: 0; left: 0; right: 0; 
             padding: 40px 40px 0 40px;
@@ -64,24 +63,26 @@
 
         /* --- GAME AREA (60% Height) --- */
         #game-easter-egg {
-            flex-grow: 1; /* Fills remaining width of header */
-            height: 140px; /* Trigger height in "normal" mode */
+            flex-grow: 1;
+            height: 140px; 
             position: relative; cursor: crosshair; 
-            display: flex; flex-direction: column; justify-content: flex-end; align-items: center;
+            display: flex; flex-direction: column; 
+            justify-content: center; /* Center the canvas so it doesn't clip at top/bottom */
+            align-items: center;
             transition: height 0.5s ease-in-out;
             overflow: hidden;
             pointer-events: auto; 
             z-index: 900;
+            padding-top: 40px; /* Offset for the header text height */
         }
         
-        /* When game is on, the whole page shifts down */
         body.game-on #game-easter-egg {
             height: 60vh;
         }
 
         #breakoutCanvas { 
             display: none; 
-            width: 70%; /* Large display size */
+            width: 70%; 
             height: auto;
             aspect-ratio: 4 / 3;
             border: 2px solid var(--theme-c1); border-radius: 15px;
@@ -102,7 +103,7 @@
 
         #close-game-btn { 
             display: none; cursor: pointer; position: absolute;
-            top: 20px; right: 15%; 
+            top: 60px; right: 15%; /* Lowered so it doesn't hide behind browser chrome */
             width: 24px; height: 24px;
             background: var(--bg-main);
             border: 2px solid var(--theme-c1);
@@ -122,7 +123,6 @@
 
         /* --- GALLERY (40% Height) --- */
         .gallery-container { 
-            margin-top: 0; /* Starts at top because header is fixed */
             flex: 1;
             width: 100vw;
             display: flex; align-items: center; overflow: hidden;
@@ -130,10 +130,9 @@
             z-index: 5;
         }
 
-        /* Push gallery down when game opens */
         body.game-on .gallery-container {
             flex: 0 0 40vh;
-            margin-top: 60vh; 
+            margin-top: 0; /* Let flexbox handle the distribution */
         }
 
         .scroll-wrapper { 
@@ -219,7 +218,6 @@
             { path: 'art_bella.jpg', title: 'Botanics', description: 'acrylic on wood, 2026' }
         ];
 
-        // Increased scale for "chunky pixels" but better visibility
         const gameConfig = { 
             cols: 10, 
             rows: 2, 
@@ -255,8 +253,6 @@
         }
 
         function initGame(fullReset = true) {
-            // Internal resolution for chunky aesthetic
-            const rect = canvas.getBoundingClientRect();
             canvas.width = 400; 
             canvas.height = 300; 
             
@@ -300,8 +296,9 @@
                     col.forEach((b, r) => {
                         if(b.status === 1) {
                             activeCount++;
-                            const bX = startX + i * (bWidth + padding), bY = r * (gameConfig.brickHeight + 8) + 30;
-                            const grd = ctx.createLinearGradient(bX, bY, bX + bWidth, bY);
+                            // Changed bY logic to add more margin from the top edge
+                            const bY = r * (gameConfig.brickHeight + 8) + 45; 
+                            const grd = ctx.createLinearGradient(bX = startX + i * (bWidth + padding), bY, bX + bWidth, bY);
                             grd.addColorStop(0, t.colors[0]); grd.addColorStop(0.5, t.colors[1]); grd.addColorStop(1, t.colors[2]);
                             ctx.fillStyle = activeTheme === 'monochromeStatic' ? t.text : grd;
                             ctx.fillRect(bX, bY, bWidth, gameConfig.brickHeight);
