@@ -123,10 +123,11 @@
         #modal-body img { max-height: 60vh; max-width: 100%; border-radius: 5px; }
 
         /* --- Game Menu Styles --- */
-        .game-menu-list { list-style: none; padding: 0; margin: 20px 0 0; display: flex; flex-direction: column; gap: 10px; }
+        .game-menu-list { list-style: none; padding: 0; margin: 15px 0 0; display: flex; flex-direction: column; gap: 8px; align-items: center; }
         .game-menu-item { 
-            padding: 10px; border: 1px solid var(--theme-c1); border-radius: 5px; 
-            cursor: pointer; font-weight: bold; transition: 0.3s; color: var(--text-base);
+            padding: 6px 16px; border: 1px solid var(--theme-c1); border-radius: 4px; 
+            cursor: pointer; font-size: 0.85rem; font-weight: bold; transition: 0.3s; color: var(--text-base);
+            width: fit-content; min-width: 100px;
         }
         .game-menu-item:hover { background: var(--theme-c1); color: var(--bg-main); }
 
@@ -236,7 +237,6 @@
 
             inputBuffer += e.key.toLowerCase();
             
-            // Multiple triggers for Arcade menu
             if (inputBuffer.endsWith("game") || inputBuffer.endsWith("arcade")) { 
                 inputBuffer = ""; 
                 openGameMenu(); 
@@ -254,7 +254,7 @@
             if (window.innerWidth <= 768) return; 
             const body = document.getElementById('modal-body');
             body.innerHTML = `
-                <h3>Arcade</h3>
+                <h3 style="margin-bottom: 5px;">Arcade</h3>
                 <ul class="game-menu-list">
                     <li class="game-menu-item" onclick="closeModal(); activateBreakout();">Breakout</li>
                     <li class="game-menu-item" onclick="closeModal(); activateSnake();">Snake</li>
@@ -269,7 +269,6 @@
             document.body.classList.remove('game-on');
             hud.style.display = 'none';
             closeBtn.style.display = 'none';
-            // Return to selection menu
             openGameMenu(); 
         }
 
