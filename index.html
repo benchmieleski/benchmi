@@ -11,7 +11,6 @@
             --theme-c1: #6cccb6; 
             --theme-c2: #57648a; 
             --theme-c3: #ab5c95; 
-            --painting-frame: #6cccb6; 
         }
 
         /* --- Global & Scrollbars --- */
@@ -29,6 +28,7 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            transition: background 0.3s ease;
         }
 
         /* --- Header & Navigation --- */
@@ -102,15 +102,15 @@
         .scroll-wrapper:hover { animation-play-state: paused; }
         
         .item-wrapper { 
-            height: 60vh; margin: 20px 40px; padding: 3.5px; 
-            background: var(--painting-frame); transition: 0.6s; 
+            height: 60vh; margin: 20px 40px; padding: 4px; 
+            background: var(--theme-c1); transition: 0.6s; 
             cursor: pointer; flex-shrink: 0; border-radius: 5px; 
             box-shadow: 0 15px 35px rgba(0,0,0,0.17); overflow: hidden;
         }
         .item-wrapper:hover { transform: translateY(-8px); box-shadow: 0 25px 50px rgba(0,0,0,0.24); }
         
         body.game-on .item-wrapper { height: 45vh; } 
-        .painting { height: 100%; display: block; background: #fff; border-radius: 4px; }
+        .painting { height: 100%; display: block; background: #fff; border-radius: 2px; }
 
         /* --- Modal --- */
         #modal { 
@@ -126,9 +126,9 @@
         .game-menu-list { list-style: none; padding: 0; margin: 20px 0 0; display: flex; flex-direction: column; gap: 10px; }
         .game-menu-item { 
             padding: 10px; border: 1px solid var(--theme-c1); border-radius: 5px; 
-            cursor: pointer; font-weight: bold; transition: 0.3s;
+            cursor: pointer; font-weight: bold; transition: 0.3s; color: var(--text-base);
         }
-        .game-menu-item:hover { background: var(--theme-c1); color: #fff; }
+        .game-menu-item:hover { background: var(--theme-c1); color: var(--bg-main); }
 
         /* --- Animations & Effects --- */
         @keyframes slow-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
@@ -203,8 +203,8 @@
         const themes = {
             misty: { colors: ['#6cccb6', '#57648a', '#ab5c95'], bg: '#fff', text: '#1a1a1a' }, 
             electric: { colors: ['#d9b3f2', '#b3d9d9', '#efb9da'], bg: '#fff', text: '#1a1a1a' },
-            monochromeDark: { colors: ['#ffffff', '#ffffff', '#ffffff'], bg: '#000', text: '#f0f0f0' },
-            monochromeStatic: { colors: ['#000', '#000', '#000'], bg: '#fff', text: '#1a1a1a' }
+            monochromeDark: { colors: ['#ffffff', '#888888', '#444444'], bg: '#000', text: '#f0f0f0' },
+            monochromeStatic: { colors: ['#000000', '#555555', '#999999'], bg: '#fff', text: '#1a1a1a' }
         };
 
         const canvas = document.getElementById('gameCanvas');
@@ -236,7 +236,6 @@
 
             inputBuffer += e.key.toLowerCase();
             if (inputBuffer.endsWith("game")) { inputBuffer = ""; openGameMenu(); }
-            if (inputBuffer.endsWith("arcade")) { inputBuffer = ""; openGameMenu(); }
             if (inputBuffer.endsWith("close")) { inputBuffer = ""; closeGame(); }
             if (inputBuffer.length > 15) inputBuffer = inputBuffer.slice(-10);
         });
@@ -245,8 +244,9 @@
             if (window.innerWidth <= 768) return; 
             const body = document.getElementById('modal-body');
             body.innerHTML = `
-                <h3>Arcade</h3>
+                <p>Arcade</p>
                 <ul class="game-menu-list">
+                <br>
                     <li class="game-menu-item" onclick="closeModal(); activateBreakout();">Breakout</li>
                     <li class="game-menu-item" onclick="closeModal(); activateSnake();">Snake</li>
                 </ul>
@@ -260,6 +260,8 @@
             document.body.classList.remove('game-on');
             hud.style.display = 'none';
             closeBtn.style.display = 'none';
+            // Instead of returning to "home", return to menu
+            openGameMenu(); 
         }
 
         function handleGameInput(e) {
@@ -269,8 +271,7 @@
 
         // --- Snake Logic ---
         function activateSnake() {
-            closeGame();
-            snakeActive = gameActive = true;
+            snakeActive = gameActive = true; breakoutActive = false;
             document.body.classList.add('game-on');
             hud.style.display = 'block';
             closeBtn.style.display = 'flex';
@@ -281,7 +282,7 @@
             canvas.width = 240; canvas.height = 180;
             snake = [{x: 10, y: 10}]; dx = dy = snakeScore = 0;
             spawnFood(); updateHud(`Score: ${snakeScore}`);
-            renderSnakeScreen("SNAKE", "Click to Start");
+            renderSnakeScreen("S N A K E", "Click to Start");
         }
 
         function spawnFood() { food = { x: Math.floor(Math.random() * 24), y: Math.floor(Math.random() * 18) }; }
@@ -305,15 +306,16 @@
 
         function renderSnakeScreen(t1, t2) {
             ctx.clearRect(0,0, canvas.width, canvas.height);
-            ctx.fillStyle = themes[activeTheme].text; ctx.textAlign = "center";
+            // Explicitly pull current theme text color for canvas
+            const textColor = themes[activeTheme].text;
+            ctx.fillStyle = textColor; ctx.textAlign = "center";
             ctx.font = "bold 14px sans-serif"; ctx.fillText(t1, 120, 80);
             ctx.font = "10px sans-serif"; ctx.fillText(t2, 120, 100);
         }
 
         // --- Breakout Logic ---
         function activateBreakout() {
-            closeGame();
-            breakoutActive = gameActive = true;
+            breakoutActive = gameActive = true; snakeActive = false;
             document.body.classList.add('game-on');
             hud.style.display = 'block'; closeBtn.style.display = 'flex';
             initBreakout(true); drawBreakout();
@@ -400,6 +402,8 @@
             root.setProperty('--theme-c3', t.colors[2]); root.setProperty('--bg-main', t.bg); 
             root.setProperty('--text-base', t.text); 
             document.querySelectorAll('.theme-option').forEach(o => o.classList.remove('active')); el.classList.add('active'); 
+            // Refresh snake screen if it's waiting to start
+            if(snakeActive && dx === 0) renderSnakeScreen("S N A K E", "Click to Start");
         }
 
         function openItem(idx) { 
