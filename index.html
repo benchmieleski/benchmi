@@ -235,18 +235,27 @@
             }
 
             inputBuffer += e.key.toLowerCase();
-            if (inputBuffer.endsWith("game")) { inputBuffer = ""; openGameMenu(); }
-            if (inputBuffer.endsWith("close")) { inputBuffer = ""; closeGame(); }
-            if (inputBuffer.length > 15) inputBuffer = inputBuffer.slice(-10);
+            
+            // Multiple triggers for Arcade menu
+            if (inputBuffer.endsWith("game") || inputBuffer.endsWith("arcade")) { 
+                inputBuffer = ""; 
+                openGameMenu(); 
+            }
+            
+            if (inputBuffer.endsWith("close")) { 
+                inputBuffer = ""; 
+                closeGame(); 
+            }
+            
+            if (inputBuffer.length > 20) inputBuffer = inputBuffer.slice(-15);
         });
 
         function openGameMenu() {
             if (window.innerWidth <= 768) return; 
             const body = document.getElementById('modal-body');
             body.innerHTML = `
-                <p>Arcade</p>
+                <h3>Arcade</h3>
                 <ul class="game-menu-list">
-                <br>
                     <li class="game-menu-item" onclick="closeModal(); activateBreakout();">Breakout</li>
                     <li class="game-menu-item" onclick="closeModal(); activateSnake();">Snake</li>
                 </ul>
@@ -260,7 +269,7 @@
             document.body.classList.remove('game-on');
             hud.style.display = 'none';
             closeBtn.style.display = 'none';
-            // Instead of returning to "home", return to menu
+            // Return to selection menu
             openGameMenu(); 
         }
 
@@ -306,7 +315,6 @@
 
         function renderSnakeScreen(t1, t2) {
             ctx.clearRect(0,0, canvas.width, canvas.height);
-            // Explicitly pull current theme text color for canvas
             const textColor = themes[activeTheme].text;
             ctx.fillStyle = textColor; ctx.textAlign = "center";
             ctx.font = "bold 14px sans-serif"; ctx.fillText(t1, 120, 80);
@@ -402,7 +410,6 @@
             root.setProperty('--theme-c3', t.colors[2]); root.setProperty('--bg-main', t.bg); 
             root.setProperty('--text-base', t.text); 
             document.querySelectorAll('.theme-option').forEach(o => o.classList.remove('active')); el.classList.add('active'); 
-            // Refresh snake screen if it's waiting to start
             if(snakeActive && dx === 0) renderSnakeScreen("S N A K E", "Click to Start");
         }
 
