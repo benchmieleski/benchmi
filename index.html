@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ben Chmieleski | Home</title>
     <style>
-        /* Import Silkscreen Font */
         @import url('https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap');
 
         :root {
@@ -21,7 +20,6 @@
             box-sizing: border-box; 
             scrollbar-width: thin; 
             scrollbar-color: var(--theme-c1) var(--bg-main); 
-            /* Apply Silkscreen globally */
             font-family: 'Silkscreen', cursive;
             letter-spacing: 1px;
         }
@@ -56,15 +54,18 @@
 
         .site-name { 
             font-size: 2rem; 
-            font-weight: bold; 
+            font-weight: 400; 
             line-height: 1.2; 
             margin: 0; 
+            text-transform: uppercase;
+            letter-spacing: 4px; 
         }
 
         .site-subheading { 
-            font-size: 1.25rem; 
+            font-size: 1.1rem; 
             line-height: 1.2; 
-            margin: 2px 0 12px; 
+            margin: 4px 0 12px; 
+            letter-spacing: 1px;
         }
 
         .nav-menu { display: none; flex-direction: row; align-items: center; gap: 20px; }
@@ -160,12 +161,15 @@
             background: linear-gradient(to right, var(--theme-c1), var(--theme-c2), var(--theme-c3), var(--theme-c1)); 
             background-size: 400% auto; animation: gradient-flow 18s linear infinite; 
             -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; 
+            display: inline-block;
         }
 
-        /* --- Responsive --- */
+        /* --- Responsive / Mobile --- */
         @media (max-width: 768px) {
             .desktop-only { display: none !important; }
             header { position: relative; padding: 20px; pointer-events: auto; }
+            .site-name { font-size: 1.5rem; letter-spacing: 2px; }
+            .site-subheading { font-size: 0.9rem; }
             .nav-menu { display: flex; margin-top: 10px; }
             .gallery-container { margin-top: 20px; overflow-y: auto; display: block; height: auto; }
             .scroll-wrapper { animation: none; display: flex; flex-direction: column; width: 100%; padding: 0 20px; }
@@ -237,15 +241,12 @@
         let gameActive = false, snakeActive = false, breakoutActive = false;
         let activeTheme = 'misty', inputBuffer = "";
 
-        // --- Breakout State ---
         const breakoutConfig = { cols: 8, rows: 3, basePaddleWidth: 36, brickHeight: 12, baseSpeed: 2, maxLevels: 3 };
         let ballReleased = false, gameWon = false, paddleX, paddleWidth, bricks, starRain = [], powerUps = [], balls = [];
         let score = 0, level = 1, lives = 3, levelTransitioning = false;
 
-        // --- Snake State ---
         let snake = [{x: 10, y: 10}], food = {x: 15, y: 15}, dx = 0, dy = 0, snakeScore = 0, gameLoop;
 
-        // --- Keyboard Detection ---
         window.addEventListener('keydown', (e) => {
             if (breakoutActive && e.code === 'Space' && !ballReleased) { ballReleased = true; return; }
             if (snakeActive) {
@@ -254,19 +255,9 @@
                 if (e.key === "ArrowLeft" && dx === 0) { dx = -1; dy = 0; }
                 if (e.key === "ArrowRight" && dx === 0) { dx = 1; dy = 0; }
             }
-
             inputBuffer += e.key.toLowerCase();
-            
-            if (inputBuffer.endsWith("game") || inputBuffer.endsWith("arcade")) { 
-                inputBuffer = ""; 
-                openGameMenu(); 
-            }
-            
-            if (inputBuffer.endsWith("close")) { 
-                inputBuffer = ""; 
-                closeGame(); 
-            }
-            
+            if (inputBuffer.endsWith("game") || inputBuffer.endsWith("arcade")) { inputBuffer = ""; openGameMenu(); }
+            if (inputBuffer.endsWith("close")) { inputBuffer = ""; closeGame(); }
             if (inputBuffer.length > 20) inputBuffer = inputBuffer.slice(-15);
         });
 
@@ -274,7 +265,7 @@
             if (window.innerWidth <= 768) return; 
             const body = document.getElementById('modal-body');
             body.innerHTML = `
-                <h3 style="margin-bottom: 5px;">Arcade</h3><br>
+                <h3 class="inv-grad-box" style="margin-bottom: 5px;">Arcade</h3><br>
                 <ul class="game-menu-list">
                     <li class="game-menu-item" onclick="closeModal(); activateBreakout();">Breakout</li>
                     <li class="game-menu-item" onclick="closeModal(); activateSnake();">Snake</li>
@@ -297,7 +288,6 @@
             if (snakeActive && dx === 0 && dy === 0) { dx = 1; gameLoop = setInterval(stepSnake, 100); }
         }
 
-        // --- Snake Logic ---
         function activateSnake() {
             snakeActive = gameActive = true; breakoutActive = false;
             document.body.classList.add('game-on');
@@ -337,12 +327,10 @@
             const style = getComputedStyle(document.documentElement);
             const themeAccent = style.getPropertyValue('--theme-c1').trim();
             ctx.fillStyle = themeAccent; ctx.textAlign = "center";
-            // Use Silkscreen style in canvas
             ctx.font = "14px 'Silkscreen', cursive"; ctx.fillText(t1, 120, 80);
             ctx.font = "8px 'Silkscreen', cursive"; ctx.fillText(t2, 120, 100);
         }
 
-        // --- Breakout Logic ---
         function activateBreakout() {
             breakoutActive = gameActive = true; snakeActive = false;
             document.body.classList.add('game-on');
@@ -411,7 +399,6 @@
             requestAnimationFrame(drawBreakout);
         }
 
-        // --- Shared Helpers ---
         function updateHud(txt) { if(hud) hud.innerText = txt; }
         function getThemeColors() { 
             const style = getComputedStyle(document.documentElement);
@@ -436,14 +423,14 @@
 
         function openItem(idx) { 
             const item = feedItems[idx % feedItems.length]; 
-            document.getElementById('modal-body').innerHTML = `<img src="${item.path}"><h3 style="margin-top:15px;">${item.title}</h3><p>${item.description}</p>`; 
+            document.getElementById('modal-body').innerHTML = `<img src="${item.path}"><h3 class="inv-grad-box" style="margin-top:15px;">${item.title}</h3><p>${item.description}</p>`; 
             document.getElementById('modal').style.display = 'block'; 
         }
         
         function openSection(type) { 
             const content = type === 'about' ? 
-                `<h3>Ben Chmieleski</h3><p>Artist & Designer in West Michigan.</p><p>I draw my inspiration from nature and the world around me. <br> I believe in the power of art & design and their ability to improve the human condition. <br> <br> Bored? Type Arcade :)</p>` : 
-                `<h3>Contact</h3><p><a href="mailto:benchmieleski@gmail.com" style="color:inherit; text-decoration:underline;">benchmieleski@gmail.com</a> | <a href="https://www.linkedin.com/public-profile/settings?trk=d_flagship3_profile_self_view_public_profile" target="_blank" style="color:inherit; text-decoration:underline;">LinkedIn</a></p>`; 
+                `<h3 class="inv-grad-box">Ben Chmieleski</h3><p>Artist & Designerin West Michigan.</p>` : 
+                `<h3 class="inv-grad-box">Contact</h3><p><a href="mailto:benchmieleski@gmail.com" style="color:inherit; text-decoration:underline;">Email</a> | <a href="https://www.linkedin.com/in/benchmieleski" target="_blank" style="color:inherit; text-decoration:underline;">LinkedIn</a></p>`; 
             document.getElementById('modal-body').innerHTML = content;
             document.getElementById('modal').style.display = 'block'; 
         }
